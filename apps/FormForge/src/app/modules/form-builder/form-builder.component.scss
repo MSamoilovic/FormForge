@@ -1,0 +1,49 @@
+.form-builder-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  gap: 16px;
+  height: calc(100vh - 32px);
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.sidebar, .properties {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fafafa;
+  overflow: auto;
+}
+
+.canvas {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fff;
+  overflow: auto;
+
+  .canvas-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+
+  .empty {
+    color: #94a3b8;
+    font-style: italic;
+    padding: 8px;
+  }
+}
+
+.draggable-item {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 8px;
+  cursor: grab;
+  user-select: none;
+}

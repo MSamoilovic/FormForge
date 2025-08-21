@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve FormForge"
+    "start": "nx serve FormForge --port 4500"
   },
   "private": true,
   "dependencies": {
+    "@angular/cdk": "^20.2.0",
     "@angular/common": "~20.1.0",
     "@angular/compiler": "~20.1.0",
     "@angular/core": "~20.1.0",
