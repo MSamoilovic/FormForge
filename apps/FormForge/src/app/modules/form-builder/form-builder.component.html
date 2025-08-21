@@ -32,7 +32,7 @@
     }
 
     @for (item of canvasFields; track item.id) {
-      <div class="canvas-item" (click)="selectField(item)">
+      <div class="canvas-item" (click)="selectField(item)" role="button" tabindex="0">
         {{ item.label }} ({{ item.type }})
       </div>
     }
