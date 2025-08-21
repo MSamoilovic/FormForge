@@ -1,0 +1,66 @@
+<div class="form-builder-grid">
+  <!-- Sidebar -->
+  <aside
+    class="sidebar"
+    cdkDropList
+    id="sidebarDropList"
+    [cdkDropListData]="fields"
+    [cdkDropListConnectedTo]="['canvasDropList']"
+  >
+    <h3>Field Types</h3>
+
+    @for (field of fields; track field) {
+      <div cdkDrag [cdkDragData]="field" class="draggable-item">
+        {{ field }}
+      </div>
+    }
+  </aside>
+
+  <!-- Canvas -->
+  <main
+    class="canvas"
+    cdkDropList
+    id="canvasDropList"
+    [cdkDropListData]="canvasFields"
+    [cdkDropListConnectedTo]="['sidebarDropList']"
+    (cdkDropListDropped)="onDrop($event)"
+  >
+    <h3>Canvas</h3>
+
+    @if (canvasFields.length === 0) {
+      <p class="empty">Drop fields here</p>
+    }
+
+    @for (item of canvasFields; track item.id) {
+      <div class="canvas-item" (click)="selectField(item)" role="button" tabindex="0">
+        {{ item.label }} ({{ item.type }})
+      </div>
+    }
+  </main>
+
+  <!-- Properties -->
+  <aside class="properties">
+    <h3>Properties</h3>
+
+    @if (!selectedField) {
+      <p>Select a field to edit its settings.</p>
+    } @else {
+      <h4>{{ selectedField.type }}</h4>
+
+      <label>
+        Label:
+        <input [(ngModel)]="selectedField.label" />
+      </label>
+
+      <label>
+        Placeholder:
+        <input [(ngModel)]="selectedField.placeholder" />
+      </label>
+
+      <label>
+        <input type="checkbox" [(ngModel)]="selectedField.required" />
+        Required
+      </label>
+    }
+  </aside>
+</div>
