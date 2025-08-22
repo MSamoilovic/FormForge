@@ -1,19 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  CdkDragDrop,
-  DragDropModule,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { CanvasField, FieldType } from '@form-forge/models';
+import {
+  CheckboxField,
+  DateField,
+  RadioField,
+  SelectorField,
+  TextField,
+} from '@form-forge/ui-kit';
 
 @Component({
   standalone: true,
   selector: 'app-form-builder',
   templateUrl: './form-builder.component.html',
   styleUrls: ['./form-builder.component.scss'],
-  imports: [CommonModule, DragDropModule, FormsModule],
+  imports: [
+    CommonModule,
+    DragDropModule,
+    FormsModule,
+    TextField,
+    SelectorField,
+    CheckboxField,
+    RadioField,
+    DateField,
+  ],
 })
 export class FormBuilderComponent {
   fields: FieldType[] = [
@@ -26,36 +38,56 @@ export class FormBuilderComponent {
   ];
 
   canvasFields: CanvasField[] = [];
+
   selectedField: CanvasField | null = null;
-  fieldProps = { label: '' };
 
-  onDrop(event: CdkDragDrop<CanvasField[]>) {
-    if (event.previousContainer === event.container) {
-      // Reorder unutar canvas-a
-      moveItemInArray(
-        this.canvasFields,
-        event.previousIndex,
-        event.currentIndex
-      );
-    } else {
-      //TODO: ovo mora da se ispravi
-      const type = event.previousContainer.data[
-        event.previousIndex
-      ] as unknown as FieldType;
+  private componentMap: Record<FieldType, Type<any>> = {
+    [FieldType.Text]: TextField,
+    [FieldType.Number]: TextField,
+    [FieldType.Select]: SelectorField,
+    [FieldType.Checkbox]: CheckboxField,
+    [FieldType.Radio]: RadioField,
+    [FieldType.Date]: DateField,
+  };
 
-      const newField: CanvasField = {
-        id: crypto.randomUUID(),
-        type,
-        label: type,
-        placeholder: '',
-        required: false,
-      };
-      this.canvasFields.splice(event.currentIndex, 0, newField);
-      this.selectField(newField);
-    }
+  onDrop(event: CdkDragDrop<any[]>) {
+    const fieldType: FieldType = event.item.data;
+
+    const newField: CanvasField = {
+      id: crypto.randomUUID(),
+      type: fieldType,
+      label: `${fieldType} field`,
+      placeholder: '',
+      required: false,
+      options:
+        fieldType === FieldType.Select || fieldType === FieldType.Radio
+          ? ['Option 1']
+          : [],
+    };
+
+    this.canvasFields.push(newField);
+    this.selectField(newField);
   }
 
   selectField(field: CanvasField) {
     this.selectedField = field;
+  }
+
+  addOption() {
+    if (this.selectedField && this.selectedField.options) {
+      this.selectedField.options.push(
+        `Option ${this.selectedField.options.length + 1}`
+      );
+    }
+  }
+
+  removeOption(index: number) {
+    if (this.selectedField && this.selectedField.options) {
+      this.selectedField.options.splice(index, 1);
+    }
+  }
+
+  getComponent(fieldType: FieldType): Type<any> | null {
+    return this.componentMap[fieldType];
   }
 }
