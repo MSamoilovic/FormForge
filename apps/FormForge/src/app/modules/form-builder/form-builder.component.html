@@ -1,66 +1,75 @@
-<div class="form-builder-grid">
-  <!-- Sidebar -->
-  <aside
-    class="sidebar"
-    cdkDropList
-    id="sidebarDropList"
-    [cdkDropListData]="fields"
-    [cdkDropListConnectedTo]="['canvasDropList']"
-  >
-    <h3>Field Types</h3>
-
-    @for (field of fields; track field) {
-      <div cdkDrag [cdkDragData]="field" class="draggable-item">
-        {{ field }}
-      </div>
-    }
+<div class="form-builder">
+  <aside class="sidebar">
+    <h3>Available Fields</h3>
+    <div
+      cdkDropList
+      [cdkDropListData]="fields"
+      class="field-list"
+      [cdkDropListConnectedTo]="['canvasDropList']"
+    >
+      @for (field of fields; track field) {
+        <div class="field-item" cdkDrag [cdkDragData]="field">
+          {{ field }}
+        </div>
+      }
+    </div>
   </aside>
 
-  <!-- Canvas -->
   <main
-    class="canvas"
-    cdkDropList
     id="canvasDropList"
-    [cdkDropListData]="canvasFields"
-    [cdkDropListConnectedTo]="['sidebarDropList']"
+    cdkDropList
+    class="canvas"
     (cdkDropListDropped)="onDrop($event)"
   >
     <h3>Canvas</h3>
-
-    @if (canvasFields.length === 0) {
-      <p class="empty">Drop fields here</p>
-    }
-
-    @for (item of canvasFields; track item.id) {
-      <div class="canvas-item" (click)="selectField(item)" role="button" tabindex="0">
-        {{ item.label }} ({{ item.type }})
+    @for (field of canvasFields; track field.id) {
+      <div
+        class="canvas-field"
+        (click)="selectField(field)"
+        [class.selected]="selectedField?.id === field.id"
+        role="button"
+      >
+        <ng-container
+          *ngComponentOutlet="
+            getComponent(field.type);
+            inputs: {
+              label: field.label,
+              placeholder: field.placeholder,
+              options: field.options
+            }
+          "
+        ></ng-container>
       </div>
     }
   </main>
 
-  <!-- Properties -->
-  <aside class="properties">
+  <aside class="properties" *ngIf="selectedField as field">
     <h3>Properties</h3>
 
-    @if (!selectedField) {
-      <p>Select a field to edit its settings.</p>
-    } @else {
-      <h4>{{ selectedField.type }}</h4>
+    <label>
+      Label:
+      <input [(ngModel)]="field.label" />
+    </label>
 
-      <label>
-        Label:
-        <input [(ngModel)]="selectedField.label" />
-      </label>
+    <label *ngIf="field.type === 'text' || field.type === 'number'">
+      Placeholder:
+      <input [(ngModel)]="field.placeholder" />
+    </label>
 
-      <label>
-        Placeholder:
-        <input [(ngModel)]="selectedField.placeholder" />
-      </label>
+    <label>
+      Required:
+      <input type="checkbox" [(ngModel)]="field.required" />
+    </label>
 
-      <label>
-        <input type="checkbox" [(ngModel)]="selectedField.required" />
-        Required
-      </label>
-    }
+    <div *ngIf="field.type === 'select' || field.type === 'radio'">
+      <h4>Options</h4>
+      @for (option of field.options; let i = $index; track i) {
+        <div class="option-item">
+          <input [(ngModel)]="field.options[i]" />
+          <button type="button" (click)="removeOption(i)">✕</button>
+        </div>
+      }
+      <button type="button" (click)="addOption()">Add Option</button>
+    </div>
   </aside>
 </div>

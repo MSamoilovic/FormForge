@@ -20,6 +20,9 @@
     "paths": {
       "@form-forge/models": [
         "./libs/models/src/index.ts"
+      ],
+      "@form-forge/ui-kit": [
+        "./libs/ui-kit/src/index.ts"
       ]
     }
   },

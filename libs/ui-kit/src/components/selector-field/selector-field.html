@@ -1,0 +1,8 @@
+<div class="form-field-container">
+  <label class="form-field-label">{{ label }}</label>
+  <select class="form-field-select">
+    @for (option of options(); track option) {
+      <option>{{ option }}</option>
+    }
+  </select>
+</div>
