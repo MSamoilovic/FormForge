@@ -10,6 +10,7 @@ import {
   SelectorField,
   TextField,
 } from '@form-forge/ui-kit';
+import { FormBuilderSidebar } from './form-builder-sidebar/form-builder-sidebar';
 
 @Component({
   standalone: true,
@@ -25,6 +26,7 @@ import {
     CheckboxField,
     RadioField,
     DateField,
+    FormBuilderSidebar,
   ],
 })
 export class FormBuilderComponent {
