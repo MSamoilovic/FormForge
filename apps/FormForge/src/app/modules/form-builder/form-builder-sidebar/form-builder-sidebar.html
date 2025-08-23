@@ -1,0 +1,15 @@
+<aside class="sidebar">
+  <h3>Available Fields</h3>
+  <div
+    cdkDropList
+    [cdkDropListData]="fields"
+    class="field-list"
+    [cdkDropListConnectedTo]="['canvasDropList']"
+  >
+    @for (field of fields(); track field) {
+      <div class="field-item" cdkDrag [cdkDragData]="field">
+        {{ field }}
+      </div>
+    }
+  </div>
+</aside>

@@ -1,19 +1,5 @@
 <div class="form-builder">
-  <aside class="sidebar">
-    <h3>Available Fields</h3>
-    <div
-      cdkDropList
-      [cdkDropListData]="fields"
-      class="field-list"
-      [cdkDropListConnectedTo]="['canvasDropList']"
-    >
-      @for (field of fields; track field) {
-        <div class="field-item" cdkDrag [cdkDragData]="field">
-          {{ field }}
-        </div>
-      }
-    </div>
-  </aside>
+  <app-form-builder-sidebar [fields]="fields" />
 
   <main
     id="canvasDropList"
@@ -51,10 +37,12 @@
       <input [(ngModel)]="field.label" />
     </label>
 
-    <label *ngIf="field.type === 'text' || field.type === 'number'">
-      Placeholder:
-      <input [(ngModel)]="field.placeholder" />
-    </label>
+    @if (field.type === 'text' || field.type === 'number') {
+      <label>
+        Placeholder:
+        <input [(ngModel)]="field.placeholder" />
+      </label>
+    }
 
     <label>
       Required:
