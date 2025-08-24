@@ -1,33 +1,13 @@
 <div class="form-builder">
   <app-form-builder-sidebar [fields]="fields" />
 
-  <main
-    id="canvasDropList"
-    cdkDropList
-    class="canvas"
-    (cdkDropListDropped)="onDrop($event)"
-  >
-    <h3>Canvas</h3>
-    @for (field of canvasFields; track field.id) {
-      <div
-        class="canvas-field"
-        (click)="selectField(field)"
-        [class.selected]="selectedField?.id === field.id"
-        role="button"
-      >
-        <ng-container
-          *ngComponentOutlet="
-            getComponent(field.type);
-            inputs: {
-              label: field.label,
-              placeholder: field.placeholder,
-              options: field.options
-            }
-          "
-        ></ng-container>
-      </div>
-    }
-  </main>
+  <app-form-builder-canvas
+    [canvasFields]="canvasFields"
+    [selectedField]="selectedField"
+    [componentMap]="componentMap"
+    (fieldDropped)="onDrop($event)"
+    (fieldSelected)="selectField($event)"
+  ></app-form-builder-canvas>
 
   <aside class="properties" *ngIf="selectedField as field">
     <h3>Properties</h3>

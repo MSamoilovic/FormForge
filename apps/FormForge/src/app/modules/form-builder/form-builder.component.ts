@@ -11,6 +11,7 @@ import {
   TextField,
 } from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './form-builder-sidebar/form-builder-sidebar';
+import { FormBuilderCanvas } from './form-builder-canvas/form-builder-canvas';
 
 @Component({
   standalone: true,
@@ -27,6 +28,7 @@ import { FormBuilderSidebar } from './form-builder-sidebar/form-builder-sidebar'
     RadioField,
     DateField,
     FormBuilderSidebar,
+    FormBuilderCanvas,
   ],
 })
 export class FormBuilderComponent {
@@ -43,7 +45,7 @@ export class FormBuilderComponent {
 
   selectedField: CanvasField | null = null;
 
-  private componentMap: Record<FieldType, Type<any>> = {
+  componentMap: Record<FieldType, Type<any>> = {
     [FieldType.Text]: TextField,
     [FieldType.Number]: TextField,
     [FieldType.Select]: SelectorField,
