@@ -1,0 +1,27 @@
+<main
+  id="canvasDropList"
+  cdkDropList
+  class="canvas"
+  (cdkDropListDropped)="onDrop($event)"
+>
+  <h3>Canvas</h3>
+  @for (field of canvasFields(); track field.id) {
+    <div
+      class="canvas-field"
+      (click)="onSelectField(field)"
+      [class.selected]="selectedField()?.id === field.id"
+    >
+      <ng-container
+        *ngComponentOutlet="
+          getComponent(field.type);
+          inputs: {
+            label: field.label,
+            placeholder: field.placeholder,
+            options: field.options,
+            fieldType: field.type
+          }
+        "
+      ></ng-container>
+    </div>
+  }
+</main>
