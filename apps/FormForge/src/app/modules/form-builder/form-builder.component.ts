@@ -12,6 +12,7 @@ import {
 } from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './form-builder-canvas/form-builder-canvas';
+import { FormBuilderPropertyPanel } from './form-builder-property-panel/form-builder-property-panel';
 
 @Component({
   standalone: true,
@@ -29,6 +30,7 @@ import { FormBuilderCanvas } from './form-builder-canvas/form-builder-canvas';
     DateField,
     FormBuilderSidebar,
     FormBuilderCanvas,
+    FormBuilderPropertyPanel,
   ],
 })
 export class FormBuilderComponent {
@@ -91,7 +93,18 @@ export class FormBuilderComponent {
     }
   }
 
-  getComponent(fieldType: FieldType): Type<any> | null {
-    return this.componentMap[fieldType];
+  onFieldChange(updatedValues: Partial<CanvasField>): void {
+    if (this.selectedField) {
+      this.selectedField = { ...this.selectedField, ...updatedValues };
+
+      const index = this.canvasFields.findIndex(
+        (f) => f.id === this.selectedField?.id
+      );
+
+      if (index !== -1) {
+        this.canvasFields[index] = this.selectedField;
+        // TODO: Imati u vidu i NGRX ovde
+      }
+    }
   }
 }

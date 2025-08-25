@@ -9,35 +9,10 @@
     (fieldSelected)="selectField($event)"
   ></app-form-builder-canvas>
 
-  <aside class="properties" *ngIf="selectedField as field">
-    <h3>Properties</h3>
-
-    <label>
-      Label:
-      <input [(ngModel)]="field.label" />
-    </label>
-
-    @if (field.type === 'text' || field.type === 'number') {
-      <label>
-        Placeholder:
-        <input [(ngModel)]="field.placeholder" />
-      </label>
-    }
-
-    <label>
-      Required:
-      <input type="checkbox" [(ngModel)]="field.required" />
-    </label>
-
-    <div *ngIf="field.type === 'select' || field.type === 'radio'">
-      <h4>Options</h4>
-      @for (option of field.options; let i = $index; track i) {
-        <div class="option-item">
-          <input [(ngModel)]="field.options[i]" />
-          <button type="button" (click)="removeOption(i)">✕</button>
-        </div>
-      }
-      <button type="button" (click)="addOption()">Add Option</button>
-    </div>
-  </aside>
+  <app-form-builder-property-panel
+    [selectedField]="selectedField"
+    (addOptionRequested)="addOption()"
+    (removeOptionRequested)="removeOption($event)"
+    (fieldChanged)="onFieldChange($event)"
+  ></app-form-builder-property-panel>
 </div>
