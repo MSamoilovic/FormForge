@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { FormRendererComponent } from './form-renderer.component';
+import { FormRenderer } from './form-renderer';
 
 export const FORM_RENDERER_ROUTES: Routes = [
-  { path: '', component: FormRendererComponent }
+  { path: '', component: FormRenderer },
 ];
