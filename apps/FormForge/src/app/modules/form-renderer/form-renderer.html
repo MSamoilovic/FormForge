@@ -1,0 +1,20 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-renderer-container">
+  @for (field of formSchema(); track field.id) {
+    <div class="form-field-wrapper">
+      <ng-container
+        *ngComponentOutlet="
+          getComponent(field.type);
+          inputs: {
+            label: field.label,
+            placeholder: field.placeholder,
+            options: field.options,
+            fieldType: field.type,
+            formControl: form.get(field.id)
+          }
+        "
+      ></ng-container>
+    </div>
+  }
+
+  <button type="submit" [disabled]="form.invalid">Submit</button>
+</form>

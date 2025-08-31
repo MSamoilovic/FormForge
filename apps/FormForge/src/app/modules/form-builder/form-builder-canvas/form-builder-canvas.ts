@@ -7,7 +7,7 @@ import { NgComponentOutlet } from '@angular/common';
   selector: 'app-form-builder-canvas',
   imports: [CdkDropList, NgComponentOutlet],
   templateUrl: './form-builder-canvas.html',
-  styleUrl: './form-builder-canvas.css',
+  styleUrl: './form-builder-canvas.scss',
   standalone: true,
 })
 export class FormBuilderCanvas {
