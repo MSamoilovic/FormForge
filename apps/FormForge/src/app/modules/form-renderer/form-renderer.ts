@@ -33,7 +33,7 @@ import { CommonModule, NgComponentOutlet } from '@angular/common';
   templateUrl: './form-renderer.html',
 })
 export class FormRenderer implements OnInit {
-  readonly formSchema = input.required<CanvasField[]>();
+  readonly formSchema = input<CanvasField[]>();
   public form!: FormGroup;
 
   fb = inject(FormBuilder);
@@ -54,7 +54,7 @@ export class FormRenderer implements OnInit {
   private buildForm(): void {
     const group: any = {};
 
-    this.formSchema().forEach((field) => {
+    this.formSchema()?.forEach((field) => {
       const validators = [];
       if (field.required) {
         validators.push(Validators.required);

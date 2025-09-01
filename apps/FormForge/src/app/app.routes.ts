@@ -15,4 +15,8 @@ export const appRoutes: Route[] = [
         (m) => m.FORM_RENDERER_ROUTES
       ),
   },
+  {
+    path: '**',
+    redirectTo: 'builder',
+  },
 ];
