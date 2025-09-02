@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { App } from './app';
 
 export const appRoutes: Route[] = [
   {
@@ -14,5 +15,9 @@ export const appRoutes: Route[] = [
       import('./modules/form-renderer/form-renderer.routes').then(
         (m) => m.FORM_RENDERER_ROUTES
       ),
+  },
+  {
+    path: '',
+    component: App,
   },
 ];

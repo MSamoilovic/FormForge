@@ -2,6 +2,7 @@ import { Component, input, output, Type } from '@angular/core';
 import { CanvasField, FieldType } from '@form-forge/models';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgComponentOutlet } from '@angular/common';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-form-builder-canvas',
@@ -29,5 +30,19 @@ export class FormBuilderCanvas {
   getComponent(fieldType: FieldType): Type<any> | null {
     const component = this.componentMap()[fieldType];
     return component || null;
+  }
+
+  getComponentInputs(field: CanvasField): Record<string, any> {
+    const inputs: Record<string, any> = {
+      label: field.label,
+      placeholder: field.placeholder,
+      formControl: new FormControl(''),
+    };
+
+    if (field.type === FieldType.Select || field.type === FieldType.Radio) {
+      inputs['options'] = field.options;
+    }
+
+    return inputs;
   }
 }

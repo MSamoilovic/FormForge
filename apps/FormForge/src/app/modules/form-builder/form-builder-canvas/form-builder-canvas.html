@@ -14,12 +14,7 @@
       <ng-container
         *ngComponentOutlet="
           getComponent(field.type);
-          inputs: {
-            label: field.label,
-            placeholder: field.placeholder,
-            options: field.options,
-            fieldType: field.type
-          }
+          inputs: getComponentInputs(field)
         "
       ></ng-container>
     </div>

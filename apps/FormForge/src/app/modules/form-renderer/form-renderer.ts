@@ -17,23 +17,15 @@ import {
 import { CommonModule, NgComponentOutlet } from '@angular/common';
 
 @Component({
-  imports: [
-    ReactiveFormsModule,
-    NgComponentOutlet,
-    CommonModule,
-    CheckboxField,
-    DateField,
-    RadioField,
-    SelectorField,
-    TextField,
-  ],
+  imports: [ReactiveFormsModule, NgComponentOutlet, CommonModule],
   selector: 'app-form-renderer',
   standalone: true,
   styleUrl: './form-renderer.scss',
   templateUrl: './form-renderer.html',
+  exportAs: 'formRenderer',
 })
 export class FormRenderer implements OnInit {
-  readonly formSchema = input.required<CanvasField[]>();
+  readonly formSchema = input<CanvasField[]>();
   public form!: FormGroup;
 
   fb = inject(FormBuilder);
@@ -54,7 +46,7 @@ export class FormRenderer implements OnInit {
   private buildForm(): void {
     const group: any = {};
 
-    this.formSchema().forEach((field) => {
+    this.formSchema()?.forEach((field) => {
       const validators = [];
       if (field.required) {
         validators.push(Validators.required);
