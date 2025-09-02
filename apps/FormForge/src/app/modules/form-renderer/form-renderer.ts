@@ -17,20 +17,12 @@ import {
 import { CommonModule, NgComponentOutlet } from '@angular/common';
 
 @Component({
-  imports: [
-    ReactiveFormsModule,
-    NgComponentOutlet,
-    CommonModule,
-    CheckboxField,
-    DateField,
-    RadioField,
-    SelectorField,
-    TextField,
-  ],
+  imports: [ReactiveFormsModule, NgComponentOutlet, CommonModule],
   selector: 'app-form-renderer',
   standalone: true,
   styleUrl: './form-renderer.scss',
   templateUrl: './form-renderer.html',
+  exportAs: 'formRenderer',
 })
 export class FormRenderer implements OnInit {
   readonly formSchema = input<CanvasField[]>();

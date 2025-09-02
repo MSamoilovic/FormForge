@@ -1,39 +1,38 @@
-@let field = selectedField() ;
+@let field = selectedField()!;
 
-<aside>
-  @if (selectedField()) {
-    <div [formGroup]="propertiesForm">
-      <h3>Properties</h3>
+@if (field !== null) {
+  <aside [formGroup]="propertiesForm">
+    <h3>Properties</h3>
 
+    <label>
+      Label:
+      <input formControlName="label" />
+    </label>
+
+    @if (field?.type === 'text' || field?.type === 'number') {
       <label>
-        Label:
-        <input formControlName="label" />
+        Placeholder:
+        <input formControlName="placeholder" />
       </label>
+    }
 
-      @if (field?.type === 'text' || field?.type === 'number') {
-        <label>
-          Placeholder:
-          <input formControlName="placeholder" />
-        </label>
-      }
+    <label>
+      Required:
+      <input type="checkbox" formControlName="required" />
+    </label>
 
-      <label>
-        Required:
-        <input type="checkbox" formControlName="required" />
-      </label>
+    @if (field?.type === 'select' || field?.type === 'radio') {
+      <div formArrayName="options">
+        <h4>Options</h4>
+        @for (optionControl of optionsFormArray.controls; let i = $index; track i) {
+          <div class="option-item">
+            <input [formControl]="optionControl" />
+            <button type="button" (click)="removeOption(i)">✕</button>
+          </div>
+        }
+        <button type="button" (click)="addOption()">Add Option</button>
+      </div>
+    }
+  </aside>
+}
 
-      @if (field?.type === 'select' || field?.type === 'radio') {
-        <div>
-          <h4>Options</h4>
-          @for (option of field?.options; let i = $index; track i) {
-            <div class="option-item">
-              <input [value]="option" />
-              <button type="button" (click)="removeOptionRequested.emit(i)">✕</button>
-            </div>
-          }
-          <button type="button" (click)="addOptionRequested.emit()">Add Option</button>
-        </div>
-      }
-    </div>
-  }
-</aside>

@@ -30,4 +30,17 @@ export class FormBuilderCanvas {
     const component = this.componentMap()[fieldType];
     return component || null;
   }
+
+  getComponentInputs(field: CanvasField): Record<string, any> {
+    const inputs: Record<string, any> = {
+      label: field.label,
+      placeholder: field.placeholder,
+    };
+
+    if (field.type === FieldType.Select || field.type === FieldType.Radio) {
+      inputs['options'] = field.options;
+    }
+
+    return inputs;
+  }
 }

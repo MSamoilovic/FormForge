@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',
-  standalone: true
+  standalone: true,
 })
 export class App {
   protected title = 'FormForge';

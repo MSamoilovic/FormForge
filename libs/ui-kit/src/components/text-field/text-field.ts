@@ -24,7 +24,7 @@ import {
 export class TextField implements ControlValueAccessor {
   label = input<string>('');
   placeholder = input<string>('');
-  formControl = input.required<FormControl>();
+  formControl = input<FormControl | undefined>(undefined);
 
   writeValue(value: any): void {
     this.formControl()?.setValue(value, { emitEvent: false });

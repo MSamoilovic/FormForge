@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { App } from './app';
 
 export const appRoutes: Route[] = [
   {
@@ -16,7 +17,7 @@ export const appRoutes: Route[] = [
       ),
   },
   {
-    path: '**',
-    redirectTo: 'builder',
+    path: '',
+    component: App,
   },
 ];
