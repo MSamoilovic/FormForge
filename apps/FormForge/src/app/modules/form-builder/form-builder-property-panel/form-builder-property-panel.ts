@@ -1,11 +1,6 @@
 import { Component, effect, inject, input, output } from '@angular/core';
 import { CanvasField } from '@form-forge/models';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-form-builder-property-panel',
@@ -34,6 +29,7 @@ export class FormBuilderPropertyPanel {
 
     effect(() => {
       const field = this.selectedField();
+      console.log(this.selectedField);
       if (field) {
         this.propertiesForm.patchValue(
           {
@@ -49,5 +45,25 @@ export class FormBuilderPropertyPanel {
     this.propertiesForm.valueChanges.subscribe((value) => {
       this.fieldChanged.emit(value);
     });
+  }
+
+  get optionsFormArray(): FormArray<FormControl<string>> {
+    return this.propertiesForm.get('options') as FormArray;
+  }
+
+  addOption(value = ''): void {
+    const options = this.propertiesForm.get('options') as FormArray;
+    options.push(this.fb.control(value));
+  }
+
+  removeOption(index: number): void {
+    const options = this.propertiesForm.get('options') as FormArray;
+    options.removeAt(index);
+  }
+
+  private setOptions(options: string[]): void {
+    const optionsArray = this.propertiesForm.get('options') as FormArray;
+    optionsArray.clear();
+    options.forEach((option) => this.addOption(option));
   }
 }
