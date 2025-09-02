@@ -26,15 +26,15 @@ export class TextField implements ControlValueAccessor {
   placeholder = input<string>('');
   formControl = input<FormControl | undefined>(undefined);
 
-  writeValue(value: any): void {
+  writeValue(value: string | null): void {
     this.formControl()?.setValue(value, { emitEvent: false });
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: string | null) => void): void {
     this.formControl()?.valueChanges.subscribe(fn);
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.formControl()?.statusChanges.subscribe(() => fn());
   }
 
