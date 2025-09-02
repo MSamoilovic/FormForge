@@ -29,7 +29,6 @@ export class FormBuilderPropertyPanel {
 
     effect(() => {
       const field = this.selectedField();
-      console.log(this.selectedField);
       if (field) {
         this.propertiesForm.patchValue(
           {

@@ -17,6 +17,7 @@ export class SelectorField implements ControlValueAccessor {
   readonly label = input<string>('');
   readonly options = input<string[]>([]);
   readonly formControl = input<FormControl | undefined>(undefined);
+  readonly placeholder = input<string>('');
 
   writeValue(value: any): void {
     this.formControl()?.setValue(value, { emitEvent: false });
