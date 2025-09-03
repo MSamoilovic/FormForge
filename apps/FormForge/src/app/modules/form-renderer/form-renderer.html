@@ -7,9 +7,9 @@
           inputs: {
             label: field.label,
             placeholder: field.placeholder,
-            options: field.options,
+            options: field.options ?? undefined,
             fieldType: field.type,
-            formControl: form.get(field.id)
+            formControl: form.get(field.id),
           }
         "
       ></ng-container>

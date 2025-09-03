@@ -1,16 +1,26 @@
 import { Component, effect, inject, input, output } from '@angular/core';
 import { CanvasField } from '@form-forge/models';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { FormBuilderFieldRulesComponent } from '../form-builder-form-rules/form-builder-field-rules.component';
 
 @Component({
   selector: 'app-form-builder-property-panel',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FormBuilderFieldRulesComponent],
   templateUrl: './form-builder-property-panel.html',
   styleUrl: './form-builder-property-panel.css',
   standalone: true,
 })
 export class FormBuilderPropertyPanel {
   readonly selectedField = input.required<CanvasField | null>();
+
+  readonly allCanvasFields = input.required<CanvasField[] | null>();
 
   readonly fieldChanged = output<Partial<CanvasField>>();
   readonly addOptionRequested = output<void>();
@@ -24,7 +34,8 @@ export class FormBuilderPropertyPanel {
       label: ['', Validators.required],
       placeholder: [''],
       required: [false],
-      options: this.fb.array([]),
+      options: this.fb.array<FormControl>([]),
+      rules: this.fb.array<FormGroup>([]),
     });
 
     effect(() => {
@@ -50,6 +61,10 @@ export class FormBuilderPropertyPanel {
     return this.propertiesForm.get('options') as FormArray;
   }
 
+  get rulesFormArray(): FormArray {
+    return this.propertiesForm.get('rules') as FormArray;
+  }
+
   addOption(value = ''): void {
     const options = this.propertiesForm.get('options') as FormArray;
     options.push(this.fb.control(value));
@@ -64,5 +79,10 @@ export class FormBuilderPropertyPanel {
     const optionsArray = this.propertiesForm.get('options') as FormArray;
     optionsArray.clear();
     options.forEach((option) => this.addOption(option));
+  }
+
+  getAllFieldIds(): string[] {
+    const id = this.allCanvasFields()?.map((field) => field.id) ?? [];
+    return id;
   }
 }

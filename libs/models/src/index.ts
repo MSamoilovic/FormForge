@@ -1,5 +1,6 @@
-export * from './canvas-field.interface';
-export * from './field.interface';
-export * from './form-schema.interface';
+export * from './canvas-field.model';
+export * from './field.model';
+export * from './form-schema.model';
+export * from './field-rule.model';
 
 export * from './field-type.enum';
