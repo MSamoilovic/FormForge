@@ -1,19 +1,8 @@
 import { Component, inject, input, OnInit, Type } from '@angular/core';
 import { CanvasField, FieldType } from '@form-forge/models';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import {
-  CheckboxField,
-  DateField,
-  RadioField,
-  SelectorField,
-  TextField,
-} from '@form-forge/ui-kit';
+import { CheckboxField, DateField, RadioField, SelectorField, TextField } from '@form-forge/ui-kit';
 import { CommonModule, NgComponentOutlet } from '@angular/common';
 
 @Component({
@@ -68,5 +57,26 @@ export class FormRenderer implements OnInit {
 
   public getComponent(fieldType: FieldType): Type<any> | null {
     return this.componentMap[fieldType] || null;
+  }
+
+  public getInput(field: CanvasField): any {
+    switch (field.type) {
+      case FieldType.Text:
+        return {
+          label: field.label,
+          placeholder: field.placeholder,
+          formControl: this.form.get(field.id),
+          fieldType: field.type,
+        };
+
+      case FieldType.Select:
+        return {
+          label: field.label,
+          placeholder: field.placeholder,
+          formControl: this.form.get(field.id),
+          fieldType: field.type,
+          options: field.options,
+        };
+    }
   }
 }
