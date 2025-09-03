@@ -3,11 +3,11 @@
   <p>Below is a dynamically rendered form from a JSON schema.</p>
 
   <app-form-renderer
-    #formRenderer="formRenderer"
+    #formRenderer
     [formSchema]="formSchema" />
 
   <hr />
 
   <h3>Form Value</h3>
-  <pre>{{ formRenderer.form?.value | json }}</pre>
+  <pre>{{ formRenderer.formValueEmmited | json }}</pre>
 </div>

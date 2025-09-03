@@ -6,6 +6,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { FieldType } from '../../../../models/src';
 
 @Component({
   selector: 'app-text-field',
@@ -25,6 +26,7 @@ export class TextField implements ControlValueAccessor {
   label = input<string>('');
   placeholder = input<string>('');
   formControl = input<FormControl | undefined>(undefined);
+  fieldType = input<FieldType>(FieldType.Text);
 
   writeValue(value: string | null): void {
     this.formControl()?.setValue(value, { emitEvent: false });
