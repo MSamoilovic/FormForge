@@ -1,4 +1,4 @@
-import { DynamicField } from './field.interface';
+import { DynamicField } from './field.model';
 
 export interface FormSchema {
   id: string;

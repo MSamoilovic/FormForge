@@ -1,0 +1,45 @@
+<div [formGroup]="parentFormGroup">
+  <div formArrayName="rules">
+    @for (ruleGroup of rulesFormArray().controls; let i = $index; track i) {
+      <div class="rule-container" [formGroupName]="i">
+        <h5>Rule {{ i + 1 }}</h5>
+
+        <div class="rule-condition" formGroupName="condition">
+          <select formControlName="fieldId">
+            <option value="" disabled>Select a field</option>
+            @for (fieldId of allFormFields(); track fieldId) {
+              <option [value]="fieldId">{{ fieldId }}</option>
+            }
+          </select>
+
+          <select formControlName="operator">
+            <option value="eq">is equal to</option>
+            <option value="neq">is not equal to</option>
+          </select>
+
+          <input type="text" formControlName="value" placeholder="Value" />
+        </div>
+
+        <div class="rule-action" formGroupName="action">
+          <select formControlName="type">
+            <option value="show">show</option>
+            <option value="hide">hide</option>
+          </select>
+        </div>
+
+        <div class="rule-target">
+          on field:
+          <select formControlName="targetFieldId">
+            <option value="" disabled>Select a target field</option>
+            @for (fieldId of allFormFields(); track fieldId) {
+              <option [value]="fieldId">{{ fieldId }}</option>
+            }
+          </select>
+        </div>
+
+        <button type="button" (click)="removeRule(i)">Remove Rule</button>
+      </div>
+    }
+    <button type="button" (click)="addRule()">Add Rule</button>
+  </div>
+</div>

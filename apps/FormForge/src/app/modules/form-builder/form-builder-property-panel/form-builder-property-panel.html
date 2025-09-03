@@ -33,6 +33,13 @@
         <button type="button" (click)="addOption()">Add Option</button>
       </div>
     }
+
+    <hr />
+    <h4>Rules</h4>
+    <app-field-rules
+      [rulesFormArray]="rulesFormArray"
+      [allFormFields]="getAllFieldIds()"
+    ></app-field-rules>
   </aside>
 }
 

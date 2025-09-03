@@ -11,6 +11,7 @@
 
   <app-form-builder-property-panel
     [selectedField]="selectedField"
+    [allCanvasFields]="canvasFields"
     (addOptionRequested)="addOption()"
     (removeOptionRequested)="removeOption($event)"
     (fieldChanged)="onFieldChange($event)"
