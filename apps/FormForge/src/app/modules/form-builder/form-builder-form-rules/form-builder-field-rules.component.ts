@@ -23,14 +23,9 @@ export class FormBuilderFieldRulesComponent {
   addRule() {
     const newRuleGroup = new FormGroup({
       condition: new FormGroup({
-        operator: new FormControl('and'),
-        conditions: new FormArray([
-          new FormGroup({
-            fieldId: new FormControl(''),
-            operator: new FormControl('eq'),
-            value: new FormControl(''),
-          }),
-        ]),
+        fieldId: new FormControl(''),
+        operator: new FormControl('eq'),
+        value: new FormControl(''),
       }),
       action: new FormGroup({
         type: new FormControl('show'),
@@ -38,7 +33,6 @@ export class FormBuilderFieldRulesComponent {
       }),
       targetFieldId: new FormControl(''),
     });
-    console.log(this.rulesFormArray());
     this.rulesFormArray().push(newRuleGroup);
   }
 
