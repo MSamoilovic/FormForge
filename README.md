@@ -1,82 +1,67 @@
-# FormForge
+<h1 align="center">FormForge</h1>
+<p align="center">
+  A powerful web application for the dynamic creation, management, and display of forms.
+</p>
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+---
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+<h2 id="features">✨ Key Features</h2>
+<ul>
+  <li><strong>Visual Form Builder:</strong> Easily drag and drop field components (text, select, radio buttons, etc.).</li>
+  <li><strong>Reactive Form Management:</strong> Uses <code>Reactive Forms</code> for efficient state management.</li>
+  <li><strong>Dynamic Rule Engine:</strong> Supports complex rules (<code>AND</code>/<code>OR</code>) that control the visibility and behavior of form fields.</li>
+  <li><strong>Nx Monorepo:</strong> Organized and scalable code with clearly defined libraries and applications.</li>
+  <li><strong>Standalone Components:</strong> A modern development approach using standalone Angular components, without the need for <code>NgModule</code>-s.</li>
+</ul>
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+<br>
 
-## Finish your CI setup
+<h2 id="technologies">🚀 Technologies Used</h2>
+<p>This project is built using a modern stack to ensure performance and maintainability:</p>
+<ul>
+  <li><strong>Angular v17+</strong>: The main frontend framework.</li>
+  <li><strong>TypeScript</strong>: A strongly typed language for more reliable code.</li>
+  <li><strong>Nx</strong>: A monorepo tool for managing projects and shared libraries.</li>
+  <li><strong>Tailwind CSS</strong>: A fast and efficient CSS utility-first library for styling.</li>
+  <li><strong>CdkDragDrop</strong>: Angular Material CDK for drag-and-drop functionality.</li>
+</ul>
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/3qKmCCtVly)
+<br>
 
+<h2 id="getting-started">🛠️ Getting Started</h2>
+<p>To run the project locally, follow these simple steps:</p>
+<ol>
+  <li><strong>Clone the repository:</strong>
+    <pre><code>git clone https://github.com/your-username/your-repository.git
+cd your-repository</code></pre>
+  </li>
+  <li><strong>Install dependencies:</strong>
+    <pre><code>npm install</code></pre>
+  </li>
+  <li><strong>Run the application:</strong>
+    <pre><code>npm run start</code></pre>
+    The application will be available at <a href="http://localhost:4200/">http://localhost:4200/</a>.
+  </li>
+</ol>
 
-## Run tasks
+<br>
 
-To run the dev server for your app, use:
+<h2 id="project-structure">📁 Project Structure</h2>
+<p>The project is organized as an Nx monorepo for easy code sharing and scalability:</p>
+<ul>
+  <li><code>apps/FormForge/</code>: The main Angular application.</li>
+  <li><code>libs/form-builder/</code>: A shared library with the logic and models for the Form Builder.</li>
+  <li><code>libs/ui/</code>: A shared library with UI components (inputs, buttons, etc.).</li>
+</ul>
 
-```sh
-npx nx serve FormForge
-```
+<br>
 
-To create a production bundle:
-
-```sh
-npx nx build FormForge
-```
-
-To see all available targets to run for a project, run:
-
-```sh
-npx nx show project FormForge
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/angular:app demo
-```
-
-To generate a new library, use:
-
-```sh
-npx nx g @nx/angular:lib mylib
-```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+<h2 id="contributing">🤝 Contributing</h2>
+<p>We are always open to contributions! If you would like to help, please follow these steps:</p>
+<ol>
+  <li>Fork the repository.</li>
+  <li>Create a new branch (<code>git checkout -b new-feature</code>).</li>
+  <li>Make your changes and commit them.</li>
+  <li>Push to your branch.</li>
+  <li>Submit a Pull Request with a detailed description of your changes.</li>
+</ol>
