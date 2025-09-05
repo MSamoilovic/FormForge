@@ -1,5 +1,5 @@
 import { Component, effect, inject, input, output } from '@angular/core';
-import { CanvasField } from '@form-forge/models';
+import { FormField } from '@form-forge/models';
 import {
   FormArray,
   FormBuilder,
@@ -18,11 +18,11 @@ import { FormBuilderFieldRulesComponent } from '../form-builder-form-rules/form-
   standalone: true,
 })
 export class FormBuilderPropertyPanel {
-  readonly selectedField = input.required<CanvasField | null>();
+  readonly selectedField = input.required<FormField | null>();
 
-  readonly allCanvasFields = input.required<CanvasField[] | null>();
+  readonly allCanvasFields = input.required<FormField[] | null>();
 
-  readonly fieldChanged = output<Partial<CanvasField>>();
+  readonly fieldChanged = output<Partial<FormField>>();
   readonly addOptionRequested = output<void>();
   readonly removeOptionRequested = output<number>();
   private readonly fb = inject(FormBuilder);

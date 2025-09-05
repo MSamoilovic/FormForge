@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule, JsonPipe } from '@angular/common';
-import { CanvasField, FieldType } from '@form-forge/models';
+import { FieldType, FormField } from '@form-forge/models';
 import { FormRenderer } from '../form-renderer';
 
 @Component({
@@ -10,7 +10,7 @@ import { FormRenderer } from '../form-renderer';
   styleUrl: './form-renderer-page.component.scss',
 })
 export class FormRendererPageComponent {
-  public formSchema: CanvasField[] = [
+  public formSchema: FormField[] = [
     {
       id: 'name',
       type: FieldType.Text,
@@ -25,7 +25,12 @@ export class FormRendererPageComponent {
       label: 'Country',
       placeholder: '',
       required: false,
-      options: ['USA', 'Canada', 'Mexico', 'Serbia'],
+      options: [
+        { label: 'USA', value: 'usa' },
+        { label: 'CAD', value: 'canada' },
+        { label: 'NOR', value: 'norway' },
+        { label: 'SRB', value: 'serbia' },
+      ],
     },
   ];
 }

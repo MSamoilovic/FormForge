@@ -2,16 +2,17 @@
   <app-form-builder-sidebar [fields]="fields" />
 
   <app-form-builder-canvas
-    [canvasFields]="canvasFields"
-    [selectedField]="selectedField"
+    [form]="form"
+    [canvasFields]="canvasFields()"
+    [selectedField]="selectedField()"
     [componentMap]="componentMap"
     (fieldDropped)="onDrop($event)"
     (fieldSelected)="selectField($event)"
   ></app-form-builder-canvas>
 
   <app-form-builder-property-panel
-    [selectedField]="selectedField"
-    [allCanvasFields]="canvasFields"
+    [selectedField]="selectedField()"
+    [allCanvasFields]="canvasFields()"
     (addOptionRequested)="addOption()"
     (removeOptionRequested)="removeOption($event)"
     (fieldChanged)="onFieldChange($event)"

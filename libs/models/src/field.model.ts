@@ -1,16 +1,25 @@
-import { FieldType } from './field-type.enum';
+import { ValidationRule } from './validation.model';
 
-export interface DynamicField {
+export enum FieldType {
+  Text = 'text',
+  Number = 'number',
+  Select = 'select',
+  Radio = 'radio',
+  Checkbox = 'checkbox',
+  Date = 'date',
+}
+
+export interface FieldOption {
+  label: string;
+  value: any;
+}
+
+export interface FormField {
   id: string;
   type: FieldType;
   label: string;
   placeholder?: string;
-  value?: any;
   required?: boolean;
-  options?: string[];
-  validations?: any[];
-  conditional?: {
-    fieldId: string;
-    value: any;
-  };
+  options?: FieldOption[];
+  validations?: ValidationRule[];
 }
