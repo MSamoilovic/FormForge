@@ -1,6 +1,17 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  FormField,
+  RuleActionType,
+  RuleConditionOperator,
+} from '@form-forge/models';
 
 @Component({
   selector: 'app-field-rules',
@@ -9,44 +20,71 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular
   styleUrl: './form-builder-field-rules.component.scss',
 })
 export class FormBuilderFieldRulesComponent {
-  readonly rulesFormArray = input.required<FormArray<FormGroup>>();
-  readonly allFormFields = input.required<string[]>();
+  private fb = inject(FormBuilder);
 
-  get parentFormGroup(): FormGroup {
+  rulesFormArray = input.required<FormArray<FormGroup>>();
+  allFormFields = input.required<FormField[]>();
+
+  readonly conditionOperators = Object.values(RuleConditionOperator);
+  readonly actionTypes = Object.values(RuleActionType);
+
+  readonly parentFormGroup = computed<FormGroup>(() => {
     const parent = this.rulesFormArray().parent;
     if (!parent || !(parent instanceof FormGroup)) {
-      throw new Error('rulesFormArray parent is not a FormGroup');
+      throw new Error(
+        'rulesFormArray parent is not a FormGroup. Ensure it is part of a parent FormGroup.'
+      );
     }
     return parent;
-  }
+  });
 
-  addRule() {
-    const newRuleGroup = new FormGroup({
-      condition: new FormGroup({
-        fieldId: new FormControl(''),
-        operator: new FormControl('eq'),
-        value: new FormControl(''),
-      }),
-      action: new FormGroup({
-        type: new FormControl('show'),
-        value: new FormControl(null),
-      }),
-      targetFieldId: new FormControl(''),
+  addRule(): void {
+    const ruleGroup = this.fb.group({
+      id: [crypto.randomUUID()],
+      description: [''],
+      conditions: this.fb.array([]),
+      actions: this.fb.array([]),
     });
-    this.rulesFormArray().push(newRuleGroup);
+    this.rulesFormArray().push(ruleGroup);
+    this.addCondition(this.rulesFormArray().length - 1);
+    this.addAction(this.rulesFormArray().length - 1);
   }
 
-  removeRule(index: number) {
-    this.rulesFormArray().removeAt(index);
+  removeRule(ruleIndex: number): void {
+    this.rulesFormArray().removeAt(ruleIndex);
   }
 
-  getConditionForm(ruleGroup: FormGroup): FormGroup | FormArray {
-    const condition = ruleGroup.get('condition');
-    if (condition instanceof FormGroup) {
-      return condition;
-    }
-    throw new Error('Condition form control is not a FormGroup');
+  conditions(ruleIndex: number): FormArray {
+    return this.rulesFormArray().at(ruleIndex).get('conditions') as FormArray;
   }
 
-  protected readonly FormGroup = FormGroup;
+  addCondition(ruleIndex: number): void {
+    const conditionGroup = this.fb.group({
+      fieldId: ['', Validators.required],
+      operator: [RuleConditionOperator.Equals, Validators.required],
+      value: ['', Validators.required],
+    });
+    this.conditions(ruleIndex).push(conditionGroup);
+  }
+
+  removeCondition(ruleIndex: number, conditionIndex: number): void {
+    this.conditions(ruleIndex).removeAt(conditionIndex);
+  }
+
+  actions(ruleIndex: number): FormArray {
+    return this.rulesFormArray().at(ruleIndex).get('actions') as FormArray;
+  }
+
+  addAction(ruleIndex: number): void {
+    const actionGroup = this.fb.group({
+      targetFieldId: ['', Validators.required],
+      type: [RuleActionType.Show, Validators.required],
+      value: [null],
+    });
+    this.actions(ruleIndex).push(actionGroup);
+  }
+
+  removeAction(ruleIndex: number, actionIndex: number): void {
+    this.actions(ruleIndex).removeAt(actionIndex);
+  }
 }

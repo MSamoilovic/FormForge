@@ -10,6 +10,8 @@
       class="canvas-field"
       (click)="onSelectField(field)"
       [class.selected]="selectedField()?.id === field.id"
+      tabindex="1"
+      type="button"
     >
       <ng-container
         *ngComponentOutlet="

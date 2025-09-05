@@ -1,45 +1,68 @@
-<div [formGroup]="parentFormGroup">
-  <div formArrayName="rules">
+<div [formGroup]="parentFormGroup()">
+  <div formArrayName="rules" class="rules-main-container">
+
     @for (ruleGroup of rulesFormArray().controls; let i = $index; track i) {
-      <div class="rule-container" [formGroupName]="i">
-        <h5>Rule {{ i + 1 }}</h5>
-
-        <div class="rule-condition" formGroupName="condition">
-          <select formControlName="fieldId">
-            <option value="" disabled>Select a field</option>
-            @for (fieldId of allFormFields(); track fieldId) {
-              <option [value]="fieldId">{{ fieldId }}</option>
-            }
-          </select>
-
-          <select formControlName="operator">
-            <option value="eq">is equal to</option>
-            <option value="neq">is not equal to</option>
-          </select>
-
-          <input type="text" formControlName="value" placeholder="Value" />
+      <div class="rule-card" [formGroupName]="i">
+        <div class="rule-header">
+          <h5>Rule #{{ i + 1 }}</h5>
+          <button type="button" class="icon-button" (click)="removeRule(i)" title="Remove Rule">✕</button>
         </div>
 
-        <div class="rule-action" formGroupName="action">
-          <select formControlName="type">
-            <option value="show">show</option>
-            <option value="hide">hide</option>
-          </select>
+        <div class="conditions-section" formArrayName="conditions">
+          <div class="section-header">
+            <h6>IF...</h6>
+            <button type="button" (click)="addCondition(i)" title="Add Condition">+ AND</button>
+          </div>
+          @for (conditionGroup of conditions(i).controls; let c_idx = $index; track c_idx) {
+            <div class="condition-row" [formGroupName]="c_idx">
+              <select formControlName="fieldId" class="form-select">
+                <option value="" disabled>Select Field</option>
+                @for (field of allFormFields(); track field.id) {
+                  <option [value]="field.id">{{ field.label }}</option>
+                }
+              </select>
+
+              <select formControlName="operator" class="form-select">
+                @for (op of conditionOperators; track op) {
+                  <option [value]="op">{{ op }}</option>
+                }
+              </select>
+
+              <input formControlName="value" placeholder="Value" class="form-input" />
+              <button type="button" class="icon-button" (click)="removeCondition(i, c_idx)" title="Remove Condition">-
+              </button>
+            </div>
+          }
         </div>
 
-        <div class="rule-target">
-          on field:
-          <select formControlName="targetFieldId">
-            <option value="" disabled>Select a target field</option>
-            @for (fieldId of allFormFields(); track fieldId) {
-              <option [value]="fieldId">{{ fieldId }}</option>
-            }
-          </select>
+        <div class="actions-section" formArrayName="actions">
+          <div class="section-header">
+            <h6>THEN...</h6>
+            <button type="button" (click)="addAction(i)" title="Add Action">+ Action</button>
+          </div>
+          @for (actionGroup of actions(i).controls; let a_idx = $index; track a_idx) {
+            <div class="action-row" [formGroupName]="a_idx">
+              <select formControlName="type" class="form-select">
+                @for (action of actionTypes; track action) {
+                  <option [value]="action">{{ action }}</option>
+                }
+              </select>
+
+              <span>field:</span>
+              <select formControlName="targetFieldId" class="form-select">
+                <option value="" disabled>Select Target</option>
+                @for (field of allFormFields(); track field.id) {
+                  <option [value]="field.id">{{ field.label }}</option>
+                }
+              </select>
+              <button type="button" class="icon-button" (click)="removeAction(i, a_idx)" title="Remove Action">-
+              </button>
+            </div>
+          }
         </div>
 
-        <button type="button" (click)="removeRule(i)">Remove Rule</button>
       </div>
     }
-    <button type="button" (click)="addRule()">Add Rule</button>
+    <button type="button" class="add-rule-btn" (click)="addRule()">Add Rule</button>
   </div>
 </div>

@@ -1,8 +1,8 @@
 import { Component, input, output, Type } from '@angular/core';
-import { CanvasField, FieldType } from '@form-forge/models';
+import { FieldType, FormField } from '@form-forge/models';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgComponentOutlet } from '@angular/common';
-import { FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-form-builder-canvas',
@@ -12,18 +12,20 @@ import { FormControl } from '@angular/forms';
   standalone: true,
 })
 export class FormBuilderCanvas {
-  canvasFields = input<CanvasField[]>([]);
-  selectedField = input<CanvasField | null>(null);
+  canvasFields = input<FormField[]>([]);
+  selectedField = input<FormField | null>(null);
   componentMap = input.required<Record<FieldType, Type<any>>>();
 
+  form = input.required<FormGroup>();
+
   fieldDropped = output<CdkDragDrop<any[]>>();
-  fieldSelected = output<CanvasField>();
+  fieldSelected = output<FormField>();
 
   onDrop(event: CdkDragDrop<any[]>) {
     this.fieldDropped.emit(event);
   }
 
-  onSelectField(field: CanvasField) {
+  onSelectField(field: FormField) {
     this.fieldSelected.emit(field);
   }
 
@@ -32,17 +34,18 @@ export class FormBuilderCanvas {
     return component || null;
   }
 
-  getComponentInputs(field: CanvasField): Record<string, any> {
+  getComponentInputs(field: FormField): Record<string, any> {
+    const control = this.form().get(field.id);
+
     const inputs: Record<string, any> = {
       label: field.label,
       placeholder: field.placeholder,
-      formControl: new FormControl(''),
+      formControl: control,
     };
 
     if (field.type === FieldType.Select || field.type === FieldType.Radio) {
       inputs['options'] = field.options;
     }
-
     return inputs;
   }
 }

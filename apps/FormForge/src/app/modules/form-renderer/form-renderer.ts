@@ -1,5 +1,5 @@
 import { Component, inject, input, OnInit, Type } from '@angular/core';
-import { CanvasField, FieldType } from '@form-forge/models';
+import { FieldType, FormField } from '@form-forge/models';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { CheckboxField, DateField, RadioField, SelectorField, TextField } from '@form-forge/ui-kit';
@@ -14,7 +14,7 @@ import { CommonModule, NgComponentOutlet } from '@angular/common';
   exportAs: 'formRenderer',
 })
 export class FormRenderer implements OnInit {
-  readonly formSchema = input<CanvasField[]>();
+  readonly formSchema = input<FormField[]>();
   public form!: FormGroup;
 
   fb = inject(FormBuilder);
@@ -59,7 +59,7 @@ export class FormRenderer implements OnInit {
     return this.componentMap[fieldType] || null;
   }
 
-  public getInput(field: CanvasField): any {
+  public getInput(field: FormField): any {
     switch (field.type) {
       case FieldType.Text:
         return {

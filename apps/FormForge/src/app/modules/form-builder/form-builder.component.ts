@@ -1,8 +1,13 @@
-import { Component, Type } from '@angular/core';
+import { Component, effect, inject, signal, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { FormsModule } from '@angular/forms';
-import { CanvasField, FieldType } from '@form-forge/models';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+} from '@angular/forms';
+import { FieldOption, FieldType, FormField } from '@form-forge/models';
 import {
   CheckboxField,
   DateField,
@@ -38,9 +43,12 @@ export class FormBuilderComponent {
     FieldType.Date,
   ];
 
-  canvasFields: CanvasField[] = [];
+  private fb = inject(FormBuilder);
 
-  selectedField: CanvasField | null = null;
+  canvasFields = signal<FormField[]>([]);
+  selectedField = signal<FormField | null>(null);
+
+  form = new FormGroup({});
 
   componentMap: Record<FieldType, Type<any>> = {
     [FieldType.Text]: TextField,
@@ -51,10 +59,29 @@ export class FormBuilderComponent {
     [FieldType.Date]: DateField,
   };
 
+  constructor() {
+    effect(() => {
+      const fields = this.canvasFields();
+      const currentControlIds = Object.keys(this.form.controls);
+      const fieldIds = fields.map((f) => f.id);
+
+      currentControlIds
+        .filter((id) => !fieldIds.includes(id))
+        .forEach((id) => this.form.removeControl(id));
+
+      // 2. Dodajemo nove kontrole za polja koja su tek dodata
+      fields
+        .filter((field) => !currentControlIds.includes(field.id))
+        .forEach((field) => {
+          this.form.addControl(field.id, this.createControl(field));
+        });
+    });
+  }
+
   onDrop(event: CdkDragDrop<any[]>) {
     const fieldType: FieldType = event.item.data;
 
-    const newField: CanvasField = {
+    const newField: FormField = {
       id: crypto.randomUUID(),
       type: fieldType,
       label: `${fieldType} field`,
@@ -62,44 +89,61 @@ export class FormBuilderComponent {
       required: false,
       options:
         fieldType === FieldType.Select || fieldType === FieldType.Radio
-          ? ['Option 1']
+          ? [{ label: 'Option1', value: 'option1' }]
           : [],
     };
 
-    this.canvasFields.push(newField);
+    this.canvasFields.update((currentFields) => [...currentFields, newField]);
     this.selectField(newField);
   }
 
-  selectField(field: CanvasField) {
-    this.selectedField = field;
+  selectField(field: FormField) {
+    this.selectedField.set(field);
   }
 
   addOption() {
-    if (this.selectedField && this.selectedField.options) {
-      this.selectedField.options.push(
-        `Option ${this.selectedField.options.length + 1}`
-      );
+    const selected = this.selectedField();
+
+    if (!selected || !selected.options) {
+      return;
     }
+
+    const options = selected.options;
+
+    const newOption: FieldOption = {
+      label: `Option ${options.length + 1}`,
+      value: `option${options.length + 1}`,
+    };
+
+    const newOptions = [...options, newOption];
+    this.onFieldChange({ options: newOptions });
   }
 
   removeOption(index: number) {
-    if (this.selectedField && this.selectedField.options) {
-      this.selectedField.options.splice(index, 1);
+    const selected = this.selectedField();
+
+    if (!selected || !selected.options) {
+      return;
+    }
+
+    const newOptions = selected.options.filter((_, i) => i !== index);
+    this.onFieldChange({ options: newOptions });
+  }
+
+  onFieldChange(updatedValues: Partial<FormField>): void {
+    const currentSelected = this.selectedField();
+    if (currentSelected) {
+      const updatedField = { ...currentSelected, ...updatedValues };
+
+      this.selectedField.set(updatedField);
+
+      this.canvasFields.update((fields) =>
+        fields.map((f) => (f.id === updatedField.id ? updatedField : f))
+      );
     }
   }
 
-  onFieldChange(updatedValues: Partial<CanvasField>): void {
-    if (this.selectedField) {
-      this.selectedField = { ...this.selectedField, ...updatedValues };
-
-      const index = this.canvasFields.findIndex(
-        (f) => f.id === this.selectedField?.id
-      );
-
-      if (index !== -1) {
-        this.canvasFields[index] = this.selectedField;
-        // TODO: Imati u vidu i NGRX ovde
-      }
-    }
+  private createControl(field: FormField): FormControl {
+    return this.fb.control('');
   }
 }
