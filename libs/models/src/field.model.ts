@@ -23,3 +23,9 @@ export interface FormField {
   options?: FieldOption[];
   validations?: ValidationRule[];
 }
+
+export interface AvailableField {
+  type: FieldType;
+  label: string;
+  icon: string;
+}

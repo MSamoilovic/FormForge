@@ -1,8 +1,19 @@
 import { Component, inject, input, OnInit, Type } from '@angular/core';
 import { FieldType, FormField } from '@form-forge/models';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
-import { CheckboxField, DateField, RadioField, SelectorField, TextField } from '@form-forge/ui-kit';
+import {
+  CheckboxField,
+  DateField,
+  RadioField,
+  SelectorField,
+  TextField,
+} from '@form-forge/ui-kit';
 import { CommonModule, NgComponentOutlet } from '@angular/common';
 
 @Component({

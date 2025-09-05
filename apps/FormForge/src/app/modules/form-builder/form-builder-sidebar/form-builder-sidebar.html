@@ -1,15 +1,19 @@
-<aside class="sidebar">
-  <h3>Available Fields</h3>
-  <div
-    cdkDropList
-    [cdkDropListData]="fields"
-    class="field-list"
-    [cdkDropListConnectedTo]="['canvasDropList']"
-  >
-    @for (field of fields(); track field) {
-      <div class="field-item" cdkDrag [cdkDragData]="field">
-        {{ field }}
-      </div>
-    }
-  </div>
-</aside>
+<mat-card class="sidebar-card">
+  <mat-card-header>
+    <mat-card-title>Toolbox</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list
+      cdkDropList
+      [cdkDropListData]="availableFields()"
+      [cdkDropListConnectedTo]="['canvasDropList']"
+    >
+      @for (field of availableFields(); track field.type) {
+        <mat-list-item cdkDrag [cdkDragData]="field.type" class="field-item">
+          <mat-icon matListItemIcon>{{ field.icon }}</mat-icon>
+          <span matListItemTitle>{{ field.label }}</span>
+        </mat-list-item>
+      }
+    </mat-list>
+  </mat-card-content>
+</mat-card>

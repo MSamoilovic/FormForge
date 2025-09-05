@@ -1,20 +1,9 @@
 import { Component, effect, inject, signal, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-} from '@angular/forms';
-import { FieldOption, FieldType, FormField } from '@form-forge/models';
-import {
-  CheckboxField,
-  DateField,
-  RadioField,
-  SelectorField,
-  TextField,
-} from '@form-forge/ui-kit';
+import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { AvailableField, FieldOption, FieldType, FormField } from '@form-forge/models';
+import { CheckboxField, DateField, RadioField, SelectorField, TextField } from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './form-builder-canvas/form-builder-canvas';
 import { FormBuilderPropertyPanel } from './form-builder-property-panel/form-builder-property-panel';
@@ -41,6 +30,19 @@ export class FormBuilderComponent {
     FieldType.Checkbox,
     FieldType.Radio,
     FieldType.Date,
+  ];
+
+  availableFields: AvailableField[] = [
+    { type: FieldType.Text, label: 'Text Input', icon: '' },
+    { type: FieldType.Number, label: 'Number Input', icon: '' },
+    {
+      type: FieldType.Select,
+      label: 'Dropdown',
+      icon: '',
+    },
+    { type: FieldType.Checkbox, label: 'Checkbox', icon: '' },
+    { type: FieldType.Radio, label: 'Radio', icon: '' },
+    { type: FieldType.Date, label: 'Date', icon: '' },
   ];
 
   private fb = inject(FormBuilder);
@@ -144,7 +146,6 @@ export class FormBuilderComponent {
   }
 
   private createControl(field: FormField): FormControl {
-
     return this.fb.control('');
   }
 }
