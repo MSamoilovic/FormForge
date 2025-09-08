@@ -26,6 +26,7 @@ import { FormBuilderSidebar } from './form-builder-sidebar/form-builder-sidebar'
 import { FormBuilderCanvas } from './form-builder-canvas/form-builder-canvas';
 import { FormBuilderPropertyPanel } from './form-builder-property-panel/form-builder-property-panel';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   standalone: true,
@@ -40,6 +41,7 @@ import { MatIconModule } from '@angular/material/icon';
     FormBuilderCanvas,
     FormBuilderPropertyPanel,
     MatIconModule,
+    MatButton,
   ],
 })
 export class FormBuilderComponent {
