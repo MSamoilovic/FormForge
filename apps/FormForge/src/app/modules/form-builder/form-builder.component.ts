@@ -7,7 +7,14 @@ import {
   FormGroup,
   FormsModule,
 } from '@angular/forms';
-import { FieldOption, FieldType, FormField } from '@form-forge/models';
+import {
+  AvailableField,
+  FieldOption,
+  FieldType,
+  FormField,
+  FormRule,
+  FormSchema,
+} from '@form-forge/models';
 import {
   CheckboxField,
   DateField,
@@ -18,6 +25,8 @@ import {
 import { FormBuilderSidebar } from './form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './form-builder-canvas/form-builder-canvas';
 import { FormBuilderPropertyPanel } from './form-builder-property-panel/form-builder-property-panel';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   standalone: true,
@@ -31,6 +40,8 @@ import { FormBuilderPropertyPanel } from './form-builder-property-panel/form-bui
     FormBuilderSidebar,
     FormBuilderCanvas,
     FormBuilderPropertyPanel,
+    MatIconModule,
+    MatButton,
   ],
 })
 export class FormBuilderComponent {
@@ -41,6 +52,19 @@ export class FormBuilderComponent {
     FieldType.Checkbox,
     FieldType.Radio,
     FieldType.Date,
+  ];
+
+  availableFields: AvailableField[] = [
+    { type: FieldType.Text, label: 'Text Input', icon: '' },
+    { type: FieldType.Number, label: 'Number Input', icon: '' },
+    {
+      type: FieldType.Select,
+      label: 'Dropdown',
+      icon: '',
+    },
+    { type: FieldType.Checkbox, label: 'Checkbox', icon: '' },
+    { type: FieldType.Radio, label: 'Radio', icon: '' },
+    { type: FieldType.Date, label: 'Date', icon: '' },
   ];
 
   private fb = inject(FormBuilder);
@@ -144,7 +168,46 @@ export class FormBuilderComponent {
   }
 
   private createControl(field: FormField): FormControl {
-
     return this.fb.control('');
+  }
+
+  saveForm(): void {
+    const currentFields = this.canvasFields();
+
+    if (currentFields.length === 0) {
+      alert('Cannot save an empty form.');
+      return;
+    }
+
+    const allRules: FormRule[] = [];
+
+    currentFields.forEach((field) => {
+      if (field.rules && Array.isArray(field.rules)) {
+        const rulesWithFieldReference = field.rules.map((rule: any) => ({
+          ...rule,
+        }));
+        allRules.push(...rulesWithFieldReference);
+      }
+    });
+
+    const formSchema: FormSchema = {
+      id: crypto.randomUUID(),
+      name: 'Test Forma',
+      description: 'Neki pokusaj forme',
+      fields: currentFields.map((f) => {
+        const { rules, ...fieldWithoutRules } = f as any;
+        return fieldWithoutRules;
+      }),
+      rules: allRules,
+    };
+
+    const formJson = JSON.stringify(formSchema, null, 2);
+
+    console.log('--- FINAL FORM SCHEMA (JSON) ---');
+    console.log(formJson);
+
+    alert(
+      'Form JSON has been successfully generated and logged to the console!'
+    );
   }
 }

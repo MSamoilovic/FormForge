@@ -1,20 +1,29 @@
-<div class="form-builder">
-  <app-form-builder-sidebar [fields]="fields" />
+<div class="form-builder-container">
+  <div class="form-builder-header">
+    <h1>Form Builder</h1>
+    <span class="spacer"></span>
+    <button mat-raised-button color="primary" (click)="saveForm()">
+      <mat-icon aria-hidden="false" aria-label="Example save icon" fontIcon="save">Save</mat-icon>
+      Save Form
+    </button>
+  </div>
 
-  <app-form-builder-canvas
-    [form]="form"
-    [canvasFields]="canvasFields()"
-    [selectedField]="selectedField()"
-    [componentMap]="componentMap"
-    (fieldDropped)="onDrop($event)"
-    (fieldSelected)="selectField($event)"
-  ></app-form-builder-canvas>
+  <div class="form-builder-content">
+    <app-form-builder-sidebar [availableFields]="availableFields" />
 
-  <app-form-builder-property-panel
-    [selectedField]="selectedField()"
-    [allCanvasFields]="canvasFields()"
-    (addOptionRequested)="addOption()"
-    (removeOptionRequested)="removeOption($event)"
-    (fieldChanged)="onFieldChange($event)"
-  ></app-form-builder-property-panel>
+    <app-form-builder-canvas
+      [form]="form"
+      [canvasFields]="canvasFields()"
+      [selectedField]="selectedField()"
+      [componentMap]="componentMap"
+      (fieldDropped)="onDrop($event)"
+      (fieldSelected)="selectField($event)"
+    ></app-form-builder-canvas>
+
+    <app-form-builder-property-panel
+      [selectedField]="selectedField()"
+      [allCanvasFields]="canvasFields()"
+      (fieldChanged)="onFieldChange($event)"
+    ></app-form-builder-property-panel>
+  </div>
 </div>
