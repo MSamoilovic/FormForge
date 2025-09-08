@@ -3,12 +3,34 @@
   height: 100vh;
 }
 
-.form-builder {
-  display: grid;
-  grid-template-columns: 280px 1fr 380px;
-  height: 100%;
-  gap: 1rem;
-  background-color: #f4f7fa;
+.form-builder-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   padding: 1rem;
   box-sizing: border-box;
+  background-color: #f4f7fa;
+}
+
+.form-builder-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-shrink: 0; // Sprečava da se header smanjuje
+
+  h1 {
+    margin: 0;
+  }
+
+  .spacer {
+    flex-grow: 1; // Gura dugme na desnu stranu
+  }
+}
+
+.form-builder-content {
+  display: grid;
+  grid-template-columns: 280px 1fr 380px;
+  gap: 1rem;
+  flex-grow: 1;
+  overflow: hidden; // Da se ne bi pojavio dupli scrollbar
 }

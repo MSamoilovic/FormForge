@@ -1,12 +1,31 @@
 import { Component, effect, inject, signal, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
-import { AvailableField, FieldOption, FieldType, FormField } from '@form-forge/models';
-import { CheckboxField, DateField, RadioField, SelectorField, TextField } from '@form-forge/ui-kit';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+} from '@angular/forms';
+import {
+  AvailableField,
+  FieldOption,
+  FieldType,
+  FormField,
+  FormRule,
+  FormSchema,
+} from '@form-forge/models';
+import {
+  CheckboxField,
+  DateField,
+  RadioField,
+  SelectorField,
+  TextField,
+} from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './form-builder-canvas/form-builder-canvas';
 import { FormBuilderPropertyPanel } from './form-builder-property-panel/form-builder-property-panel';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   standalone: true,
@@ -20,6 +39,7 @@ import { FormBuilderPropertyPanel } from './form-builder-property-panel/form-bui
     FormBuilderSidebar,
     FormBuilderCanvas,
     FormBuilderPropertyPanel,
+    MatIconModule,
   ],
 })
 export class FormBuilderComponent {
@@ -147,5 +167,45 @@ export class FormBuilderComponent {
 
   private createControl(field: FormField): FormControl {
     return this.fb.control('');
+  }
+
+  saveForm(): void {
+    const currentFields = this.canvasFields();
+
+    if (currentFields.length === 0) {
+      alert('Cannot save an empty form.');
+      return;
+    }
+
+    const allRules: FormRule[] = [];
+
+    currentFields.forEach((field) => {
+      if (field.rules && Array.isArray(field.rules)) {
+        const rulesWithFieldReference = field.rules.map((rule: any) => ({
+          ...rule,
+        }));
+        allRules.push(...rulesWithFieldReference);
+      }
+    });
+
+    const formSchema: FormSchema = {
+      id: crypto.randomUUID(),
+      name: 'Test Forma',
+      description: 'Neki pokusaj forme',
+      fields: currentFields.map((f) => {
+        const { rules, ...fieldWithoutRules } = f as any;
+        return fieldWithoutRules;
+      }),
+      rules: allRules,
+    };
+
+    const formJson = JSON.stringify(formSchema, null, 2);
+
+    console.log('--- FINAL FORM SCHEMA (JSON) ---');
+    console.log(formJson);
+
+    alert(
+      'Form JSON has been successfully generated and logged to the console!'
+    );
   }
 }

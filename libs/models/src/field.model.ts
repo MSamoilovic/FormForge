@@ -1,4 +1,5 @@
 import { ValidationRule } from './validation.model';
+import { FormRule } from './rule.model';
 
 export enum FieldType {
   Text = 'text',
@@ -22,6 +23,7 @@ export interface FormField {
   required?: boolean;
   options?: FieldOption[];
   validations?: ValidationRule[];
+  rules?: FormRule[];
 }
 
 export interface AvailableField {
