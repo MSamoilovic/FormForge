@@ -1,21 +1,22 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  FormField,
-  RuleActionType,
-  RuleConditionOperator,
-} from '@form-forge/models';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormField, RuleActionType, RuleConditionOperator } from '@form-forge/models';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-field-rules',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
   templateUrl: './form-builder-field-rules.component.html',
   styleUrl: './form-builder-field-rules.component.scss',
 })
@@ -28,15 +29,8 @@ export class FormBuilderFieldRulesComponent {
   readonly conditionOperators = Object.values(RuleConditionOperator);
   readonly actionTypes = Object.values(RuleActionType);
 
-  readonly parentFormGroup = computed<FormGroup>(() => {
-    const parent = this.rulesFormArray().parent;
-    if (!parent || !(parent instanceof FormGroup)) {
-      throw new Error(
-        'rulesFormArray parent is not a FormGroup. Ensure it is part of a parent FormGroup.'
-      );
-    }
-    return parent;
-  });
+  //
+  parentForm = input.required<FormGroup>();
 
   addRule(): void {
     const ruleGroup = this.fb.group({

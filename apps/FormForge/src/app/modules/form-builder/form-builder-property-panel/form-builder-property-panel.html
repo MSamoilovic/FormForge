@@ -1,45 +1,63 @@
-@let field = selectedField()!;
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Properties</mat-card-title>
+  </mat-card-header>
 
-@if (field !== null) {
-  <aside [formGroup]="propertiesForm">
-    <h3>Properties</h3>
+  <mat-card-content>
+    @if (selectedField(); as field) {
+      <div class="properties-form-container" [formGroup]="propertiesForm">
 
-    <label>
-      Label:
-      <input formControlName="label" />
-    </label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Label</mat-label>
+          <input matInput formControlName="label">
+        </mat-form-field>
 
-    @if (field?.type === 'text' || field?.type === 'number') {
-      <label>
-        Placeholder:
-        <input formControlName="placeholder" />
-      </label>
-    }
+        @if (field.type === 'text' || field.type === 'number') {
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Placeholder</mat-label>
+            <input matInput formControlName="placeholder">
+          </mat-form-field>
+        }
 
-    <label>
-      Required:
-      <input type="checkbox" formControlName="required" />
-    </label>
+        <mat-checkbox formControlName="required">Required</mat-checkbox>
 
-    @if (field?.type === 'select' || field?.type === 'radio') {
-      <div formArrayName="options">
-        <h4>Options</h4>
-        @for (optionControl of optionsFormArray.controls; let i = $index; track i) {
-          <div class="option-item">
-            <input [formControl]="optionControl" />
-            <button type="button" (click)="removeOption(i)">✕</button>
+        @if (field.type === 'select' || field.type === 'radio') {
+          <div class="options-container" formArrayName="options">
+            <h4>Options</h4>
+            @for (optionGroup of optionsFormArray.controls; let i = $index; track i) {
+              <div class="option-item-group" [formGroupName]="i">
+                <mat-form-field appearance="outline">
+                  <mat-label>Label</mat-label>
+                  <input matInput formControlName="label">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Value</mat-label>
+                  <input matInput formControlName="value">
+                </mat-form-field>
+                <button mat-icon-button color="warn" (click)="removeOption(i)">
+                  <mat-icon>remove_circle_outline</mat-icon>
+                </button>
+              </div>
+            }
+            <div class="add-option-button">
+              <button type="button" mat-stroked-button (click)="addOption()">+ Add Option</button>
+            </div>
           </div>
         }
-        <button type="button" (click)="addOption()">Add Option</button>
+
+        <mat-divider></mat-divider>
+
+        <app-field-rules
+          [parentForm]="propertiesForm"
+          [rulesFormArray]="rulesFormArray"
+          [allFormFields]="getAllFields()"
+        ></app-field-rules>
+
+      </div>
+    } @else {
+      <div class="no-field-selected">
+        <p>Select a field on the canvas to see its properties.</p>
       </div>
     }
-
-    <hr />
-    <h4>Rules</h4>
-    <app-field-rules
-      [rulesFormArray]="rulesFormArray"
-      [allFormFields]="getAllFieldIds()"
-    ></app-field-rules>
-  </aside>
-}
-
+  </mat-card-content>
+</mat-card>

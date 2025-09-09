@@ -1,24 +1,62 @@
-<main
-  id="canvasDropList"
-  cdkDropList
-  class="canvas"
-  (cdkDropListDropped)="onDrop($event)"
->
-  <h3>Canvas</h3>
-  @for (field of canvasFields(); track field.id) {
-    <div
-      class="canvas-field"
-      (click)="onSelectField(field)"
-      [class.selected]="selectedField()?.id === field.id"
-      tabindex="1"
-      type="button"
-    >
-      <ng-container
-        *ngComponentOutlet="
-          getComponent(field.type);
-          inputs: getComponentInputs(field)
-        "
-      ></ng-container>
-    </div>
-  }
-</main>
+<!--<main-->
+<!--  id="canvasDropList"-->
+<!--  cdkDropList-->
+<!--  class="canvas"-->
+<!--  (cdkDropListDropped)="onDrop($event)"-->
+<!--&gt;-->
+<!--  <h3>Canvas</h3>-->
+<!--  @for (field of canvasFields(); track field.id) {-->
+<!--    <div-->
+<!--      class="canvas-field"-->
+<!--      (click)="onSelectField(field)"-->
+<!--      [class.selected]="selectedField()?.id === field.id"-->
+<!--      tabindex="1"-->
+<!--      type="button"-->
+<!--    >-->
+<!--      <ng-container-->
+<!--        *ngComponentOutlet="-->
+<!--          getComponent(field.type);-->
+<!--          inputs: getComponentInputs(field)-->
+<!--        "-->
+<!--      ></ng-container>-->
+<!--    </div>-->
+<!--  }-->
+<!--</main>-->'
+<mat-card class="canvas-card">
+  <mat-card-header>
+    <mat-card-title>Canvas</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content
+    id="canvasDropList"
+    cdkDropList
+    class="canvas-content"
+    (cdkDropListDropped)="onDrop($event)"
+  >
+    @if (!canvasFields().length) {
+      <div class="empty-state">
+        <mat-icon>add_circle_outline</mat-icon>
+        <span>Drag Control from the toolbox</span>
+      </div>
+    } @else {
+      @for (field of canvasFields(); track field.id) {
+        <div
+          cdkDrag
+          class="canvas-field-wrapper"
+          (click)="onSelectField(field)"
+          [class.selected]="selectedField()?.id === field.id"
+        >
+          <div class="drag-handle">
+            <mat-icon cdkDragHandle>drag_indicator</mat-icon>
+          </div>
+          <div class="field-content">
+            <ng-container
+              [ngComponentOutlet]="getComponent(field.type)"
+              [ngComponentOutletInputs]="getComponentInputs(field)"
+            ></ng-container>
+          </div>
+        </div>
+      }
+    }
+  </mat-card-content>
+</mat-card>

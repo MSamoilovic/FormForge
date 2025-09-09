@@ -3,10 +3,12 @@ import { FieldType, FormField } from '@form-forge/models';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgComponentOutlet } from '@angular/common';
 import { FormGroup } from '@angular/forms';
+import { MatCard, MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-form-builder-canvas',
-  imports: [CdkDropList, NgComponentOutlet],
+  imports: [CdkDropList, NgComponentOutlet, MatCardModule, MatIconModule],
   templateUrl: './form-builder-canvas.html',
   styleUrl: './form-builder-canvas.scss',
   standalone: true,
