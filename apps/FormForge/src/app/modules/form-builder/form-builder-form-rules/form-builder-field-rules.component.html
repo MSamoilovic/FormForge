@@ -1,4 +1,4 @@
-<div [formGroup]="parentFormGroup()">
+<div [formGroup]="parentForm()">
   <div formArrayName="rules" class="rules-main-container">
 
     @for (ruleGroup of rulesFormArray().controls; let i = $index; track i) {
@@ -13,7 +13,7 @@
             <h6>IF...</h6>
             <button type="button" (click)="addCondition(i)" title="Add Condition">+ AND</button>
           </div>
-          @for (conditionGroup of conditions(i).controls; let c_idx = $index; track c_idx) {
+          @for (conditionGroup of $any(ruleGroup.get('conditions')).controls; let c_idx = $index; track c_idx) {
             <div class="condition-row" [formGroupName]="c_idx">
               <select formControlName="fieldId" class="form-select">
                 <option value="" disabled>Select Field</option>
@@ -40,7 +40,7 @@
             <h6>THEN...</h6>
             <button type="button" (click)="addAction(i)" title="Add Action">+ Action</button>
           </div>
-          @for (actionGroup of actions(i).controls; let a_idx = $index; track a_idx) {
+          @for (actionGroup of $any(ruleGroup.get('actions')).controls; let a_idx = $index; track a_idx) {
             <div class="action-row" [formGroupName]="a_idx">
               <select formControlName="type" class="form-select">
                 @for (action of actionTypes; track action) {

@@ -1,10 +1,54 @@
-/* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
 
-html {
-  @include mat.theme((
-    color: mat.$violet-palette,
-    typography: Roboto,
-    density: -2,
-  ));
+@include mat.core();
+
+$form-forge-primary: mat.m2-define-palette(mat.$m2-blue-palette, 700, 500, 900);
+$form-forge-accent: mat.m2-define-palette(mat.$m2-teal-palette, A200, A100, A400);
+$form-forge-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$form-forge-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $form-forge-primary,
+    accent: $form-forge-accent,
+    warn: $form-forge-warn,
+  ),
+  typography: mat.m2-define-typography-config(),
+  density: 0,
+));
+
+@include mat.all-component-themes($form-forge-theme);
+
+:root {
+  --ff-color-primary: #{mat.m2-get-color-from-palette($form-forge-primary, 500)};
+  --ff-color-accent: #{mat.m2-get-color-from-palette($form-forge-accent, A200)};
+  --ff-color-warn: #{mat.m2-get-color-from-palette($form-forge-warn, 500)};
+
+  --ff-color-surface: #ffffff;
+  --ff-color-background: #f4f7fa;
+  --ff-color-border: #e0e0e0;
+
+  --ff-text-primary: #212121;
+  --ff-text-secondary: #757575;
+
+  --ff-font-family: 'Roboto', sans-serif;
+
+  --ff-spacing-unit: 8px;
+  --ff-spacing-xs: calc(0.5 * var(--ff-spacing-unit));
+  --ff-spacing-sm: var(--ff-spacing-unit);
+  --ff-spacing-md: calc(2 * var(--ff-spacing-unit));
+  --ff-spacing-lg: calc(3 * var(--ff-spacing-unit));
+  --ff-spacing-xl: calc(4 * var(--ff-spacing-unit));
+
+  --ff-border-radius: 8px;
+  --ff-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--ff-font-family), serif;
+  background-color: var(--ff-color-background);
+  color: var(--ff-text-primary);
 }
