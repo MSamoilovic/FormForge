@@ -20,6 +20,11 @@ export interface RuleCondition {
   value: any;
 }
 
+export interface RuleConditionGroup {
+  operator: 'and' | 'or';
+  conditions: (RuleCondition | RuleConditionGroup)[];
+}
+
 export interface RuleAction {
   targetFieldId: string;
   type: RuleActionType;
@@ -29,6 +34,6 @@ export interface RuleAction {
 export interface FormRule {
   id: string;
   description?: string;
-  conditions: RuleCondition[];
+  conditions: (RuleCondition | RuleConditionGroup)[];
   actions: RuleAction[];
 }

@@ -6,7 +6,13 @@ import {
   input,
   output,
 } from '@angular/core';
-import { FieldOption, FormField, FormRule } from '@form-forge/models';
+import {
+  FieldOption,
+  FormField,
+  FormRule,
+  RuleCondition,
+  RuleConditionGroup,
+} from '@form-forge/models';
 import {
   FormArray,
   FormBuilder,
@@ -124,36 +130,41 @@ export class FormBuilderPropertyPanel {
 
   private setRules(rules: FormRule[] = []): void {
     const rulesArray = this.propertiesForm.get('rules') as FormArray;
-
-    // UTIŠAVAMO CLEAR
     rulesArray.clear({ emitEvent: false });
 
     rules.forEach((rule) => {
       const ruleGroup = this.fb.group({
-        // ... definicija ruleGroup-a ...
-        conditions: this.fb.array([]),
-        actions: this.fb.array([]),
+        id: [rule.id],
+        description: [rule.description],
+        conditions: this.fb.array(
+          rule.conditions.map((c) => this.buildConditionForm(c))
+        ),
+        actions: this.fb.array(rule.actions.map((a) => this.fb.group(a))),
       });
 
-      // Popunjavanje conditions i actions...
-      if (rule.conditions) {
-        rule.conditions.forEach((condition) => {
-          (ruleGroup.get('conditions') as FormArray).push(
-            this.fb.group(condition),
-            { emitEvent: false }
-          ); // UTIŠANO
-        });
-      }
-      if (rule.actions) {
-        rule.actions.forEach((action) => {
-          (ruleGroup.get('actions') as FormArray).push(this.fb.group(action), {
-            emitEvent: false,
-          }); // UTIŠANO
-        });
-      }
-
-      // UTIŠAVAMO PUSH
       rulesArray.push(ruleGroup, { emitEvent: false });
+    });
+  }
+
+  private buildConditionForm(
+    condition: RuleCondition | RuleConditionGroup
+  ): FormGroup {
+    if ('operator' in condition) {
+      const group = condition as RuleConditionGroup;
+      return this.fb.group({
+        operator: [group.operator],
+        conditions: this.fb.array(
+          group.conditions.map((c) => this.buildConditionForm(c))
+        ),
+      });
+    }
+
+    // Ako je običan USLOV, kreiramo prost FormGroup
+    const simpleCondition = condition as RuleCondition;
+    return this.fb.group({
+      fieldId: [simpleCondition.fieldId, Validators.required],
+      operator: [simpleCondition.operator, Validators.required],
+      value: [simpleCondition.value, Validators.required],
     });
   }
 
