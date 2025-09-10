@@ -1,0 +1,26 @@
+:host {
+  display: flex;
+  justify-content: center;
+  padding: var(--ff-spacing-xl);
+}
+
+.form-container {
+  max-width: 600px;
+  width: 100%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ff-spacing-md);
+}
+
+.submit-button {
+  margin-top: var(--ff-spacing-md);
+}
+
+.error-message {
+  font-size: 12px;
+  margin-top: -12px; // Smanjuje razmak
+  margin-left: 2px;
+}

@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="property-panel-card">
   <mat-card-header>
     <mat-card-title>Properties</mat-card-title>
   </mat-card-header>
@@ -9,19 +9,20 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Label</mat-label>
-          <input matInput formControlName="label">
+          <input matInput formControlName="label" placeholder="Enter field label">
         </mat-form-field>
 
         @if (field.type === 'text' || field.type === 'number') {
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Placeholder</mat-label>
-            <input matInput formControlName="placeholder">
+            <input matInput formControlName="placeholder" placeholder="Enter placeholder text">
           </mat-form-field>
         }
 
-        <mat-checkbox formControlName="required">Required</mat-checkbox>
+        <mat-checkbox formControlName="required" color="primary">Required</mat-checkbox>
 
         @if (field.type === 'select' || field.type === 'radio') {
+          <mat-divider></mat-divider>
           <div class="options-container" formArrayName="options">
             <h4>Options</h4>
             @for (optionGroup of optionsFormArray.controls; let i = $index; track i) {
@@ -34,7 +35,7 @@
                   <mat-label>Value</mat-label>
                   <input matInput formControlName="value">
                 </mat-form-field>
-                <button mat-icon-button color="warn" (click)="removeOption(i)">
+                <button mat-icon-button color="warn" (click)="removeOption(i)" title="Remove Option">
                   <mat-icon>remove_circle_outline</mat-icon>
                 </button>
               </div>
@@ -56,6 +57,7 @@
       </div>
     } @else {
       <div class="no-field-selected">
+        <mat-icon>touch_app</mat-icon>
         <p>Select a field on the canvas to see its properties.</p>
       </div>
     }
