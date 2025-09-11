@@ -10,7 +10,7 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
         @for (field of formSchema.fields; track field.id) {
-          <div class="field-wrapper">
+          <div class="field-wrapper" [class.hidden]="form.get(field.id)?.disabled">
             <ng-container
               [ngComponentOutlet]="getComponent(field.type)"
               [ngComponentOutletInputs]="getComponentInputs(field)"

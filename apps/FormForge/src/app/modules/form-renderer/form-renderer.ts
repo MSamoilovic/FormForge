@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Type } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, Type } from '@angular/core';
 import {
   FieldType,
   FormField,
@@ -26,6 +26,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatError } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { RuleEngineService } from '@form-forge/rule-engine';
+import { Subject } from 'rxjs';
 
 @Component({
   imports: [
@@ -35,18 +36,22 @@ import { RuleEngineService } from '@form-forge/rule-engine';
     MatError,
     MatButton,
   ],
-  providers: [RuleEngineService],
+
   selector: 'app-form-renderer',
   standalone: true,
   styleUrl: './form-renderer.scss',
   templateUrl: './form-renderer.html',
   exportAs: 'formRenderer',
 })
-export class FormRenderer implements OnInit {
+export class FormRenderer implements OnInit, OnDestroy {
   formSchema: FormSchema = MOCK_FORM_SCHEMA;
 
   public form!: FormGroup;
   private fb = inject(FormBuilder);
+
+  private ruleEngineService = inject(RuleEngineService);
+
+  private destroy$ = new Subject<void>();
 
   private componentMap: Record<FieldType, Type<any>> = {
     [FieldType.Text]: TextField,
@@ -59,10 +64,19 @@ export class FormRenderer implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
+
+    if (this.formSchema.rules) {
+      this.ruleEngineService.processRules(
+        this.form,
+        this.formSchema.rules,
+        this.destroy$
+      );
+    }
   }
 
   private buildForm(): void {
     const group: { [key: string]: FormControl } = {};
+
     this.formSchema.fields.forEach((field) => {
       group[field.id] = this.createControl(field);
     });
@@ -113,11 +127,24 @@ export class FormRenderer implements OnInit {
   }
 
   getComponentInputs(field: FormField): Record<string, any> {
-    return {
+    const inputs: Record<string, any> = {
       label: field.label,
-      placeholder: field.placeholder,
-      options: field.options,
       formControl: this.form.get(field.id),
     };
+
+    if (field.type === FieldType.Text) {
+      inputs['placeholder'] = field.placeholder || '';
+    }
+
+    if (field.type === FieldType.Select || field.type === FieldType.Radio) {
+      inputs['options'] = field.options;
+    }
+
+    return inputs;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

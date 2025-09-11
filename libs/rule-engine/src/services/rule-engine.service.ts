@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import {
   AbstractControl,
   FormGroup,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-
 import {
   FormRule,
   RuleAction,
@@ -14,17 +13,10 @@ import {
   RuleConditionGroup,
   RuleConditionOperator,
 } from '@form-forge/models';
+import { asyncScheduler, observeOn, startWith, Subject, takeUntil } from 'rxjs';
 
-import { startWith, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class RuleEngineService {
-  /**
-   * Glavna javna metoda servisa.
-   */
   public processRules(
     form: FormGroup,
     rules: FormRule[],
@@ -35,18 +27,26 @@ export class RuleEngineService {
     }
 
     form.valueChanges
-      .pipe(startWith(form.value), takeUntil(destroy$))
+      .pipe(
+        startWith(form.value),
+        observeOn(asyncScheduler),
+        takeUntil(destroy$)
+      )
       .subscribe((formValue) => {
         rules.forEach((rule) => {
+          // 1. Prolazimo kroz SVAKI uslov u `conditions` nizu i evaluiramo ga.
           const conditionResults = rule.conditions.map((condition) =>
             this.evaluateCondition(condition, formValue)
           );
 
+          // 2. Proveravamo da li su SVI rezultati tačni (AND logika)
           const conditionsMet = conditionResults.every((result) => result);
 
-          if (conditionsMet) {
-            rule.actions.forEach((action) => this.executeAction(action, form));
-          }
+          // 3. UVEK pozivamo akcije, ali im prosleđujemo rezultat
+          //    kako bi one znale da li da se izvrše ili "ponište".
+          rule.actions.forEach((action) =>
+            this.executeAction(action, form, conditionsMet)
+          );
         });
       });
   }
@@ -60,17 +60,12 @@ export class RuleEngineService {
       const results = group.conditions.map((c) =>
         this.evaluateCondition(c, formValue)
       );
-
-      if (group.operator === 'and') {
-        return results.every((result) => result);
-      } else {
-        // 'or'
-        return results.some((result) => result);
-      }
+      return group.operator === 'and'
+        ? results.every((r) => r)
+        : results.some((r) => r);
     } else {
       const singleCondition = condition as RuleCondition;
       const fieldValue = formValue[singleCondition.fieldId];
-
       switch (singleCondition.operator) {
         case RuleConditionOperator.Equals:
           return fieldValue == singleCondition.value;
@@ -88,25 +83,48 @@ export class RuleEngineService {
     }
   }
 
-  private executeAction(action: RuleAction, form: FormGroup): void {
+  /**
+   * Izvršava ili "poništava" akciju na osnovu toga da li su uslovi ispunjeni.
+   */
+  private executeAction(
+    action: RuleAction,
+    form: FormGroup,
+    conditionsMet: boolean
+  ): void {
     const targetControl = form.get(action.targetFieldId);
     if (!targetControl) return;
 
     switch (action.type) {
       case RuleActionType.Show:
-        targetControl.enable({ emitEvent: false });
+        if (conditionsMet) {
+          targetControl.enable({ emitEvent: false });
+        } else {
+          targetControl.disable({ emitEvent: false });
+        }
         break;
       case RuleActionType.Hide:
-        targetControl.disable({ emitEvent: false });
+        if (conditionsMet) {
+          targetControl.disable({ emitEvent: false });
+        } else {
+          targetControl.enable({ emitEvent: false });
+        }
         break;
       case RuleActionType.Enable:
-        targetControl.enable({ emitEvent: false });
+        if (conditionsMet) {
+          targetControl.enable({ emitEvent: false });
+        } else {
+          targetControl.disable({ emitEvent: false });
+        }
         break;
       case RuleActionType.Disable:
-        targetControl.disable({ emitEvent: false });
+        if (conditionsMet) {
+          targetControl.disable({ emitEvent: false });
+        } else {
+          targetControl.enable({ emitEvent: false });
+        }
         break;
       case RuleActionType.SetRequired:
-        this.toggleValidator(targetControl, Validators.required, true);
+        this.toggleValidator(targetControl, Validators.required, conditionsMet);
         break;
     }
     targetControl.updateValueAndValidity({ emitEvent: false });
