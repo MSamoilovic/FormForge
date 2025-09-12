@@ -1,0 +1,20 @@
+<mat-toolbar color="primary" class="main-toolbar">
+    <div class="toolbar-content">
+        <a routerLink="/dashboard" class="logo-container">
+            <mat-icon>dynamic_form</mat-icon>
+            <h1>{{ title }}</h1>
+        </a>
+
+        <span class="spacer"></span>
+
+        <nav class="navigation-items">
+            <a mat-button routerLink="/dashboard" routerLinkActive="active-link"
+                [routerLinkActiveOptions]="{ exact: true }">
+                Dashboard
+            </a>
+            <a mat-button routerLink="/builder" routerLinkActive="active-link">
+                New Form
+            </a>
+        </nav>
+    </div>
+</mat-toolbar>

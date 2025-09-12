@@ -1,0 +1,45 @@
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>My Forms</h1>
+        <button mat-raised-button color="primary" (click)="createNewForm()">
+            <mat-icon>add</mat-icon>
+            Create New Form
+        </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="form-card-grid">
+        @for (form of forms(); track form.id) {
+        <mat-card class="form-card">
+            <mat-card-header>
+                <mat-card-title>{{ form.name }}</mat-card-title>
+                <mat-card-subtitle>Created: {{ form.createdAt | date:'dd.MM.yyyy' }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p>Total Submissions: <strong>{{ form.submissionCount }}</strong></p>
+            </mat-card-content>
+            <mat-card-actions >
+                <button mat-stroked-button color="primary" (click)="editForm(form.id)">EDIT</button>
+                <button mat-button>SUBMISSIONS</button>
+                <button mat-icon-button matTooltip="Get embed code">
+                    <mat-icon>code</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" matTooltip="Delete form">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-card-actions>
+        </mat-card>
+        } @empty {
+        <div class="empty-state-container">
+            <h2>No forms created yet.</h2>
+            <p>Ready to build your first one?</p>
+            <button mat-raised-button color="accent" (click)="createNewForm()">
+                <mat-icon>add</mat-icon>
+                Create your first form
+            </button>
+        </div>
+        }
+    </div>
+</div>
+
