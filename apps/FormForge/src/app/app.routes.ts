@@ -15,4 +15,21 @@ export const appRoutes: Route[] = [
         (m) => m.FORM_RENDERER_ROUTES
       ),
   },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./modules/dashboard/dashboard.routes').then(
+        (m) => m.DASHBOARD_ROUTES
+      ),
+  },
+  {
+    path: '',
+    redirectTo: '/dashboard',
+    pathMatch: 'full',
+  },
+
+  {
+    path: '**',
+    redirectTo: '/dashboard',
+  },
 ];
