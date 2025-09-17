@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  input,
-  output,
-} from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import {
   FieldOption,
   FormField,
@@ -16,7 +9,6 @@ import {
 import {
   FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -26,38 +18,38 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatInput } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-form-builder-property-panel',
+  standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     FormBuilderFieldRulesComponent,
     MatCardModule,
     MatFormFieldModule,
+    MatInputModule,
     MatCheckboxModule,
     MatDividerModule,
-    MatInput,
+    MatButtonModule,
     MatIconModule,
-    MatIconButton,
-    MatButton,
   ],
   templateUrl: './form-builder-property-panel.html',
-  styleUrl: './form-builder-property-panel.css',
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./form-builder-property-panel.css'],
 })
 export class FormBuilderPropertyPanel {
-  readonly selectedField = input.required<FormField | null>();
+  private fb = inject(FormBuilder);
 
-  readonly allCanvasFields = input.required<FormField[] | null>();
+  readonly selectedField = input.required<FormField | null>();
+  readonly allCanvasFields = input.required<FormField[]>();
 
   readonly fieldChanged = output<Partial<FormField>>();
-  readonly addOptionRequested = output<void>();
-  readonly removeOptionRequested = output<number>();
-  private readonly fb = inject(FormBuilder);
 
   propertiesForm: FormGroup;
 
@@ -66,7 +58,7 @@ export class FormBuilderPropertyPanel {
       label: ['', Validators.required],
       placeholder: [''],
       required: [false],
-      options: this.fb.array<FormControl>([]),
+      options: this.fb.array<FormGroup>([]),
       rules: this.fb.array<FormGroup>([]),
     });
 
@@ -81,19 +73,19 @@ export class FormBuilderPropertyPanel {
           },
           { emitEvent: false }
         );
-
         this.setOptions(field.options);
-
         this.setRules(field.rules);
       }
     });
 
-    this.propertiesForm.valueChanges.subscribe((value) => {
-      this.fieldChanged.emit(value);
-    });
+    this.propertiesForm.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
+      .subscribe((value) => {
+        this.fieldChanged.emit(value);
+      });
   }
 
-  get optionsFormArray(): FormArray<FormControl<string>> {
+  get optionsFormArray(): FormArray {
     return this.propertiesForm.get('options') as FormArray;
   }
 
@@ -101,24 +93,21 @@ export class FormBuilderPropertyPanel {
     return this.propertiesForm.get('rules') as FormArray;
   }
 
-  addOption(value = ''): void {
-    const options = this.propertiesForm.get('options') as FormArray;
-    options.push(this.fb.control(value));
+  getAllFields(): FormField[] {
+    return this.allCanvasFields() ?? [];
+  }
+
+  addOption(): void {
+    const optionsArray = this.propertiesForm.get('options') as FormArray;
+    const newOption: FieldOption = {
+      label: `Option ${optionsArray.length + 1}`,
+      value: `option_${optionsArray.length + 1}`,
+    };
+    optionsArray.push(this.createOptionGroup(newOption));
   }
 
   removeOption(index: number): void {
-    const options = this.propertiesForm.get('options') as FormArray;
-    options.removeAt(index);
-  }
-
-  private setOptions(options: FieldOption[] = []): void {
-    const optionsArray = this.propertiesForm.get('options') as FormArray;
-
-    optionsArray.clear({ emitEvent: false });
-
-    options.forEach((option) => {
-      optionsArray.push(this.createOptionGroup(option), { emitEvent: false });
-    });
+    this.optionsFormArray.removeAt(index);
   }
 
   private createOptionGroup(option: FieldOption): FormGroup {
@@ -128,10 +117,17 @@ export class FormBuilderPropertyPanel {
     });
   }
 
+  private setOptions(options: FieldOption[] = []): void {
+    const optionsArray = this.propertiesForm.get('options') as FormArray;
+    optionsArray.clear({ emitEvent: false });
+    options.forEach((option) => {
+      optionsArray.push(this.createOptionGroup(option), { emitEvent: false });
+    });
+  }
+
   private setRules(rules: FormRule[] = []): void {
     const rulesArray = this.propertiesForm.get('rules') as FormArray;
     rulesArray.clear({ emitEvent: false });
-
     rules.forEach((rule) => {
       const ruleGroup = this.fb.group({
         id: [rule.id],
@@ -141,7 +137,6 @@ export class FormBuilderPropertyPanel {
         ),
         actions: this.fb.array(rule.actions.map((a) => this.fb.group(a))),
       });
-
       rulesArray.push(ruleGroup, { emitEvent: false });
     });
   }
@@ -149,7 +144,7 @@ export class FormBuilderPropertyPanel {
   private buildConditionForm(
     condition: RuleCondition | RuleConditionGroup
   ): FormGroup {
-    if ('operator' in condition) {
+    if ('conditions' in condition) {
       const group = condition as RuleConditionGroup;
       return this.fb.group({
         operator: [group.operator],
@@ -159,16 +154,11 @@ export class FormBuilderPropertyPanel {
       });
     }
 
-    // Ako je običan USLOV, kreiramo prost FormGroup
     const simpleCondition = condition as RuleCondition;
     return this.fb.group({
       fieldId: [simpleCondition.fieldId, Validators.required],
       operator: [simpleCondition.operator, Validators.required],
       value: [simpleCondition.value, Validators.required],
     });
-  }
-
-  getAllFields(): FormField[] {
-    return this.allCanvasFields() ?? [];
   }
 }

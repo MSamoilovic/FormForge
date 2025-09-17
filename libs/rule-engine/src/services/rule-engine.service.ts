@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   AbstractControl,
   FormGroup,
@@ -34,16 +34,12 @@ export class RuleEngineService {
       )
       .subscribe((formValue) => {
         rules.forEach((rule) => {
-          // 1. Prolazimo kroz SVAKI uslov u `conditions` nizu i evaluiramo ga.
           const conditionResults = rule.conditions.map((condition) =>
             this.evaluateCondition(condition, formValue)
           );
 
-          // 2. Proveravamo da li su SVI rezultati tačni (AND logika)
           const conditionsMet = conditionResults.every((result) => result);
 
-          // 3. UVEK pozivamo akcije, ali im prosleđujemo rezultat
-          //    kako bi one znale da li da se izvrše ili "ponište".
           rule.actions.forEach((action) =>
             this.executeAction(action, form, conditionsMet)
           );

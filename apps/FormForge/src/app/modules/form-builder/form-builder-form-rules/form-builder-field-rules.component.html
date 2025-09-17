@@ -1,68 +1,129 @@
-<div [formGroup]="parentForm()">
-  <div formArrayName="rules" class="rules-main-container">
-
+<div [formGroup]="parentForm()" class="rules-editor-container">
+  <h4>Rules</h4>
+  <div formArrayName="rules">
     @for (ruleGroup of rulesFormArray().controls; let i = $index; track i) {
-      <div class="rule-card" [formGroupName]="i">
-        <div class="rule-header">
-          <h5>Rule #{{ i + 1 }}</h5>
-          <button type="button" class="icon-button" (click)="removeRule(i)" title="Remove Rule">✕</button>
-        </div>
+      <mat-card class="rule-card" [formGroupName]="i">
+        <mat-card-header class="rule-header">
+          <mat-card-title>Rule #{{ i + 1 }}</mat-card-title>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="removeRule(i)"
+            matTooltip="Delete this rule"
+          >
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </mat-card-header>
 
-        <div class="conditions-section" formArrayName="conditions">
-          <div class="section-header">
-            <h6>IF...</h6>
-            <button type="button" (click)="addCondition(i)" title="Add Condition">+ AND</button>
-          </div>
-          @for (conditionGroup of $any(ruleGroup.get('conditions')).controls; let c_idx = $index; track c_idx) {
-            <div class="condition-row" [formGroupName]="c_idx">
-              <select formControlName="fieldId" class="form-select">
-                <option value="" disabled>Select Field</option>
-                @for (field of allFormFields(); track field.id) {
-                  <option [value]="field.id">{{ field.label }}</option>
-                }
-              </select>
-
-              <select formControlName="operator" class="form-select">
-                @for (op of conditionOperators; track op) {
-                  <option [value]="op">{{ op }}</option>
-                }
-              </select>
-
-              <input formControlName="value" placeholder="Value" class="form-input" />
-              <button type="button" class="icon-button" (click)="removeCondition(i, c_idx)" title="Remove Condition">-
+        <mat-card-content>
+          <!-- Sekcija za USLOVE (CONDITIONS) -->
+          <div class="conditions-section" formArrayName="conditions">
+            <div class="section-header">
+              <h6>IF...</h6>
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="addCondition(i)"
+              >
+                <mat-icon>add</mat-icon>
+                AND
               </button>
             </div>
-          }
-        </div>
+            @for (conditionGroup of $any(ruleGroup.get('conditions')).controls; let
+              c_idx = $index; track c_idx) {
+              <div class="condition-row" [formGroupName]="c_idx">
+                <mat-form-field appearance="outline" class="rule-field">
+                  <mat-label>Field</mat-label>
+                  <mat-select formControlName="fieldId">
+                    @for (field of allFormFields(); track field.id) {
+                      <mat-option [value]="field.id">{{ field.label }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
 
-        <div class="actions-section" formArrayName="actions">
-          <div class="section-header">
-            <h6>THEN...</h6>
-            <button type="button" (click)="addAction(i)" title="Add Action">+ Action</button>
+                <mat-form-field appearance="outline" class="rule-operator">
+                  <mat-label>Operator</mat-label>
+                  <mat-select formControlName="operator">
+                    @for (op of conditionOperators; track op) {
+                      <mat-option [value]="op">{{ op }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="rule-field">
+                  <mat-label>Value</mat-label>
+                  <input matInput formControlName="value" />
+                </mat-form-field>
+
+                <button
+                  mat-icon-button
+                  (click)="removeCondition(i, c_idx)"
+                  matTooltip="Remove condition"
+                >
+                  <mat-icon>remove_circle_outline</mat-icon>
+                </button>
+              </div>
+            }
           </div>
-          @for (actionGroup of $any(ruleGroup.get('actions')).controls; let a_idx = $index; track a_idx) {
-            <div class="action-row" [formGroupName]="a_idx">
-              <select formControlName="type" class="form-select">
-                @for (action of actionTypes; track action) {
-                  <option [value]="action">{{ action }}</option>
-                }
-              </select>
 
-              <span>field:</span>
-              <select formControlName="targetFieldId" class="form-select">
-                <option value="" disabled>Select Target</option>
-                @for (field of allFormFields(); track field.id) {
-                  <option [value]="field.id">{{ field.label }}</option>
-                }
-              </select>
-              <button type="button" class="icon-button" (click)="removeAction(i, a_idx)" title="Remove Action">-
+          <mat-divider></mat-divider>
+
+          <!-- Sekcija za AKCIJE (ACTIONS) -->
+          <div class="actions-section" formArrayName="actions">
+            <div class="section-header">
+              <h6>THEN...</h6>
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="addAction(i)"
+              >
+                <mat-icon>add</mat-icon>
+                Action
               </button>
             </div>
-          }
-        </div>
+            @for (actionGroup of $any(ruleGroup.get('actions')).controls; let
+              a_idx = $index; track a_idx) {
+              <div class="action-row" [formGroupName]="a_idx">
+                <mat-form-field appearance="outline" class="rule-action-type">
+                  <mat-label>Action</mat-label>
+                  <mat-select formControlName="type">
+                    @for (action of actionTypes; track action) {
+                      <mat-option [value]="action">{{ action }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
 
-      </div>
+                <mat-form-field appearance="outline" class="rule-field">
+                  <mat-label>Target Field</mat-label>
+                  <mat-select formControlName="targetFieldId">
+                    @for (field of allFormFields(); track field.id) {
+                      <mat-option [value]="field.id">{{ field.label }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <button
+                  mat-icon-button
+                  (click)="removeAction(i, a_idx)"
+                  matTooltip="Remove action"
+                >
+                  <mat-icon>remove_circle_outline</mat-icon>
+                </button>
+              </div>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
     }
-    <button type="button" class="add-rule-btn" (click)="addRule()">Add Rule</button>
+    <button
+      type="button"
+      mat-raised-button
+      color="accent"
+      (click)="addRule()"
+      class="add-rule-button"
+    >
+      <mat-icon>add</mat-icon>
+      Add New Rule
+    </button>
   </div>
 </div>

@@ -1,21 +1,15 @@
 import { Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  FormField,
-  RuleActionType,
-  RuleConditionOperator,
-} from '@form-forge/models';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormField, RuleActionType, RuleConditionOperator } from '@form-forge/models';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-field-rules',
@@ -24,8 +18,12 @@ import { MatIconModule } from '@angular/material/icon';
     ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatDividerModule,
+    MatTooltipModule,
   ],
   templateUrl: './form-builder-field-rules.component.html',
   styleUrl: './form-builder-field-rules.component.scss',
@@ -39,7 +37,6 @@ export class FormBuilderFieldRulesComponent {
   readonly conditionOperators = Object.values(RuleConditionOperator);
   readonly actionTypes = Object.values(RuleActionType);
 
-  //
   parentForm = input.required<FormGroup>();
 
   addRule(): void {
