@@ -1,81 +1,72 @@
-.rule-container {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-  background-color: #f9f9f9;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  h5 {
-    margin: 0 0 8px 0;
-    font-size: 1.1rem;
-    color: #333;
-  }
-
-  .rule-condition,
-  .rule-action,
-  .rule-target {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-
-    select,
-    input {
-      padding: 6px 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 0.95rem;
-      width: 100%;
-    }
-
-    label {
-      display: flex;
-      flex-direction: column;
-      font-size: 0.9rem;
-      color: #555;
-    }
-  }
-
-  .rule-action select {
-    min-width: 100px;
-  }
-
-  .rule-target select {
-    min-width: 140px;
-  }
-
-  button {
-    align-self: flex-start;
-    padding: 6px 12px;
-    font-size: 0.9rem;
-    color: #fff;
-    background-color: #e74c3c;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background-color: #c0392b;
-    }
+.rules-editor-container {
+  h4 {
+    color: var(--ff-text-secondary);
+    font-weight: 500;
+    margin-bottom: var(--ff-spacing-md);
   }
 }
 
-button.add-rule {
-  padding: 8px 14px;
-  font-size: 0.95rem;
-  color: #fff;
-  background-color: #3498db;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 8px;
-  transition: background-color 0.2s;
+.rule-card {
+  background-color: var(--ff-color-surface);
+  margin-bottom: var(--ff-spacing-lg);
+  box-shadow: none;
+  border: 1px solid var(--ff-color-border);
+}
 
-  &:hover {
-    background-color: #2980b9;
+.rule-header {
+  padding: var(--ff-spacing-sm) var(--ff-spacing-md);
+  background-color: #f5f5f5;
+
+  .mat-mdc-card-header-text {
+    margin: 0;
   }
+
+  mat-card-title {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--ff-spacing-md);
+  margin-bottom: var(--ff-spacing-sm);
+
+  h6 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ff-text-secondary);
+    text-transform: uppercase;
+  }
+}
+
+.condition-row,
+.action-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ff-spacing-sm);
+  margin-bottom: var(--ff-spacing-sm);
+}
+
+.rule-field {
+  flex: 1 1 35%;
+}
+
+.rule-operator {
+  flex: 1 1 30%;
+}
+
+.rule-action-type {
+  flex: 1 1 40%;
+}
+
+mat-divider {
+  margin: var(--ff-spacing-lg) 0;
+}
+
+.add-rule-button {
+  width: 100%;
 }

@@ -27,6 +27,9 @@ import { FormBuilderCanvas } from './form-builder-canvas/form-builder-canvas';
 import { FormBuilderPropertyPanel } from './form-builder-property-panel/form-builder-property-panel';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ApiService } from '../core/services/api.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -42,7 +45,9 @@ import { MatButton } from '@angular/material/button';
     FormBuilderPropertyPanel,
     MatIconModule,
     MatButton,
+    MatSnackBarModule,
   ],
+  providers: [ApiService, HttpClient],
 })
 export class FormBuilderComponent {
   fields: FieldType[] = [
@@ -68,6 +73,8 @@ export class FormBuilderComponent {
   ];
 
   private fb = inject(FormBuilder);
+  private apiService = inject(ApiService);
+  private snackBar = inject(MatSnackBar);
 
   canvasFields = signal<FormField[]>([]);
   selectedField = signal<FormField | null>(null);
@@ -93,7 +100,6 @@ export class FormBuilderComponent {
         .filter((id) => !fieldIds.includes(id))
         .forEach((id) => this.form.removeControl(id));
 
-      // 2. Dodajemo nove kontrole za polja koja su tek dodata
       fields
         .filter((field) => !currentControlIds.includes(field.id))
         .forEach((field) => {
@@ -173,41 +179,47 @@ export class FormBuilderComponent {
 
   saveForm(): void {
     const currentFields = this.canvasFields();
-
     if (currentFields.length === 0) {
-      alert('Cannot save an empty form.');
+      this.snackBar.open('Cannot save an empty form.', 'Close', {
+        duration: 3000,
+      });
       return;
     }
 
-    const allRules: FormRule[] = [];
-
-    currentFields.forEach((field) => {
-      if (field.rules && Array.isArray(field.rules)) {
-        const rulesWithFieldReference = field.rules.map((rule: any) => ({
-          ...rule,
-        }));
-        allRules.push(...rulesWithFieldReference);
-      }
+    const allRules: FormRule[] = currentFields.flatMap(
+      (field) => field.rules || []
+    );
+    const cleanFields: FormField[] = currentFields.map((field) => {
+      const { rules, ...fieldWithoutRules } = field;
+      return fieldWithoutRules;
     });
 
     const formSchema: FormSchema = {
-      id: crypto.randomUUID(),
-      name: 'Test Forma',
-      description: 'Neki pokusaj forme',
-      fields: currentFields.map((f) => {
-        const { rules, ...fieldWithoutRules } = f as any;
-        return fieldWithoutRules;
-      }),
+      id: '1',
+      name: 'My New Form',
+      description: 'A dynamically created form.',
+      fields: cleanFields,
       rules: allRules,
     };
 
-    const formJson = JSON.stringify(formSchema, null, 2);
-
-    console.log('--- FINAL FORM SCHEMA (JSON) ---');
-    console.log(formJson);
-
-    alert(
-      'Form JSON has been successfully generated and logged to the console!'
-    );
+    this.apiService.createForm(formSchema).subscribe({
+      next: (savedForm) => {
+        console.log(
+          'Forma je uspešno sačuvana! Odgovor sa servera:',
+          savedForm
+        );
+        this.snackBar.open(`Form "${savedForm.name}" has been saved!`, 'OK', {
+          duration: 3000,
+          panelClass: 'success-snackbar',
+        });
+      },
+      error: (err) => {
+        console.error('Došlo je do greške pri čuvanju forme:', err);
+        this.snackBar.open('Error saving form. Please try again.', 'Error', {
+          duration: 5000,
+          panelClass: 'error-snackbar',
+        });
+      },
+    });
   }
 }
