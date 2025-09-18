@@ -46,6 +46,7 @@ import { HttpClient } from '@angular/common/http';
     MatIconModule,
     MatButton,
     MatSnackBarModule,
+    FormBuilderPropertyPanel,
   ],
   providers: [ApiService, HttpClient],
 })
