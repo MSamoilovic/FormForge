@@ -1,27 +1,9 @@
-import { Component, effect, inject, signal, Type } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-} from '@angular/forms';
-import {
-  AvailableField,
-  FieldOption,
-  FieldType,
-  FormField,
-  FormRule,
-  FormSchema,
-} from '@form-forge/models';
-import {
-  CheckboxField,
-  DateField,
-  RadioField,
-  SelectorField,
-  TextField,
-} from '@form-forge/ui-kit';
+import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { AvailableField, FieldOption, FieldType, FormField, FormRule, FormSchema } from '@form-forge/models';
+import { CheckboxField, DateField, RadioField, SelectorField, TextField } from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './form-builder-canvas/form-builder-canvas';
 import { FormBuilderPropertyPanel } from './form-builder-property-panel/form-builder-property-panel';
@@ -30,6 +12,7 @@ import { MatButton } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ApiService } from '../core/services/api.service';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -46,10 +29,11 @@ import { HttpClient } from '@angular/common/http';
     MatIconModule,
     MatButton,
     MatSnackBarModule,
+    FormBuilderPropertyPanel,
   ],
   providers: [ApiService, HttpClient],
 })
-export class FormBuilderComponent {
+export class FormBuilderComponent implements OnInit {
   fields: FieldType[] = [
     FieldType.Text,
     FieldType.Number,
@@ -75,9 +59,19 @@ export class FormBuilderComponent {
   private fb = inject(FormBuilder);
   private apiService = inject(ApiService);
   private snackBar = inject(MatSnackBar);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   canvasFields = signal<FormField[]>([]);
   selectedField = signal<FormField | null>(null);
+  isLoading = signal<boolean>(false);
+  isEditMode = signal<boolean>(false);
+
+  private formIdToEdit = signal<number | null>(null);
+
+  pageTitle = computed(() =>
+    this.isEditMode() ? 'Edit Form' : 'Create New Form'
+  );
 
   form = new FormGroup({});
 
@@ -105,6 +99,44 @@ export class FormBuilderComponent {
         .forEach((field) => {
           this.form.addControl(field.id, this.createControl(field));
         });
+    });
+  }
+
+  ngOnInit() {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      const formId = +idParam;
+      this.isEditMode.set(true);
+      this.formIdToEdit.set(formId);
+      this.loadFormForEdit(formId);
+    }
+  }
+
+  loadFormForEdit(id: number): void {
+    this.isLoading.set(true);
+    this.apiService.getForm(id).subscribe({
+      next: (formSchema) => {
+        const fieldsWithRules = formSchema.fields.map((field) => {
+          const associatedRules =
+            formSchema.rules?.filter((rule) =>
+              rule.conditions.some(
+                (c) => 'fieldId' in c && c.fieldId === field.id
+              )
+            ) || [];
+          return { ...field, rules: associatedRules };
+        });
+
+        this.canvasFields.set(fieldsWithRules);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Greška pri učitavanju forme za izmenu:', err);
+        this.isLoading.set(false);
+        this.snackBar.open(`Form with ID ${id} not found.`, 'Error', {
+          duration: 5000,
+        });
+        this.router.navigate(['/dashboard']); // Vraćamo korisnika na dashboard
+      },
     });
   }
 
