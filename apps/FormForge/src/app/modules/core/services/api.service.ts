@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FormSchema } from '@form-forge/models';
+import { FormSchemaPayload } from '../models/FormSchemaPayload';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class ApiService {
 
   private readonly apiUrl = 'http://127.0.0.1:8000';
 
-  createForm(formSchema: FormSchema): Observable<FormSchema> {
+  createForm(formSchema: FormSchemaPayload): Observable<FormSchema> {
     return this.http.post<FormSchema>(`${this.apiUrl}/api/forms`, formSchema);
   }
 
@@ -21,5 +22,9 @@ export class ApiService {
 
   getForm(id: number): Observable<FormSchema> {
     return this.http.get<FormSchema>(`${this.apiUrl}/api/forms/${id}`);
+  }
+
+  updateForm(id: number, form: FormSchemaPayload) {
+    return this.http.put<FormSchema>(`${this.apiUrl}/api/forms/${id}`, form);
   }
 }
