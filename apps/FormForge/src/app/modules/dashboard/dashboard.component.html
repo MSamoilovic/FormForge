@@ -27,11 +27,12 @@
           </mat-card-content>
           <mat-card-actions align="end">
             <button mat-stroked-button color="primary" (click)="editForm(form.id)">EDIT</button>
+            <button mat-stroked-button color="warning" (click)="deleteForm(form.id, form.name)">DELETE</button>
           </mat-card-actions>
         </mat-card>
       } @empty {
         <div class="empty-state-container">
-          <!-- ... vaš empty state HTML ... -->
+
         </div>
       }
     </div>

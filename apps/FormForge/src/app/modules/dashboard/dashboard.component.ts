@@ -7,6 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { ApiService } from '../core/services/api.service';
 import { FormSchema } from '@form-forge/models';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +27,8 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 export class DashboardComponent implements OnInit {
   private router = inject(Router);
   private apiService = inject(ApiService);
+  dialog = inject(MatDialog);
+  snackBar = inject(MatSnackBar);
 
   forms = signal<FormSchema[]>([]);
   isLoading = signal<boolean>(true);
@@ -53,5 +58,40 @@ export class DashboardComponent implements OnInit {
 
   editForm(id: string): void {
     this.router.navigate(['/builder', id]);
+  }
+
+  deleteForm(id: string, name: string): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '500px',
+      data: {
+        message: `Are you sure you want to delete the form "${name}"? This action cannot be undone.`,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.apiService.deleteForm(id).subscribe({
+          next: () => {
+            this.forms.update((currentForms) =>
+              //TODO: Investigate and resolve
+              currentForms.filter((f) => f.id !== id)
+            );
+            this.snackBar.open(
+              `Form "${name}" was successfully deleted.`,
+              'OK',
+              { duration: 3000 }
+            );
+          },
+          error: (err) => {
+            console.error('Error deleting form:', err);
+            this.snackBar.open(
+              'Could not delete form. Please try again.',
+              'Error',
+              { duration: 5000 }
+            );
+          },
+        });
+      }
+    });
   }
 }
