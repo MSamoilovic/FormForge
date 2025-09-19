@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FieldType, FormField, FormRule, FormSchema } from '@form-forge/models';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { Observable } from 'rxjs';
+import { FormSchemaPayload } from '../../core/models/FormSchemaPayload';
 
 @Injectable({
   providedIn: 'any',
@@ -26,6 +28,8 @@ export class FormBuilderService {
   public readonly pageTitle = computed(() =>
     this.isEditMode() ? 'Edit Form' : 'Create New Form'
   );
+
+  private formName = signal<string>('My New Form');
 
   constructor() {
     this.initializeFromUrl();
@@ -53,6 +57,8 @@ export class FormBuilderService {
             ) || [];
           return { ...field, rules: associatedRules };
         });
+
+        this.formName.set(formSchema.name);
         this.canvasFields.set(fieldsWithRules);
         this.isLoading.set(false);
       },
@@ -119,23 +125,37 @@ export class FormBuilderService {
       return fieldWithoutRules;
     });
 
-    const formSchema: FormSchema = {
-      id: this.formIdToEdit()?.toString() || crypto.randomUUID(),
-      name: 'My New Form',
-      description: 'A dynamically created form.',
-      fields: cleanFields,
-      rules: allRules,
-    };
+    const formSchemaPayload = new FormSchemaPayload(
+      this.formName(),
+      'A dynamically Created Form',
+      cleanFields,
+      allRules
+    );
 
-    // TODO: Implement PUT request
-    this.apiService.createForm(formSchema).subscribe({
+    let saveObservable: Observable<FormSchema>;
+    const isEditing = this.isEditMode();
+
+    if (isEditing) {
+      const formId = this.formIdToEdit() ?? 0;
+      saveObservable = this.apiService.updateForm(formId, formSchemaPayload);
+    } else {
+      saveObservable = this.apiService.createForm(formSchemaPayload);
+    }
+
+    saveObservable.subscribe({
       next: (savedForm) => {
-        this.snackBar.open(`Form "${savedForm.name}" has been saved!`, 'OK', {
-          duration: 3000,
-        });
+        const message = isEditing ? 'updated' : 'created';
+        this.snackBar.open(
+          `Form "${savedForm.name}" has been successfully ${message}!`,
+          'OK',
+          {
+            duration: 3000,
+          }
+        );
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
+        console.log(err);
         this.snackBar.open('Error saving form. Please try again.', 'Error', {
           duration: 5000,
         });

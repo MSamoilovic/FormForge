@@ -3,7 +3,13 @@ import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { AvailableField, FieldType, FormField } from '@form-forge/models';
-import { CheckboxField, DateField, RadioField, SelectorField, TextField } from '@form-forge/ui-kit';
+import {
+  CheckboxField,
+  DateField,
+  RadioField,
+  SelectorField,
+  TextField,
+} from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './components/form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './components/form-builder-canvas/form-builder-canvas';
 import { FormBuilderPropertyPanel } from './components/form-builder-property-panel/form-builder-property-panel';
