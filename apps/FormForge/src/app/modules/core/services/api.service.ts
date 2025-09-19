@@ -27,4 +27,8 @@ export class ApiService {
   updateForm(id: number, form: FormSchemaPayload) {
     return this.http.put<FormSchema>(`${this.apiUrl}/api/forms/${id}`, form);
   }
+
+  deleteForm(id: string) {
+    return this.http.delete(`${this.apiUrl}/api/forms/${id}`);
+  }
 }

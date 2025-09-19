@@ -1,1 +1,15 @@
-<p>confirm-dialog.component works!</p>
+<h1 mat-dialog-title>Confirm Action</h1>
+<div mat-dialog-content>
+  <p>{{ data.message }}</p>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-flat-button
+    color="warn"
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+  >
+    Confirm
+  </button>
+</div>
