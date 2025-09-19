@@ -1,29 +1,38 @@
 <div class="form-builder-container">
   <div class="form-builder-header">
-    <h1>Form Builder</h1>
+    <h1>{{ formBuilderService.pageTitle() }}</h1>
     <span class="spacer"></span>
     <button mat-raised-button color="primary" (click)="saveForm()">
-      <mat-icon aria-hidden="false" aria-label="Example save icon" fontIcon="save">Save</mat-icon>
+      <mat-icon>save</mat-icon>
       Save Form
     </button>
   </div>
 
-  <div class="form-builder-content">
-    <app-form-builder-sidebar [availableFields]="availableFields" />
 
-    <app-form-builder-canvas
-      [form]="form"
-      [canvasFields]="canvasFields()"
-      [selectedField]="selectedField()"
-      [componentMap]="componentMap"
-      (fieldDropped)="onDrop($event)"
-      (fieldSelected)="selectField($event)"
-    ></app-form-builder-canvas>
+  @if (formBuilderService.loading()) {
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>Loading form data...</p>
+    </div>
+  } @else {
+    <div class="form-builder-content">
+      <app-form-builder-sidebar [availableFields]="availableFields" />
 
-    <app-form-builder-property-panel
-      [selectedField]="selectedField()"
-      [allCanvasFields]="canvasFields()"
-      (fieldChanged)="onFieldChange($event)"
-    ></app-form-builder-property-panel>
-  </div>
+
+      <app-form-builder-canvas
+        [form]="form"
+        [canvasFields]="formBuilderService.fields()"
+        [selectedField]="formBuilderService.selected()"
+        [componentMap]="componentMap"
+        (fieldDropped)="onDrop($event)"
+        (fieldSelected)="onSelectField($event)"
+      ></app-form-builder-canvas>
+
+      <app-form-builder-property-panel
+        [selectedField]="formBuilderService.selected()"
+        [allCanvasFields]="formBuilderService.fields()"
+        (fieldChanged)="onFieldChange($event)"
+      ></app-form-builder-property-panel>
+    </div>
+  }
 </div>
