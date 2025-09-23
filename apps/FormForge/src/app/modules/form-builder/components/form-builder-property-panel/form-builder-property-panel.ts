@@ -1,18 +1,6 @@
 import { Component, effect, inject, input, output } from '@angular/core';
-import {
-  FieldOption,
-  FormField,
-  FormRule,
-  RuleCondition,
-  RuleConditionGroup,
-} from '@form-forge/models';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FieldOption, FormField, FormRule, RuleCondition, RuleConditionGroup } from '@form-forge/models';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormBuilderFieldRulesComponent } from '../form-builder-form-rules/form-builder-field-rules.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -51,6 +39,8 @@ export class FormBuilderPropertyPanel {
 
   readonly fieldChanged = output<Partial<FormField>>();
 
+  private previousFieldId: string | null = null;
+
   propertiesForm: FormGroup;
 
   constructor() {
@@ -64,7 +54,9 @@ export class FormBuilderPropertyPanel {
 
     effect(() => {
       const field = this.selectedField();
-      if (field) {
+
+      if (field && this.previousFieldId !== field.id) {
+        console.log(`Resetting form for new field: ${field.label}`);
         this.propertiesForm.patchValue(
           {
             label: field.label,
@@ -75,6 +67,12 @@ export class FormBuilderPropertyPanel {
         );
         this.setOptions(field.options);
         this.setRules(field.rules);
+
+        this.previousFieldId = field.id;
+      }
+
+      if (!field) {
+        this.previousFieldId = null;
       }
     });
 
@@ -123,6 +121,7 @@ export class FormBuilderPropertyPanel {
     options.forEach((option) => {
       optionsArray.push(this.createOptionGroup(option), { emitEvent: false });
     });
+    console.log(options);
   }
 
   private setRules(rules: FormRule[] = []): void {

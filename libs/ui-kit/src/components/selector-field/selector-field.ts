@@ -5,7 +5,7 @@ import {
   FormControl,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { FieldType } from '../../../../models/src';
+import { FieldOption, FieldType } from '@form-forge/models';
 
 @Component({
   selector: 'app-selector-field',
@@ -16,7 +16,7 @@ import { FieldType } from '../../../../models/src';
 })
 export class SelectorField implements ControlValueAccessor {
   readonly label = input<string>('');
-  readonly options = input<string[]>([]);
+  readonly options = input<FieldOption[]>([]);
   readonly formControl = input<FormControl | undefined>(undefined);
   readonly placeholder = input<string>('');
   readonly fieldType = input<FieldType>(FieldType.Select);
