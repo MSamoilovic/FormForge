@@ -1,6 +1,18 @@
 import { Component, effect, inject, input, output } from '@angular/core';
-import { FieldOption, FormField, FormRule, RuleCondition, RuleConditionGroup } from '@form-forge/models';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FieldOption,
+  FormField,
+  FormRule,
+  RuleCondition,
+  RuleConditionGroup,
+} from '@form-forge/models';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { FormBuilderFieldRulesComponent } from '../form-builder-form-rules/form-builder-field-rules.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';

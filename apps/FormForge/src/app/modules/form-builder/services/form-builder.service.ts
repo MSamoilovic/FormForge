@@ -1,17 +1,18 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { ApiService } from '../../core/services/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FieldType, FormField, FormRule, FormSchema } from '@form-forge/models';
+import { FieldType, FormField, FormRule } from '@form-forge/models';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Observable } from 'rxjs';
 import { FormSchemaPayload } from '../../core/models/FormSchemaPayload';
+import { FormBuilderDataService } from './form-builder.data.service';
+import { FormSchemaResponse } from '../../core/models/FormSchemaResponse';
 
 @Injectable({
   providedIn: 'any',
 })
 export class FormBuilderService {
-  private apiService = inject(ApiService);
+  private apiService = inject(FormBuilderDataService);
   private snackBar = inject(MatSnackBar);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -46,7 +47,7 @@ export class FormBuilderService {
 
   private loadFormForEdit(id: number): void {
     this.isLoading.set(true);
-    this.apiService.getForm(id).subscribe({
+    this.apiService.getById(id.toString()).subscribe({
       next: (formSchema) => {
         const fieldsWithRules = formSchema.fields.map((field) => {
           const associatedRules =
@@ -132,7 +133,7 @@ export class FormBuilderService {
       allRules
     );
 
-    let saveObservable: Observable<FormSchema>;
+    let saveObservable: Observable<FormSchemaResponse>;
     const isEditing = this.isEditMode();
 
     if (isEditing) {

@@ -1,8 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { FormSchema } from '@form-forge/models';
-import { FormSchemaPayload } from '../models/FormSchemaPayload';
 
 @Injectable({
   providedIn: 'root',
@@ -10,25 +8,21 @@ import { FormSchemaPayload } from '../models/FormSchemaPayload';
 export class ApiService {
   private http = inject(HttpClient);
 
-  private readonly apiUrl = 'http://127.0.0.1:8000';
+  private readonly apiUrl = 'http://127.0.0.1:8000/api';
 
-  createForm(formSchema: FormSchemaPayload): Observable<FormSchema> {
-    return this.http.post<FormSchema>(`${this.apiUrl}/api/forms`, formSchema);
+  get<T>(endpoint: string): Observable<T> {
+    return this.http.get<T>(`${this.apiUrl}/${endpoint}`);
   }
 
-  getForms(): Observable<FormSchema[]> {
-    return this.http.get<FormSchema[]>(`${this.apiUrl}/api/forms`);
+  post<T>(endpoint: string, body: any): Observable<T> {
+    return this.http.post<T>(`${this.apiUrl}/${endpoint}`, body);
   }
 
-  getForm(id: number): Observable<FormSchema> {
-    return this.http.get<FormSchema>(`${this.apiUrl}/api/forms/${id}`);
+  put<T>(endpoint: string, body: any): Observable<T> {
+    return this.http.put<T>(`${this.apiUrl}/${endpoint}`, body);
   }
 
-  updateForm(id: number, form: FormSchemaPayload) {
-    return this.http.put<FormSchema>(`${this.apiUrl}/api/forms/${id}`, form);
-  }
-
-  deleteForm(id: string) {
-    return this.http.delete(`${this.apiUrl}/api/forms/${id}`);
+  delete<T>(endpoint: string): Observable<T> {
+    return this.http.delete<T>(`${this.apiUrl}/${endpoint}`);
   }
 }
