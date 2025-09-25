@@ -4,12 +4,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { ApiService } from '../core/services/api.service';
 import { FormSchema } from '@form-forge/models';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilderDataService } from '../form-builder/services/form-builder.data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,13 +20,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatButtonModule,
     MatProgressSpinner,
   ],
-  providers: [ApiService],
+  providers: [FormBuilderDataService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
   private router = inject(Router);
-  private apiService = inject(ApiService);
+  private apiService = inject(FormBuilderDataService);
   dialog = inject(MatDialog);
   snackBar = inject(MatSnackBar);
 
@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit {
     this.isLoading.set(true);
     this.apiService.getForms().subscribe({
       next: (data) => {
-        this.forms.set(data);
+        this.forms.set(data as FormSchema[]);
         this.isLoading.set(false);
         console.log('Uspešno učitane forme:', data);
       },
