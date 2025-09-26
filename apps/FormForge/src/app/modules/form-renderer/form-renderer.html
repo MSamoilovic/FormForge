@@ -1,4 +1,9 @@
-@if (form) {
+@if (isLoading()) {
+  <div class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Loading form...</p>
+  </div>
+} @else if (formSchema && form) {
   <mat-card class="form-container">
     <mat-card-header>
       <mat-card-title>{{ formSchema.name }}</mat-card-title>
@@ -7,33 +12,41 @@
       }
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
 
         @for (field of formSchema.fields; track field.id) {
           <div class="field-wrapper" [class.hidden]="form.get(field.id)?.disabled">
+
             <ng-container
               [ngComponentOutlet]="getComponent(field.type)"
               [ngComponentOutletInputs]="getComponentInputs(field)"
             ></ng-container>
 
-            @if (form.get(field.id)?.invalid && form.get(field.id)?.touched) {
-              <mat-error class="error-message">
-                @for (validation of field.validations; track validation.type) {
-                  @if (form.get(field.id)?.hasError(validation.type.toLowerCase())) {
-                    {{ validation.message }}
+            
+            @if (form.get(field.id); as control) {
+              @if (control.invalid && (control.touched || control.dirty)) {
+                <mat-error class="error-message">
+                  @for (validation of field.validations; track validation.type) {
+                    @if (control.hasError(validation.type.toLowerCase())) {
+                      {{ validation.message }}
+                    }
                   }
-                }
-              </mat-error>
+                </mat-error>
+              }
             }
           </div>
         }
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" class="submit-button">
+        <button mat-raised-button color="primary" type="submit" class="submit-button">
           Submit
         </button>
       </form>
     </mat-card-content>
   </mat-card>
 } @else {
-  <p>Loading form...</p>
+  <div class="error-container">
+    <h2>Form Not Found</h2>
+    <p>The form you are looking for could not be loaded.</p>
+    <a mat-stroked-button routerLink="/dashboard">Go to Dashboard</a>
+  </div>
 }
