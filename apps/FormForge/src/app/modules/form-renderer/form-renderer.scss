@@ -2,29 +2,44 @@
   display: flex;
   justify-content: center;
   padding: var(--ff-spacing-xl);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--ff-spacing-xl);
+  color: var(--ff-text-secondary);
 }
 
 .form-container {
-  max-width: 600px;
+  max-width: 700px;
   width: 100%;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: var(--ff-spacing-md);
+  gap: var(--ff-spacing-lg); // Veći razmak između polja
 }
 
 .submit-button {
   margin-top: var(--ff-spacing-md);
+  align-self: flex-start; // Da se ne rastegne preko cele širine
+}
+
+.field-wrapper {
+  transition: opacity 0.3s ease-in-out;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .error-message {
   font-size: 12px;
-  margin-top: -12px; // Smanjuje razmak
-  margin-left: 2px;
-}
-
-.field-wrapper.hidden {
-  display: none;
+  margin-top: 4px; // Mali razmak od polja
 }
