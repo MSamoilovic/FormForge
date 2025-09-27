@@ -9,12 +9,11 @@ import { MatError } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { RuleEngineService } from '@form-forge/rule-engine';
 import { Subject } from 'rxjs';
-import { SubmissionApiService } from '../core/services/submission-api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { FormBuilderDataService } from '../form-builder/services/form-builder.data.service';
 import { SubmissionPayload } from '../core/models/SubmissionPayload';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormRendererDataService } from './services/form-renderer-data.service';
 
 @Component({
   imports: [
@@ -26,7 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatProgressSpinnerModule,
     RouterLink,
   ],
-  providers: [SubmissionApiService, FormBuilderDataService],
+  providers: [FormRendererDataService],
   selector: 'app-form-renderer',
   standalone: true,
   styleUrl: './form-renderer.scss',
@@ -38,11 +37,11 @@ export class FormRenderer implements OnInit, OnDestroy {
   public formSchema: FormSchema | null = null;
   public isLoading = signal(true);
 
+  private dataService = inject(FormRendererDataService);
+
   private fb = inject(FormBuilder);
   private ruleEngine = inject(RuleEngineService);
-  private submissionApi = inject(SubmissionApiService);
-  //TODO: HITNO !!!! prebaciti u infrastructure folder zajedno sa modelima
-  private formApi = inject(FormBuilderDataService);
+
   private snackBar = inject(MatSnackBar);
   private route = inject(ActivatedRoute);
   private destroy$ = new Subject<void>();
@@ -72,8 +71,7 @@ export class FormRenderer implements OnInit, OnDestroy {
 
   loadForm(id: number): void {
     this.isLoading.set(true);
-    console.log(id);
-    this.formApi.getById(id.toString()).subscribe({
+    this.dataService.getFormById(id.toString()).subscribe({
       next: (schema) => {
         this.formSchema = schema as FormSchema;
         this.buildForm();
@@ -156,7 +154,7 @@ export class FormRenderer implements OnInit, OnDestroy {
       data: this.form.value,
     };
 
-    this.submissionApi.create(this.formId, submissionData).subscribe({
+    this.dataService.createSubmission(this.formId, submissionData).subscribe({
       next: () => {
         this.snackBar.open(
           'Your response has been successfully submitted!',

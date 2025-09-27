@@ -1,36 +1,35 @@
 import { inject, Injectable } from '@angular/core';
-import { ApiService } from '../../core/services/api.service';
 import { Observable } from 'rxjs';
 import { FormSchemaPayload } from '../../core/models/FormSchemaPayload';
 import { FormSchemaResponse } from '../../core/models/FormSchemaResponse';
+import { FormApiService } from '../../core/services/form-api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FormBuilderDataService {
-  private api = inject(ApiService);
-  private readonly endpoint = 'forms';
+  private api = inject(FormApiService);
 
   getForms(): Observable<FormSchemaResponse[]> {
-    return this.api.get<FormSchemaResponse[]>(this.endpoint);
+    return this.api.getForms();
   }
 
   getById(id: string): Observable<FormSchemaResponse> {
-    return this.api.get<FormSchemaResponse>(`${this.endpoint}/${id}`);
+    return this.api.getById(id);
   }
 
   createForm(data: FormSchemaPayload): Observable<FormSchemaResponse> {
-    return this.api.post<FormSchemaResponse>(this.endpoint, data);
+    return this.api.createForm(data);
   }
 
   updateForm(
     id: number,
     data: FormSchemaPayload
   ): Observable<FormSchemaResponse> {
-    return this.api.put<FormSchemaResponse>(`${this.endpoint}/${id}`, data);
+    return this.api.updateForm(id, data);
   }
 
   deleteForm(id: string): Observable<void> {
-    return this.api.delete<void>(`${this.endpoint}/${id}`);
+    return this.api.deleteForm(id);
   }
 }
