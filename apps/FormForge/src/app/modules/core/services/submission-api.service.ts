@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 import { SubmissionPayload } from '../models/SubmissionPayload';
 import { SubmissionResponse } from '../models/SubmissionResponse';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SubmissionApiService {
   private api = inject(ApiService);
 

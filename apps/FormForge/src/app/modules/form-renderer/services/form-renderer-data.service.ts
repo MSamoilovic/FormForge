@@ -3,7 +3,9 @@ import { FormApiService } from '../../core/services/form-api';
 import { SubmissionApiService } from '../../core/services/submission-api.service';
 import { SubmissionPayload } from '../../core/models/SubmissionPayload';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class FormRendererDataService {
   private formApiService = inject(FormApiService);
   private submissionsApiService = inject(SubmissionApiService);
