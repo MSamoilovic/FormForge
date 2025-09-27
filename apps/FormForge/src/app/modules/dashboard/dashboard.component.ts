@@ -9,7 +9,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormBuilderDataService } from '../form-builder/services/form-builder.data.service';
+import { DashboardDataService } from './services/dashboard-data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,13 +20,13 @@ import { FormBuilderDataService } from '../form-builder/services/form-builder.da
     MatButtonModule,
     MatProgressSpinner,
   ],
-  providers: [FormBuilderDataService],
+  providers: [DashboardDataService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
   private router = inject(Router);
-  private apiService = inject(FormBuilderDataService);
+  private apiService = inject(DashboardDataService);
   dialog = inject(MatDialog);
   snackBar = inject(MatSnackBar);
 
