@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DashboardDataService } from './services/dashboard-data.service';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +20,8 @@ import { DashboardDataService } from './services/dashboard-data.service';
     MatCardModule,
     MatButtonModule,
     MatProgressSpinner,
+    RouterLink,
+    MatTooltip,
   ],
   providers: [DashboardDataService],
   templateUrl: './dashboard.component.html',
