@@ -23,6 +23,13 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'submissions',
+    loadChildren: () =>
+      import('./modules/submissions/submissions.routes').then(
+        (m) => m.SUBMISSIONS_ROUTES
+      ),
+  },
+  {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full',

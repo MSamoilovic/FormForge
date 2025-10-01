@@ -27,6 +27,10 @@
           </mat-card-content>
           <mat-card-actions align="end">
             <button mat-stroked-button color="primary" (click)="editForm(form.id)">EDIT</button>
+            <a mat-button [routerLink]="['/submissions', form.id]">SUBMISSIONS</a>
+            <button mat-icon-button matTooltip="Get embed code">
+              <mat-icon>code</mat-icon>
+            </button>
             <button mat-stroked-button color="warning" (click)="deleteForm(form.id, form.name)">DELETE</button>
           </mat-card-actions>
         </mat-card>

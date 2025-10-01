@@ -1,0 +1,42 @@
+.viewer-container {
+  padding: var(--ff-spacing-lg);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.viewer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--ff-spacing-md);
+}
+
+.loading-container, .empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--ff-spacing-xl);
+  color: var(--ff-text-secondary);
+  text-align: center;
+}
+
+.empty-state mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: var(--ff-spacing-md);
+}
+
+.table-card {
+  padding: 0 !important; // Da se tabela lepo zalepi za ivice
+}
+
+table {
+  width: 100%;
+}
+
+th.mat-header-cell {
+  font-weight: 500;
+  color: var(--ff-text-primary);
+}

@@ -11,7 +11,7 @@ export class SubmissionApiService {
   private api = inject(ApiService);
 
   private getEndpoint(formId: number): string {
-    return `forms/${formId}/submissions`;
+    return `submissions/${formId}`;
   }
 
   create(
