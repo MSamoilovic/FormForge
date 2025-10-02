@@ -44,3 +44,13 @@ th.mat-header-cell {
 mat-paginator {
   margin-top: var(--ff-spacing-md);
 }
+
+filter-field {
+  width: 100%;
+  padding: var(--ff-spacing-md) var(--ff-spacing-md) 0;
+  box-sizing: border-box;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}

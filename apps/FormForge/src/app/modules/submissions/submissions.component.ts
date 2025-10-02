@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, computed, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -10,6 +19,8 @@ import { SubmissionsDataService } from './services/submissions-data.service';
 import { SubmissionResponse } from '../core/models/SubmissionResponse';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-submissions',
@@ -23,6 +34,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     MatPaginatorModule,
     MatButtonModule,
     RouterLink,
+    MatFormFieldModule,
+    MatInput,
   ],
   templateUrl: './submissions.component.html',
   styleUrl: './submissions.component.scss',
@@ -94,6 +107,18 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
           return item.data[columnId];
       }
     };
+
+    this.dataSource.filterPredicate = (
+      data: SubmissionResponse,
+      filter: string
+    ) => {
+      const dataStr =
+        data.id +
+        new Date(data.submitted_at).toLocaleString() +
+        Object.values(data.data).join('');
+
+      return dataStr.toLowerCase().includes(filter);
+    };
   }
 
   private loadSubmissions(formId: number) {
@@ -108,5 +133,14 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
         this.isLoading.set(false);
       },
     });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }

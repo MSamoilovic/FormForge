@@ -14,27 +14,34 @@
   } @else {
     <mat-card class="table-card">
       @if (dataSource.data.length > 0) {
-        <table mat-table [dataSource]="dataSource" matSort>
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Filter Submissions</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Search by any value...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
 
-          @for (column of displayedColumns(); track column) {
-            <ng-container [matColumnDef]="column">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
-              <td mat-cell *matCellDef="let submission">
-                @if (column === 'submitted_at') {
-                  {{ submission[column] | date:'dd.MM.yyyy HH:mm' }}
-                } @else if (column === 'id') {
-                  {{ submission.id }}
-                } @else {
-                  {{ submission.data[column] }}
-                }
-              </td>
-            </ng-container>
-          }
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" matSort>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
-        </table>
+            @for (column of displayedColumns(); track column) {
+              <ng-container [matColumnDef]="column">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
+                <td mat-cell *matCellDef="let submission">
+                  @if (column === 'submitted_at') {
+                    {{ submission[column] | date:'dd.MM.yyyy HH:mm' }}
+                  } @else if (column === 'id') {
+                    {{ submission.id }}
+                  } @else {
+                    {{ submission.data[column] }}
+                  }
+                </td>
+              </ng-container>
+            }
 
+            <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
+          </table>
+        </div>
 
         <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
 
