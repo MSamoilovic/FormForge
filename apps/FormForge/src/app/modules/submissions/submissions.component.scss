@@ -40,3 +40,7 @@ th.mat-header-cell {
   font-weight: 500;
   color: var(--ff-text-primary);
 }
+
+mat-paginator {
+  margin-top: var(--ff-spacing-md);
+}
