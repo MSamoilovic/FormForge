@@ -21,6 +21,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-submissions',
@@ -36,6 +38,7 @@ import { MatInput } from '@angular/material/input';
     RouterLink,
     MatFormFieldModule,
     MatInput,
+    ReactiveFormsModule,
   ],
   templateUrl: './submissions.component.html',
   styleUrl: './submissions.component.scss',
@@ -43,9 +46,9 @@ import { MatInput } from '@angular/material/input';
 export class SubmissionsComponent implements OnInit, AfterViewInit {
   private route = inject(ActivatedRoute);
   private submissionDataService = inject(SubmissionsDataService);
+  private fb = inject(FormBuilder);
 
   private formId: number | null = null;
-
   submissions = signal<SubmissionResponse[]>([]);
   isLoading = signal<boolean>(true);
 
@@ -63,6 +66,8 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
   private _sort!: MatSort;
   private _paginator!: MatPaginator;
 
+  filterForm: FormGroup = this.fb.group({});
+
   @ViewChild(MatSort) set sort(sort: MatSort) {
     this._sort = sort;
     if (this._sort) {
@@ -79,6 +84,8 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
   constructor() {
     effect(() => {
       this.dataSource.data = this.submissions();
+
+      this.buildFilterForm();
     });
   }
 
@@ -111,13 +118,29 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
     this.dataSource.filterPredicate = (
       data: SubmissionResponse,
       filter: string
-    ) => {
-      const dataStr =
-        data.id +
-        new Date(data.submitted_at).toLocaleString() +
-        Object.values(data.data).join('');
+    ): boolean => {
+      const filterValues = JSON.parse(filter);
 
-      return dataStr.toLowerCase().includes(filter);
+      for (const key in filterValues) {
+        const filterValue = filterValues[key]?.trim().toLowerCase();
+        if (filterValue) {
+          let dataValue: any;
+          if (key === 'id' || key === 'submitted_at') {
+            dataValue = data[key];
+          } else {
+            dataValue = data.data[key];
+          }
+
+          if (
+            dataValue === null ||
+            dataValue === undefined ||
+            !String(dataValue).toLowerCase().includes(filterValue)
+          ) {
+            return false;
+          }
+        }
+      }
+      return true;
     };
   }
 
@@ -142,5 +165,20 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  buildFilterForm(): void {
+    const group: { [key: string]: any } = {};
+    this.displayedColumns().forEach((col) => {
+      group[col] = [''];
+    });
+    this.filterForm = this.fb.group(group);
+
+    this.filterForm.valueChanges.pipe(debounceTime(300)).subscribe((values) => {
+      this.dataSource.filter = JSON.stringify(values);
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    });
   }
 }

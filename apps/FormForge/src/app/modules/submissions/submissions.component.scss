@@ -1,3 +1,7 @@
+:host {
+  display: block;
+}
+
 .viewer-container {
   padding: var(--ff-spacing-lg);
   max-width: 1400px;
@@ -11,7 +15,8 @@
   margin-bottom: var(--ff-spacing-md);
 }
 
-.loading-container, .empty-state {
+.loading-container,
+.empty-state {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,38 +24,49 @@
   padding: var(--ff-spacing-xl);
   color: var(--ff-text-secondary);
   text-align: center;
-}
-
-.empty-state mat-icon {
-  font-size: 64px;
-  width: 64px;
-  height: 64px;
-  margin-bottom: var(--ff-spacing-md);
+  min-height: 300px;
 }
 
 .table-card {
-  padding: 0 !important; // Da se tabela lepo zalepi za ivice
+  padding: 0 !important;
+}
+
+.table-responsive {
+  overflow-x: auto;
 }
 
 table {
   width: 100%;
 }
 
-th.mat-header-cell {
+// --- NOVI STIL ZA ZAGLAVLJE I FILTERE ---
+
+th.mat-mdc-header-cell {
+  padding: 0 var(--ff-spacing-md) !important; // Smanjujemo padding
+}
+
+.column-header-sort {
   font-weight: 500;
   color: var(--ff-text-primary);
+  padding: 8px 0;
+}
+
+.column-filter {
+  .mat-mdc-text-field-wrapper {
+    height: 40px;
+  }
+
+  .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  input {
+    font-size: 14px;
+  }
 }
 
 mat-paginator {
   margin-top: var(--ff-spacing-md);
 }
 
-filter-field {
-  width: 100%;
-  padding: var(--ff-spacing-md) var(--ff-spacing-md) 0;
-  box-sizing: border-box;
-}
-
-.table-responsive {
-  overflow-x: auto;
-}
