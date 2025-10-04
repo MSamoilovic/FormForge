@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -24,5 +24,15 @@ export class ApiService {
 
   delete<T>(endpoint: string): Observable<T> {
     return this.http.delete<T>(`${this.apiUrl}/${endpoint}`);
+  }
+
+  downloadFile(
+    endpoint: string,
+    params: HttpParams = new HttpParams()
+  ): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${endpoint}`, {
+      params: params,
+      responseType: 'blob',
+    });
   }
 }
