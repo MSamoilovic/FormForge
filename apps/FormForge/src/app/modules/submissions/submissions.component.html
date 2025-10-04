@@ -1,10 +1,16 @@
 <div class="viewer-container">
   <div class="viewer-header">
     <h1>Form Submissions</h1>
-    <a mat-stroked-button routerLink="/dashboard">
-      <mat-icon>arrow_back</mat-icon>
-      Back to Dashboard
-    </a>
+    <div class="header-actions">
+      <button mat-stroked-button color="primary" (click)="exportData()" [disabled]="!dataSource.data.length">
+        <mat-icon>download</mat-icon>
+        Export as CSV
+      </button>
+      <a mat-stroked-button routerLink="/dashboard">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Dashboard
+      </a>
+    </div>
   </div>
 
   @if (isLoading()) {
