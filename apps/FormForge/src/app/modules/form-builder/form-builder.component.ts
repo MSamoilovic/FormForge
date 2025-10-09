@@ -20,6 +20,7 @@ import { ApiService } from '../core/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilderService } from './services/form-builder.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { NotificationService } from '../core/services/notification.service';
 
 @Component({
   standalone: true,
@@ -39,7 +40,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     MatProgressSpinner,
     FormBuilderPropertyPanel,
   ],
-  providers: [ApiService, HttpClient, FormBuilderService],
+  providers: [ApiService, HttpClient, FormBuilderService, NotificationService],
 })
 export class FormBuilderComponent {
   fields: FieldType[] = [

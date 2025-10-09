@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, computed, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -176,11 +185,9 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
   exportData() {
     if (this.formId === null) {
       return;
-      //TODO: Napraviti SnackBarServis
     }
 
     const filters = this.filterForm.value;
-
     this.submissionDataService.exportSubmissions(this.formId, filters);
   }
 }

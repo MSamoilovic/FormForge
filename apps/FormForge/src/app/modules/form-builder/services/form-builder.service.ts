@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { FormSchemaPayload } from '../../core/models/FormSchemaPayload';
 import { FormBuilderDataService } from './form-builder.data.service';
 import { FormSchemaResponse } from '../../core/models/FormSchemaResponse';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Injectable({
   providedIn: 'any',
@@ -16,6 +17,7 @@ export class FormBuilderService {
   private snackBar = inject(MatSnackBar);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private notificationService = inject(NotificationService);
 
   private canvasFields = signal<FormField[]>([]);
   private selectedField = signal<FormField | null>(null);
@@ -66,9 +68,10 @@ export class FormBuilderService {
       error: (err) => {
         console.error('Error', err);
         this.isLoading.set(false);
-        this.snackBar.open(`Form with ID ${id} not found.`, 'Error', {
-          duration: 5000,
-        });
+        // this.snackBar.open(`Form with ID ${id} not found.`, 'Error', {
+        //   duration: 5000,
+        // });
+        this.notificationService.showError(`Form with ID ${id} not found.`);
         this.router.navigate(['/dashboard']);
       },
     });
@@ -112,9 +115,7 @@ export class FormBuilderService {
   public saveForm(): void {
     const currentFields = this.canvasFields();
     if (currentFields.length === 0) {
-      this.snackBar.open('Cannot save an empty form.', 'Close', {
-        duration: 3000,
-      });
+      this.notificationService.showInfo('Cannot save an empty form.');
       return;
     }
 
@@ -146,20 +147,17 @@ export class FormBuilderService {
     saveObservable.subscribe({
       next: (savedForm) => {
         const message = isEditing ? 'updated' : 'created';
-        this.snackBar.open(
-          `Form "${savedForm.name}" has been successfully ${message}!`,
-          'OK',
-          {
-            duration: 3000,
-          }
+
+        this.notificationService.showSuccess(
+          `Form "${savedForm.name}" has been successfully ${message}!`
         );
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
         console.log(err);
-        this.snackBar.open('Error saving form. Please try again.', 'Error', {
-          duration: 5000,
-        });
+        this.notificationService.showError(
+          'Error saving form. Please try again.'
+        );
       },
     });
   }

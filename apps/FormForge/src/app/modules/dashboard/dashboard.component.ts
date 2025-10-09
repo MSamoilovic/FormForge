@@ -11,6 +11,7 @@ import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/conf
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DashboardDataService } from './services/dashboard-data.service';
 import { MatTooltip } from '@angular/material/tooltip';
+import { NotificationService } from '../core/services/notification.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,13 +24,15 @@ import { MatTooltip } from '@angular/material/tooltip';
     RouterLink,
     MatTooltip,
   ],
-  providers: [DashboardDataService],
+  providers: [DashboardDataService, NotificationService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
   private router = inject(Router);
   private apiService = inject(DashboardDataService);
+  private notificationService = inject(NotificationService);
+
   dialog = inject(MatDialog);
   snackBar = inject(MatSnackBar);
 
@@ -76,21 +79,21 @@ export class DashboardComponent implements OnInit {
         this.apiService.deleteForm(id).subscribe({
           next: () => {
             this.forms.update((currentForms) =>
-              //TODO: Investigate and resolve
               currentForms.filter((f) => f.id !== id)
             );
-            this.snackBar.open(
-              `Form "${name}" was successfully deleted.`,
-              'OK',
-              { duration: 3000 }
+            // this.snackBar.open(
+            //   `Form "${name}" was successfully deleted.`,
+            //   'OK',
+            //   { duration: 3000 }
+            // );
+            this.notificationService.showSuccess(
+              `Form "${name}" was successfully deleted.`
             );
           },
           error: (err) => {
             console.error('Error deleting form:', err);
-            this.snackBar.open(
-              'Could not delete form. Please try again.',
-              'Error',
-              { duration: 5000 }
+            this.notificationService.showError(
+              'Could not delete form. Please try again.'
             );
           },
         });
