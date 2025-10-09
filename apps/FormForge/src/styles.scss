@@ -52,3 +52,21 @@ html, body {
   background-color: var(--ff-color-background);
   color: var(--ff-text-primary);
 }
+
+.success-snackbar {
+  --mdc-snackbar-container-color: #4CAF50;
+  --mat-mdc-snack-bar-button-color: #ffffff;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #F44336;
+  --mat-mdc-snack-bar-button-color: #ffffff;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+}
+
+.info-snackbar {
+  --mdc-snackbar-container-color: #2196F3; // Plava
+  --mat-mdc-snack-bar-button-color: #ffffff;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+}
