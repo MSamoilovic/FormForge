@@ -1,45 +1,50 @@
 .dashboard-container {
-    padding: var(--ff-spacing-lg);
-    max-width: 1200px;
-    margin: 0 auto;
+  padding: var(--ff-spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--ff-spacing-md);
+
+  &-actions {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--ff-spacing-md);
+    gap: var(--ff-spacing-sm);
+  }
 }
 
 .form-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--ff-spacing-md);
-    margin-top: var(--ff-spacing-lg);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--ff-spacing-md);
+  margin-top: var(--ff-spacing-lg);
 }
 
 .form-card {
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 
-    &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    }
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .empty-state-container {
-    grid-column: 1 / -1; // Da zauzme ceo red
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: var(--ff-spacing-xl);
-    border: 2px dashed var(--ff-color-border);
-    border-radius: var(--ff-border-radius);
-    text-align: center;
-    color: var(--ff-text-secondary);
+  grid-column: 1 / -1; // Da zauzme ceo red
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--ff-spacing-xl);
+  border: 2px dashed var(--ff-color-border);
+  border-radius: var(--ff-border-radius);
+  text-align: center;
+  color: var(--ff-text-secondary);
 
-    button {
-        margin-top: var(--ff-spacing-md);
-    }
+  button {
+    margin-top: var(--ff-spacing-md);
+  }
 }
