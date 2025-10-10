@@ -6,12 +6,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { FormSchema } from '@form-forge/models';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DashboardDataService } from './services/dashboard-data.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { NotificationService } from '../core/services/notification.service';
+import { GenerateFormDialogComponent } from './components/generate-form/generate-form-dialog.component';
+import { AIApiService } from '../core/services/ai-api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,8 +25,9 @@ import { NotificationService } from '../core/services/notification.service';
     MatProgressSpinner,
     RouterLink,
     MatTooltip,
+    MatDialogModule,
   ],
-  providers: [DashboardDataService, NotificationService],
+  providers: [DashboardDataService, NotificationService, AIApiService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -81,11 +84,7 @@ export class DashboardComponent implements OnInit {
             this.forms.update((currentForms) =>
               currentForms.filter((f) => f.id !== id)
             );
-            // this.snackBar.open(
-            //   `Form "${name}" was successfully deleted.`,
-            //   'OK',
-            //   { duration: 3000 }
-            // );
+
             this.notificationService.showSuccess(
               `Form "${name}" was successfully deleted.`
             );
@@ -97,6 +96,18 @@ export class DashboardComponent implements OnInit {
             );
           },
         });
+      }
+    });
+  }
+
+  generateFormFromText(): void {
+    const dialogRef = this.dialog.open(GenerateFormDialogComponent, {
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log(result);
       }
     });
   }

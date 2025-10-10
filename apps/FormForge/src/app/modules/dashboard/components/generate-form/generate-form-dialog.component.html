@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>
+  <mat-icon>auto_awesome</mat-icon>
+  Create Form with AI
+</h2>
+
+<mat-dialog-content>
+  <p>
+    Describe the form you want to create. Be as specific as possible for the best
+    results.
+  </p>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label
+    >e.g., "Create a contact form with fields for name, email, and
+      message."
+    </mat-label
+    >
+    <textarea
+      matInput
+      [formControl]="promptControl"
+      rows="5"
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="5"
+      cdkAutosizeMaxRows="10"
+      placeholder="Describe your form here..."
+    ></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="promptControl.invalid || isLoading()"
+    (click)="generate()"
+  >
+    @if (isLoading()) {
+      <mat-spinner diameter="20" color="accent"></mat-spinner>
+    } @else {
+      <span>Generate</span>
+    }
+  </button>
+</mat-dialog-actions>
+
+
