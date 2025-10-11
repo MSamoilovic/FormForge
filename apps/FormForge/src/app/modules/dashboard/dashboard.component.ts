@@ -106,8 +106,11 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
       if (result) {
-        console.log(result);
+        this.router.navigate(['/builder'], {
+          state: { generatedSchema: result },
+        });
       }
     });
   }

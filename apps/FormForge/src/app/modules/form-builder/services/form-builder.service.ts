@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FieldType, FormField, FormRule } from '@form-forge/models';
+import { FieldType, FormField, FormRule, FormSchema } from '@form-forge/models';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Observable } from 'rxjs';
 import { FormSchemaPayload } from '../../core/models/FormSchemaPayload';
@@ -35,7 +35,34 @@ export class FormBuilderService {
   private formName = signal<string>('My New Form');
 
   constructor() {
-    this.initializeFromUrl();
+    this.initialize();
+  }
+
+  private initialize(): void {
+    const navigationState = history.state;
+    const aiSchema = navigationState.generatedSchema;
+
+    console.log('upao u ovo sranje');
+
+    if (aiSchema) {
+      try {
+        console.log('AI schema found in navigation state. Loading...');
+        const schema: FormSchema = aiSchema;
+
+        this.canvasFields.set(schema.fields || []);
+        this.formName.set(schema.name || 'AI Generated Form');
+
+        history.replaceState(
+          { ...history.state, generatedSchema: undefined },
+          ''
+        );
+      } catch (e) {
+        console.error('Failed to process AI generated schema from state', e);
+        this.initializeFromUrl();
+      }
+    } else {
+      this.initializeFromUrl();
+    }
   }
 
   private initializeFromUrl(): void {
