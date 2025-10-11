@@ -7,9 +7,10 @@ export class AIApiService {
   private apiService = inject(ApiService);
   private url = 'ai';
 
-  generateFormFromText() {
-    return this.apiService.get<FormSchemaResponse>(
-      this.url + '/generate-form-from-text'
+  generateFormFromText(promptText?: string) {
+    return this.apiService.post<FormSchemaResponse>(
+      this.url + '/generate-form-from-text',
+      { prompt: promptText }
     );
   }
 }
