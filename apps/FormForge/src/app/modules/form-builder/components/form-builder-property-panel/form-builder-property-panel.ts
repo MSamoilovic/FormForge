@@ -24,6 +24,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { FormBuilderThemeEditorComponent } from '../form-builder-theme-editor/form-builder-theme-editor.component';
 
 @Component({
   selector: 'app-form-builder-property-panel',
@@ -39,6 +41,9 @@ import { CommonModule } from '@angular/common';
     MatDividerModule,
     MatButtonModule,
     MatIconModule,
+    MatTabGroup,
+    MatTab,
+    FormBuilderThemeEditorComponent,
   ],
   templateUrl: './form-builder-property-panel.html',
   styleUrls: ['./form-builder-property-panel.css'],
@@ -62,24 +67,38 @@ export class FormBuilderPropertyPanel {
       required: [false],
       options: this.fb.array<FormGroup>([]),
       rules: this.fb.array<FormGroup>([]),
+
+      theme: this.fb.group({
+        primaryColor: ['#3f51b5'],
+        backgroundColor: ['#ffffff'],
+        textColor: ['#000000'],
+        fontFamily: ["'Roboto', sans-serif"],
+        borderRadius: [8],
+      }),
     });
 
     effect(() => {
       const field = this.selectedField();
 
       if (field && this.previousFieldId !== field.id) {
-        console.log(`Resetting form for new field: ${field.label}`);
-        this.propertiesForm.patchValue(
+        this.propertiesForm.reset(
           {
             label: field.label,
             placeholder: field.placeholder,
             required: field.required,
+            theme: field.theme || {
+              primaryColor: '#3f51b5',
+              backgroundColor: '#ffffff',
+              textColor: '#000000',
+              fontFamily: "'Roboto', sans-serif",
+              borderRadius: 8,
+            },
           },
           { emitEvent: false }
         );
+
         this.setOptions(field.options);
         this.setRules(field.rules);
-
         this.previousFieldId = field.id;
       }
 
@@ -105,6 +124,10 @@ export class FormBuilderPropertyPanel {
 
   getAllFields(): FormField[] {
     return this.allCanvasFields() ?? [];
+  }
+
+  get themeFormGroup(): FormGroup {
+    return this.propertiesForm.get('theme') as FormGroup;
   }
 
   addOption(): void {

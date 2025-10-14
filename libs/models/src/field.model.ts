@@ -15,6 +15,14 @@ export interface FieldOption {
   value: any;
 }
 
+export interface FormTheme {
+  primaryColor: string;
+  backgroundColor: string;
+  textColor: string;
+  fontFamily: string;
+  borderRadius: number;
+}
+
 export interface FormField {
   id: string;
   type: FieldType;
@@ -24,6 +32,7 @@ export interface FormField {
   options?: FieldOption[];
   validations?: ValidationRule[];
   rules?: FormRule[];
+  theme?: FormTheme;
 }
 
 export interface AvailableField {

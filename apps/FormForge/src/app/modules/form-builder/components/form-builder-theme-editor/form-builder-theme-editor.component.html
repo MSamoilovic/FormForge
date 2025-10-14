@@ -1,0 +1,50 @@
+<div class="theme-editor-container" [formGroup]="themeForm()">
+  <div class="section-title">
+    <mat-icon>palette</mat-icon>
+    <h4>Colors</h4>
+  </div>
+  <div class="theme-grid">
+    <!-- Primary Color -->
+    <div class="color-picker-wrapper">
+      <label for="primaryColor">Primary</label>
+      <input type="color" formControlName="primaryColor" />
+    </div>
+    <!-- Background Color -->
+    <div class="color-picker-wrapper">
+      <label for="backGroundColor">Background</label>
+      <input type="color" formControlName="backgroundColor" />
+    </div>
+    <!-- Text Color -->
+    <div class="color-picker-wrapper">
+      <label for="textColor">Text</label>
+      <input type="color" formControlName="textColor" />
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="section-title">
+    <mat-icon>text_fields</mat-icon>
+    <h4>Typography</h4>
+  </div>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Font Family</mat-label>
+    <mat-select formControlName="fontFamily">
+      @for (font of fontFamilies; track font.value) {
+        <mat-option [value]="font.value">{{ font.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-divider></mat-divider>
+
+  <div class="section-title">
+    <mat-icon>rounded_corner</mat-icon>
+    <h4>Layout</h4>
+  </div>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Border Radius (px)</mat-label>
+    <input type="number" matInput formControlName="borderRadius" />
+  </mat-form-field>
+</div>
+
