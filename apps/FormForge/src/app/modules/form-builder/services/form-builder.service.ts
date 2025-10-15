@@ -1,7 +1,13 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FieldType, FormField, FormRule, FormSchema } from '@form-forge/models';
+import {
+  FieldType,
+  FormField,
+  FormRule,
+  FormSchema,
+  FormTheme,
+} from '@form-forge/models';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Observable } from 'rxjs';
 import { FormSchemaPayload } from '../../core/models/FormSchemaPayload';
@@ -23,10 +29,13 @@ export class FormBuilderService {
   private selectedField = signal<FormField | null>(null);
   private isLoading = signal<boolean>(false);
   private formIdToEdit = signal<number | null>(null);
+  private theme = signal<FormTheme | undefined>(undefined);
 
   public readonly fields = this.canvasFields.asReadonly();
   public readonly selected = this.selectedField.asReadonly();
   public readonly loading = this.isLoading.asReadonly();
+  public readonly currentTheme = this.theme.asReadonly();
+
   public readonly isEditMode = computed(() => this.formIdToEdit() !== null);
   public readonly pageTitle = computed(() =>
     this.isEditMode() ? 'Edit Form' : 'Create New Form'
@@ -90,14 +99,12 @@ export class FormBuilderService {
 
         this.formName.set(formSchema.name);
         this.canvasFields.set(fieldsWithRules);
+        this.theme.set(formSchema.formTheme || undefined);
         this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Error', err);
         this.isLoading.set(false);
-        // this.snackBar.open(`Form with ID ${id} not found.`, 'Error', {
-        //   duration: 5000,
-        // });
         this.notificationService.showError(`Form with ID ${id} not found.`);
         this.router.navigate(['/dashboard']);
       },
@@ -158,7 +165,8 @@ export class FormBuilderService {
       this.formName(),
       'A dynamically Created Form',
       cleanFields,
-      allRules
+      allRules,
+      this.currentTheme()
     );
 
     let saveObservable: Observable<FormSchemaResponse>;
