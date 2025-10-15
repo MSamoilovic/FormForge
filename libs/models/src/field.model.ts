@@ -1,5 +1,6 @@
 import { ValidationRule } from './validation.model';
 import { FormRule } from './rule.model';
+import { FormTheme } from './theme.model';
 
 export enum FieldType {
   Text = 'text',
@@ -13,14 +14,6 @@ export enum FieldType {
 export interface FieldOption {
   label: string;
   value: any;
-}
-
-export interface FormTheme {
-  primaryColor: string;
-  backgroundColor: string;
-  textColor: string;
-  fontFamily: string;
-  borderRadius: number;
 }
 
 export interface FormField {
