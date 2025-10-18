@@ -6,7 +6,14 @@
     <p>Loading form...</p>
   </div>
 } @else if (formSchema) {
-  <mat-card class="form-container">
+  <mat-card
+    class="form-container"
+    [style.--form-primary-color]="formSchema.theme?.primaryColor || '#3f51b5'"
+    [style.--form-background-color]="formSchema.theme?.backgroundColor || '#ffffff'"
+    [style.--form-text-color]="formSchema.theme?.textColor || '#000000'"
+    [style.--form-font-family]="formSchema.theme?.fontFamily || 'Roboto, sans-serif'"
+    [style.--form-border-radius]="formSchema.theme?.borderRadius || 8"
+  >
     <mat-card-header>
       <mat-card-title>{{ formSchema?.name }}</mat-card-title>
       @if (formSchema?.description) {
@@ -37,7 +44,6 @@
               }
             </div>
           }
-
           <button mat-raised-button color="primary" type="submit" class="submit-button">
             Submit
           </button>
