@@ -2,7 +2,12 @@ import { Component, effect, inject, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
-import { AvailableField, FieldType, FormField } from '@form-forge/models';
+import {
+  AvailableField,
+  FieldType,
+  FormField,
+  FormTheme,
+} from '@form-forge/models';
 import {
   CheckboxField,
   DateField,
@@ -108,5 +113,9 @@ export class FormBuilderComponent {
 
   saveForm(): void {
     this.formBuilderService.saveForm();
+  }
+
+  onThemeChange(theme: FormTheme): void {
+    this.formBuilderService.updateTheme(theme);
   }
 }

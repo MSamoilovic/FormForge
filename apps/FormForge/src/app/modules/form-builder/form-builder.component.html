@@ -2,6 +2,10 @@
   <div class="form-builder-header">
     <h1>{{ formBuilderService.pageTitle() }}</h1>
     <span class="spacer"></span>
+    <button mat-stroked-button color="primary">
+      <mat-icon>visibility</mat-icon>
+      Preview
+    </button>
     <button mat-raised-button color="primary" (click)="saveForm()">
       <mat-icon>save</mat-icon>
       Save Form
@@ -18,20 +22,30 @@
     <div class="form-builder-content">
       <app-form-builder-sidebar [availableFields]="availableFields" />
 
-
-      <app-form-builder-canvas
-        [form]="form"
-        [canvasFields]="formBuilderService.fields()"
-        [selectedField]="formBuilderService.selected()"
-        [componentMap]="componentMap"
-        (fieldDropped)="onDrop($event)"
-        (fieldSelected)="onSelectField($event)"
-      ></app-form-builder-canvas>
+      <div
+        class="canvas-preview-wrapper"
+        [style.--form-primary-color]="formBuilderService.currentTheme()?.primaryColor || null"
+        [style.--form-background-color]="formBuilderService.currentTheme()?.backgroundColor || null"
+        [style.--form-text-color]="formBuilderService.currentTheme()?.textColor || null"
+        [style.--form-font-family]="formBuilderService.currentTheme()?.fontFamily || null"
+        [style.--form-border-radius.px]="formBuilderService.currentTheme()?.borderRadius || null"
+      >
+        <app-form-builder-canvas
+          [form]="form"
+          [canvasFields]="formBuilderService.fields()"
+          [selectedField]="formBuilderService.selected()"
+          [componentMap]="componentMap"
+          (fieldDropped)="onDrop($event)"
+          (fieldSelected)="onSelectField($event)"
+        ></app-form-builder-canvas>
+      </div>
 
       <app-form-builder-property-panel
         [selectedField]="formBuilderService.selected()"
         [allCanvasFields]="formBuilderService.fields()"
+        [formTheme]="formBuilderService.currentTheme()"
         (fieldChanged)="onFieldChange($event)"
+        (themeChanged)="onThemeChange($event)"
       ></app-form-builder-property-panel>
     </div>
   }

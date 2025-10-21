@@ -51,8 +51,6 @@ export class FormBuilderService {
     const navigationState = history.state;
     const aiSchema = navigationState.generatedSchema;
 
-    console.log('upao u ovo sranje');
-
     if (aiSchema) {
       try {
         console.log('AI schema found in navigation state. Loading...');
@@ -99,7 +97,7 @@ export class FormBuilderService {
 
         this.formName.set(formSchema.name);
         this.canvasFields.set(fieldsWithRules);
-        this.theme.set(formSchema.formTheme || undefined);
+        this.theme.set(formSchema.theme || undefined);
         this.isLoading.set(false);
       },
       error: (err) => {
@@ -140,10 +138,18 @@ export class FormBuilderService {
     if (currentSelected) {
       const updatedField = { ...currentSelected, ...updatedValues };
       this.selectedField.set(updatedField);
+      console.log(this.selectedField());
       this.canvasFields.update((fields) =>
         fields.map((f) => (f.id === updatedField.id ? updatedField : f))
       );
+
+      this.theme.set(this.selectedField()?.theme || this.theme());
     }
+  }
+
+  public updateTheme(theme: FormTheme): void {
+    console.log('Servis: Ažuriram theme signal:', theme);
+    this.theme.set(theme);
   }
 
   public saveForm(): void {
@@ -160,6 +166,8 @@ export class FormBuilderService {
       const { rules, ...fieldWithoutRules } = field;
       return fieldWithoutRules;
     });
+
+    console.log(this.currentTheme());
 
     const formSchemaPayload = new FormSchemaPayload(
       this.formName(),

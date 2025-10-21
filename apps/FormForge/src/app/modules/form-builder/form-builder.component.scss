@@ -16,14 +16,14 @@
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
-  flex-shrink: 0; // Sprečava da se header smanjuje
+  flex-shrink: 0;
 
   h1 {
     margin: 0;
   }
 
   .spacer {
-    flex-grow: 1; // Gura dugme na desnu stranu
+    flex-grow: 1;
   }
 }
 
@@ -32,5 +32,15 @@
   grid-template-columns: 280px 1fr 380px;
   gap: 1rem;
   flex-grow: 1;
-  overflow: hidden; // Da se ne bi pojavio dupli scrollbar
+  overflow: hidden;
+}
+
+.canvas-preview-wrapper {
+  background-color: var(--form-background-color, var(--ff-color-surface));
+  font-family: var(--form-font-family, var(--ff-font-family));
+  padding: var(--ff-spacing-lg);
+  border-radius: var(--ff-border-radius);
+  border: 1px solid var(--ff-color-border);
+  overflow-y: auto;
+  transition: background-color 0.3s ease;
 }
