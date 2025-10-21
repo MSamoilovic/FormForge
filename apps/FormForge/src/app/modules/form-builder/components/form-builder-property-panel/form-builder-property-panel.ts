@@ -1,18 +1,6 @@
 import { Component, effect, inject, input, output } from '@angular/core';
-import {
-  FieldOption,
-  FormField,
-  FormRule,
-  RuleCondition,
-  RuleConditionGroup,
-} from '@form-forge/models';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FieldOption, FormField, FormRule, FormTheme, RuleCondition, RuleConditionGroup } from '@form-forge/models';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormBuilderFieldRulesComponent } from '../form-builder-form-rules/form-builder-field-rules.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -55,6 +43,9 @@ export class FormBuilderPropertyPanel {
   readonly allCanvasFields = input.required<FormField[]>();
 
   readonly fieldChanged = output<Partial<FormField>>();
+  readonly themeChanged = output<FormTheme>();
+
+  readonly formTheme = input<FormTheme | null>();
 
   private previousFieldId: string | null = null;
 
@@ -69,11 +60,11 @@ export class FormBuilderPropertyPanel {
       rules: this.fb.array<FormGroup>([]),
 
       theme: this.fb.group({
-        primaryColor: ['#3f51b5'],
-        backgroundColor: ['#ffffff'],
-        textColor: ['#000000'],
-        fontFamily: ["'Roboto', sans-serif"],
-        borderRadius: [8],
+        primaryColor: [''],
+        backgroundColor: [''],
+        textColor: [''],
+        fontFamily: [''],
+        borderRadius: [0],
       }),
     });
 
@@ -86,13 +77,7 @@ export class FormBuilderPropertyPanel {
             label: field.label,
             placeholder: field.placeholder,
             required: field.required,
-            theme: field.theme || {
-              primaryColor: '#3f51b5',
-              backgroundColor: '#ffffff',
-              textColor: '#000000',
-              fontFamily: "'Roboto', sans-serif",
-              borderRadius: 8,
-            },
+            theme: this.formTheme(),
           },
           { emitEvent: false }
         );
@@ -111,6 +96,22 @@ export class FormBuilderPropertyPanel {
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
       .subscribe((value) => {
         this.fieldChanged.emit(value);
+      });
+
+    this.themeFormGroup.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(
+          (prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe((themeValue) => {
+        console.log(
+          'PropertyPanel: Theme changed, emitting event:',
+          themeValue
+        );
+        this.themeChanged.emit(themeValue);
       });
   }
 
@@ -156,7 +157,6 @@ export class FormBuilderPropertyPanel {
     options.forEach((option) => {
       optionsArray.push(this.createOptionGroup(option), { emitEvent: false });
     });
-    console.log(options);
   }
 
   private setRules(rules: FormRule[] = []): void {
