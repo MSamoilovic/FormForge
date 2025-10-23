@@ -1,4 +1,4 @@
-import { Component, effect, inject, Type } from '@angular/core';
+import { Component, computed, effect, inject, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
@@ -26,6 +26,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormBuilderService } from './services/form-builder.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NotificationService } from '../core/services/notification.service';
+import { ThemeService } from '../core/services/theme.service';
 
 @Component({
   standalone: true,
@@ -71,8 +72,13 @@ export class FormBuilderComponent {
   ];
 
   formBuilderService = inject(FormBuilderService);
+  private themeService = inject(ThemeService);
 
   form = new FormGroup({});
+
+  public isDarkMode = computed(
+    () => this.themeService.currentTheme() === 'dark'
+  );
 
   componentMap: Record<FieldType, Type<any>> = {
     [FieldType.Text]: TextField,

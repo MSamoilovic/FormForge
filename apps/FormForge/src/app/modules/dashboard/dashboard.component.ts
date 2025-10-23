@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -14,6 +14,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { NotificationService } from '../core/services/notification.service';
 import { GenerateFormDialogComponent } from './components/generate-form/generate-form-dialog.component';
 import { AIApiService } from '../core/services/ai-api.service';
+import { ThemeService } from '../core/services/theme.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,12 +36,17 @@ export class DashboardComponent implements OnInit {
   private router = inject(Router);
   private apiService = inject(DashboardDataService);
   private notificationService = inject(NotificationService);
+  private themeService = inject(ThemeService);
 
   dialog = inject(MatDialog);
   snackBar = inject(MatSnackBar);
 
   forms = signal<FormSchema[]>([]);
   isLoading = signal<boolean>(true);
+
+  public isDarkMode = computed(
+    () => this.themeService.currentTheme() === 'dark'
+  );
 
   ngOnInit() {
     this.loadForms();

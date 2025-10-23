@@ -8,6 +8,14 @@
   flex-direction: column;
   height: 100%;
   box-sizing: border-box;
+  background: var(--ff-color-surface);
+  border: 1px solid var(--ff-color-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-theme & {
+    background: var(--ff-color-surface);
+    border-color: var(--ff-color-border);
+  }
 }
 
 mat-card-content {
@@ -57,6 +65,11 @@ mat-divider {
   height: 100%;
   color: var(--ff-text-secondary);
   text-align: center;
+  transition: color 0.3s ease;
+
+  .dark-theme & {
+    color: var(--ff-text-secondary);
+  }
 
   mat-icon {
     font-size: 48px;

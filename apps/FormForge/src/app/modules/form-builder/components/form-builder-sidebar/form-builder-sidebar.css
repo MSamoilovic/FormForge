@@ -1,7 +1,14 @@
 .sidebar {
-  background: #f8f9fa;
+  background: var(--ff-color-surface);
   padding: 1rem;
   border-radius: 8px;
+  border: 1px solid var(--ff-color-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-theme & {
+    background: var(--ff-color-surface);
+    border-color: var(--ff-color-border);
+  }
 }
 
 .field-list {
@@ -11,9 +18,23 @@
 }
 
 .field-item {
-  background: #fff;
-  border: 1px solid #dee2e6;
+  background: var(--ff-color-surface);
+  border: 1px solid var(--ff-color-border);
   padding: 0.5rem;
   border-radius: 4px;
   cursor: grab;
+  color: var(--ff-text-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background: var(--ff-color-primary);
+    color: white;
+    border-color: var(--ff-color-primary);
+  }
+
+  .dark-theme & {
+    background: var(--ff-color-surface);
+    border-color: var(--ff-color-border);
+    color: var(--ff-text-primary);
+  }
 }
