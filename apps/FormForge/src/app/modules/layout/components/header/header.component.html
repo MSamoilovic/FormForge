@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="main-toolbar">
+<mat-toolbar color="primary" class="main-toolbar" [class.dark-theme]="isDarkMode()">
   <div class="toolbar-content">
     <a routerLink="/dashboard" class="logo-container">
       <mat-icon>dynamic_form</mat-icon>
@@ -8,8 +8,7 @@
     <span class="spacer"></span>
 
     <nav class="navigation-items">
-      <a mat-button routerLink="/dashboard" routerLinkActive="active-link"
-         [routerLinkActiveOptions]="{ exact: true }">
+      <a mat-button routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
         Dashboard
       </a>
       <a mat-button routerLink="/builder" routerLinkActive="active-link">
@@ -17,17 +16,13 @@
       </a>
     </nav>
 
-    <button
-      mat-icon-button
-      (click)="toggleTheme()"
-      [matTooltip]="isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
-      aria-label="Toggle theme"
-      class="theme-toggle-button"
-    >
+    <button mat-icon-button (click)="toggleTheme()"
+      [matTooltip]="isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'" aria-label="Toggle theme"
+      class="theme-toggle-button">
       @if (isDarkMode()) {
-        <mat-icon>light_mode</mat-icon>
+      <mat-icon>light_mode</mat-icon>
       } @else {
-        <mat-icon>dark_mode</mat-icon>
+      <mat-icon>dark_mode</mat-icon>
       }
     </button>
   </div>

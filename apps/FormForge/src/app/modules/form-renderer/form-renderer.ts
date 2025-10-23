@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Type } from '@angular/core';
+import { Component, computed, inject, OnInit, Type } from '@angular/core';
 import { FieldType, FormField } from '@form-forge/models';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -17,6 +17,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormRendererService } from './services/form-renderer.service';
 import { FormRendererDataService } from './services/form-renderer-data.service';
+import { ThemeService } from '../core/services/theme.service';
 
 @Component({
   imports: [
@@ -38,8 +39,13 @@ import { FormRendererDataService } from './services/form-renderer-data.service';
 export class FormRenderer implements OnInit {
   public readonly rendererService = inject(FormRendererService);
   private readonly route = inject(ActivatedRoute);
+  private themeService = inject(ThemeService);
 
   private formId: number | null = null;
+
+  public isDarkMode = computed(
+    () => this.themeService.currentTheme() === 'dark'
+  );
 
   private componentMap: Record<FieldType, Type<any>> = {
     [FieldType.Text]: TextField,

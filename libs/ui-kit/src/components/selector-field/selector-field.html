@@ -2,10 +2,10 @@
   <label class="form-field-label">{{ label() }}</label>
   <select class="form-field-select" [formControl]="formControl()!">
     @if (placeholder()) {
-      <option disabled selected>{{ placeholder() }}</option>
+    <option disabled selected>{{ placeholder() }}</option>
     }
     @for (option of options(); track option) {
-      <option [value]="option.value">{{ option.label }}</option>
+    <option [value]="option.value">{{ option.label }}</option>
     }
   </select>
   <span class="custom-arrow"></span>

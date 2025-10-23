@@ -23,6 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
+import { ThemeService } from '../core/services/theme.service';
 
 @Component({
   selector: 'app-submissions',
@@ -47,10 +48,15 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
   private route = inject(ActivatedRoute);
   private submissionDataService = inject(SubmissionsDataService);
   private fb = inject(FormBuilder);
+  private themeService = inject(ThemeService);
 
   private formId: number | null = null;
   submissions = signal<SubmissionResponse[]>([]);
   isLoading = signal<boolean>(true);
+
+  public isDarkMode = computed(
+    () => this.themeService.currentTheme() === 'dark'
+  );
 
   dataSource = new MatTableDataSource<SubmissionResponse>([]);
 
