@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {
   CheckboxField,
   DateField,
+  NumberField,
   RadioField,
   SelectorField,
   TextField,
@@ -49,9 +50,9 @@ export class FormRenderer implements OnInit {
 
   private componentMap: Record<FieldType, Type<any>> = {
     [FieldType.Text]: TextField,
+    [FieldType.Number]: NumberField,
     [FieldType.Select]: SelectorField,
     [FieldType.Checkbox]: CheckboxField,
-    [FieldType.Number]: TextField,
     [FieldType.Radio]: RadioField,
     [FieldType.Date]: DateField,
   };
@@ -87,6 +88,11 @@ export class FormRenderer implements OnInit {
     };
     if (field.type === FieldType.Select || field.type === FieldType.Radio) {
       inputs['options'] = field.options;
+    }
+    if (field.type === FieldType.Number) {
+      if (field.min !== undefined) inputs['min'] = field.min;
+      if (field.max !== undefined) inputs['max'] = field.max;
+      if (field.step !== undefined) inputs['step'] = field.step;
     }
     return inputs;
   }

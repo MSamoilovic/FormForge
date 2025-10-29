@@ -34,6 +34,17 @@ mat-card-content {
   width: 100%;
 }
 
+.third-width {
+  flex: 1;
+  min-width: 0;
+}
+
+.number-field-properties {
+  display: flex;
+  gap: var(--ff-spacing-sm);
+  width: 100%;
+}
+
 mat-divider {
   margin: var(--ff-spacing-sm) 0;
 }
