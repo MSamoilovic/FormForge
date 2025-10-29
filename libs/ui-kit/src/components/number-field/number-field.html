@@ -1,0 +1,5 @@
+<div class="form-field-container">
+    <label class="form-field-label">{{ label() }}</label>
+    <input type="number" [placeholder]="placeholder()" class="form-field-input" [formControl]="formControl()!"
+        [attr.min]="min()" [attr.max]="max()" [attr.step]="step()" />
+</div>

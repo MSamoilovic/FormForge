@@ -11,6 +11,7 @@ import {
 import {
   CheckboxField,
   DateField,
+  NumberField,
   RadioField,
   SelectorField,
   TextField,
@@ -82,7 +83,7 @@ export class FormBuilderComponent {
 
   componentMap: Record<FieldType, Type<any>> = {
     [FieldType.Text]: TextField,
-    [FieldType.Number]: TextField,
+    [FieldType.Number]: NumberField,
     [FieldType.Select]: SelectorField,
     [FieldType.Checkbox]: CheckboxField,
     [FieldType.Radio]: RadioField,

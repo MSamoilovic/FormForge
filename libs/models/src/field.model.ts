@@ -26,6 +26,10 @@ export interface FormField {
   validations?: ValidationRule[];
   rules?: FormRule[];
   theme?: FormTheme;
+  // Number field specific properties
+  min?: number;
+  max?: number;
+  step?: number;
 }
 
 export interface AvailableField {

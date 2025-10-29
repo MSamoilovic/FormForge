@@ -58,6 +58,10 @@ export class FormBuilderPropertyPanel {
       required: [false],
       options: this.fb.array<FormGroup>([]),
       rules: this.fb.array<FormGroup>([]),
+      // Number field specific properties
+      min: [null],
+      max: [null],
+      step: [null],
 
       theme: this.fb.group({
         primaryColor: [''],
@@ -77,6 +81,9 @@ export class FormBuilderPropertyPanel {
             label: field.label,
             placeholder: field.placeholder,
             required: field.required,
+            min: field.min ?? null,
+            max: field.max ?? null,
+            step: field.step ?? null,
             theme: this.formTheme(),
           },
           { emitEvent: false }

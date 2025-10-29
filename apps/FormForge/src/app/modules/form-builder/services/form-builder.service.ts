@@ -127,6 +127,12 @@ export class FormBuilderService {
           : [],
       rules: [],
       validations: [],
+      // Initialize number field specific properties
+      ...(fieldType === FieldType.Number && {
+        min: undefined,
+        max: undefined,
+        step: undefined,
+      }),
     };
 
     this.canvasFields.update((currentFields) => [...currentFields, newField]);
