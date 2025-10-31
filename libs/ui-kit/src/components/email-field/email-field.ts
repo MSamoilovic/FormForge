@@ -1,33 +1,26 @@
 import { Component, forwardRef, input } from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { FieldOption, FieldType } from '@form-forge/models';
+import { FieldType } from '../../../../models/src';
 
 @Component({
-  selector: 'app-selector-field',
+  selector: 'app-email-field',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './selector-field.html',
-  styleUrl: './selector-field.scss',
-  standalone: true,
+  templateUrl: './email-field.html',
+  styleUrl: './email-field.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SelectorField),
+      useExisting: forwardRef(() => EmailField),
       multi: true,
     },
   ],
 })
-export class SelectorField implements ControlValueAccessor {
-  readonly label = input<string>('');
-  readonly options = input<FieldOption[]>([]);
-  readonly formControl = input<FormControl | undefined>(undefined);
-  readonly placeholder = input<string>('');
-  readonly fieldType = input<FieldType>(FieldType.Select);
+export class EmailField implements ControlValueAccessor {
+  label = input<string>('');
+  placeholder = input<string>('');
+  formControl = input<FormControl | undefined>(undefined);
+  fieldType = input<FieldType>(FieldType.Email);
 
   writeValue(value: any): void {
     this.formControl()?.setValue(value, { emitEvent: false });
