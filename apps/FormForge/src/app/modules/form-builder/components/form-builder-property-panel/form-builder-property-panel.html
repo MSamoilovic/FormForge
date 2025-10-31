@@ -14,7 +14,7 @@
             <input matInput formControlName="label" placeholder="Enter field label">
           </mat-form-field>
 
-          @if (field.type === 'text' || field.type === 'number') {
+          @if (field.type === 'text' || field.type === 'number' || field.type === 'email') {
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Placeholder</mat-label>
             <input matInput formControlName="placeholder" placeholder="Enter placeholder text">

@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {
   CheckboxField,
   DateField,
+  EmailField,
   NumberField,
   RadioField,
   SelectorField,
@@ -55,6 +56,7 @@ export class FormRenderer implements OnInit {
     [FieldType.Checkbox]: CheckboxField,
     [FieldType.Radio]: RadioField,
     [FieldType.Date]: DateField,
+    [FieldType.Email]: EmailField,
   };
 
   ngOnInit(): void {

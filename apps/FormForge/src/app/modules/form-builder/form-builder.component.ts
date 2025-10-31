@@ -11,6 +11,7 @@ import {
 import {
   CheckboxField,
   DateField,
+  EmailField,
   NumberField,
   RadioField,
   SelectorField,
@@ -57,6 +58,7 @@ export class FormBuilderComponent {
     FieldType.Checkbox,
     FieldType.Radio,
     FieldType.Date,
+    FieldType.Email,
   ];
 
   availableFields: AvailableField[] = [
@@ -67,6 +69,7 @@ export class FormBuilderComponent {
       label: 'Dropdown',
       icon: '',
     },
+    { type: FieldType.Email, label: 'Email', icon: '' },
     { type: FieldType.Checkbox, label: 'Checkbox', icon: '' },
     { type: FieldType.Radio, label: 'Radio', icon: '' },
     { type: FieldType.Date, label: 'Date', icon: '' },
@@ -88,6 +91,7 @@ export class FormBuilderComponent {
     [FieldType.Checkbox]: CheckboxField,
     [FieldType.Radio]: RadioField,
     [FieldType.Date]: DateField,
+    [FieldType.Email]: EmailField,
   };
 
   constructor() {

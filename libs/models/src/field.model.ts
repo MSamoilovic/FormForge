@@ -9,6 +9,7 @@ export enum FieldType {
   Radio = 'radio',
   Checkbox = 'checkbox',
   Date = 'date',
+  Email = 'email',
 }
 
 export interface FieldOption {
