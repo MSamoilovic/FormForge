@@ -10,6 +10,8 @@
   <li><strong>Visual Form Builder:</strong> Easily drag and drop field components (text, select, radio buttons, etc.).</li>
   <li><strong>Reactive Form Management:</strong> Uses <code>Reactive Forms</code> for efficient state management.</li>
   <li><strong>Dynamic Rule Engine:</strong> Supports complex rules (<code>AND</code>/<code>OR</code>) that control the visibility and behavior of form fields.</li>
+  <li><strong>Embed Anywhere:</strong> 🆕 JavaScript SDK for embedding forms on any website (inline, popup, or slide-in widget).</li>
+  <li><strong>AI-Powered:</strong> Generate forms from natural language descriptions.</li>
   <li><strong>Nx Monorepo:</strong> Organized and scalable code with clearly defined libraries and applications.</li>
   <li><strong>Standalone Components:</strong> A modern development approach using standalone Angular components, without the need for <code>NgModule</code>-s.</li>
 </ul>
@@ -51,5 +53,38 @@ cd your-repository</code></pre>
 <ul>
   <li><code>apps/FormForge/</code>: The main Angular application.</li>
   <li><code>libs/models/</code>: A shared library with the logic and models for the Form Builder and Form Renderer.</li>
-  <li><code>libs/ui/</code>: A shared library with UI components (inputs, buttons, etc.).</li>
+  <li><code>libs/ui-kit/</code>: A shared library with UI components (inputs, buttons, etc.).</li>
+  <li><code>libs/rule-engine/</code>: Business logic for conditional form rules.</li>
+  <li><code>libs/embed-sdk/</code>: 🆕 JavaScript SDK for embedding forms on external websites.</li>
 </ul>
+
+<br>
+
+<h2 id="documentation">📚 Documentation</h2>
+<p>Comprehensive planning and technical documentation:</p>
+<ul>
+  <li><strong><a href="PROJECT_OVERVIEW.md">Project Overview</a></strong>: Complete project summary</li>
+  <li><strong><a href="ROADMAP.md">Roadmap</a></strong>: Long-term feature plan (Q1-Q4 2025)</li>
+  <li><strong><a href="TECHNICAL_PLAN.md">Technical Plan</a></strong>: Detailed implementation guide</li>
+  <li><strong><a href="BACKLOG.md">Product Backlog</a></strong>: User stories and sprint planning</li>
+  <li><strong><a href="QUICK_START_GUIDE.md">Quick Start Guide</a></strong>: Step-by-step implementation guide</li>
+  <li><strong><a href="EMBED_IMPLEMENTATION.md">Embed System</a></strong>: 🆕 Widget/embed technical specification</li>
+</ul>
+
+<br>
+
+<h2 id="upcoming-features">🚀 Upcoming Features</h2>
+<p>Exciting new features coming soon:</p>
+<ul>
+  <li>✅ <strong>Embed/Widget System</strong>: Embed forms anywhere (Sprint 5-6)</li>
+  <li>📧 <strong>Email Field</strong>: With built-in validation (Sprint 1)</li>
+  <li>📱 <strong>Phone Field</strong>: International format support (Sprint 1)</li>
+  <li>📄 <strong>Textarea Field</strong>: Multi-line text input (Sprint 1)</li>
+  <li>📎 <strong>File Upload</strong>: Drag & drop with preview (Sprint 2)</li>
+  <li>🔄 <strong>Undo/Redo</strong>: Full history management (Sprint 1)</li>
+  <li>🌙 <strong>Dark Mode</strong>: System and manual toggle (Sprint 2)</li>
+  <li>📊 <strong>Analytics Dashboard</strong>: Form performance insights (Sprint 4)</li>
+  <li>🤖 <strong>Enhanced AI</strong>: Better form generation (Sprint 5)</li>
+</ul>
+
+<p>See <a href="ROADMAP.md">ROADMAP.md</a> for complete feature list.</p>

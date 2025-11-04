@@ -30,6 +30,11 @@ host {
     box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
+    // textarea specifics
+    line-height: 1.5;
+    min-height: 6.5rem; // ~4 lines by default
+    resize: vertical;
+
     &::placeholder {
         color: var(--ff-text-secondary);
         opacity: 0.7;
@@ -44,10 +49,4 @@ host {
         border-color: var(--form-primary-color, var(--ff-color-primary));
         box-shadow: 0 0 0 3px rgba(from var(--form-primary-color, var(--ff-color-primary)) r g b / 0.2);
     }
-
-    &:invalid {
-        border-color: var(--ff-color-error, #f44336);
-    }
 }
-
-
