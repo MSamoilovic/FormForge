@@ -2,12 +2,7 @@ import { Component, computed, effect, inject, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
-import {
-  AvailableField,
-  FieldType,
-  FormField,
-  FormTheme,
-} from '@form-forge/models';
+import { AvailableField, FieldType, FormField, FormTheme } from '@form-forge/models';
 import {
   CheckboxField,
   DateField,
@@ -15,7 +10,8 @@ import {
   NumberField,
   RadioField,
   SelectorField,
-  TextField,
+  TextAreaField,
+  TextField
 } from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './components/form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './components/form-builder-canvas/form-builder-canvas';
@@ -92,6 +88,7 @@ export class FormBuilderComponent {
     [FieldType.Radio]: RadioField,
     [FieldType.Date]: DateField,
     [FieldType.Email]: EmailField,
+    [FieldType.TextArea]: TextAreaField,
   };
 
   constructor() {

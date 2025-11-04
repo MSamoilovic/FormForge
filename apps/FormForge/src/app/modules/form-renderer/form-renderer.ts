@@ -9,6 +9,7 @@ import {
   NumberField,
   RadioField,
   SelectorField,
+  TextAreaField,
   TextField,
 } from '@form-forge/ui-kit';
 import { CommonModule } from '@angular/common';
@@ -57,6 +58,7 @@ export class FormRenderer implements OnInit {
     [FieldType.Radio]: RadioField,
     [FieldType.Date]: DateField,
     [FieldType.Email]: EmailField,
+    [FieldType.TextArea]: TextAreaField,
   };
 
   ngOnInit(): void {
