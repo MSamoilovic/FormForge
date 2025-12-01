@@ -6,3 +6,4 @@ export * from './components/radio-field/radio-field';
 export * from './components/number-field/number-field';
 export * from './components/email-field/email-field';
 export * from './components/text-area-field/text-area-field';
+export * from './components/file-upload-field/file-upload-field';

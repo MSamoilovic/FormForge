@@ -2,16 +2,22 @@ import { Component, computed, effect, inject, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
-import { AvailableField, FieldType, FormField, FormTheme } from '@form-forge/models';
+import {
+  AvailableField,
+  FieldType,
+  FormField,
+  FormTheme,
+} from '@form-forge/models';
 import {
   CheckboxField,
   DateField,
   EmailField,
+  FileUploadField,
   NumberField,
   RadioField,
   SelectorField,
   TextAreaField,
-  TextField
+  TextField,
 } from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './components/form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './components/form-builder-canvas/form-builder-canvas';
@@ -55,6 +61,8 @@ export class FormBuilderComponent {
     FieldType.Radio,
     FieldType.Date,
     FieldType.Email,
+    FieldType.TextArea,
+    FieldType.FileUpload,
   ];
 
   availableFields: AvailableField[] = [
@@ -66,6 +74,8 @@ export class FormBuilderComponent {
       icon: '',
     },
     { type: FieldType.Email, label: 'Email', icon: '' },
+    { type: FieldType.TextArea, label: 'Text Area', icon: '' },
+    { type: FieldType.FileUpload, label: 'File Upload', icon: '' },
     { type: FieldType.Checkbox, label: 'Checkbox', icon: '' },
     { type: FieldType.Radio, label: 'Radio', icon: '' },
     { type: FieldType.Date, label: 'Date', icon: '' },
@@ -89,6 +99,7 @@ export class FormBuilderComponent {
     [FieldType.Date]: DateField,
     [FieldType.Email]: EmailField,
     [FieldType.TextArea]: TextAreaField,
+    [FieldType.FileUpload]: FileUploadField,
   };
 
   constructor() {

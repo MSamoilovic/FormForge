@@ -6,6 +6,7 @@ import {
   CheckboxField,
   DateField,
   EmailField,
+  FileUploadField,
   NumberField,
   RadioField,
   SelectorField,
@@ -59,6 +60,7 @@ export class FormRenderer implements OnInit {
     [FieldType.Date]: DateField,
     [FieldType.Email]: EmailField,
     [FieldType.TextArea]: TextAreaField,
+    [FieldType.FileUpload]: FileUploadField,
   };
 
   ngOnInit(): void {
@@ -97,6 +99,10 @@ export class FormRenderer implements OnInit {
       if (field.min !== undefined) inputs['min'] = field.min;
       if (field.max !== undefined) inputs['max'] = field.max;
       if (field.step !== undefined) inputs['step'] = field.step;
+    }
+    if (field.type === FieldType.FileUpload) {
+      // Za sada koristimo podrazumevane vrednosti iz FileUploadField;
+      // kasnije se ovde mogu vezati specifične opcije (accept, multiple, maxSize, maxFiles).
     }
     return inputs;
   }

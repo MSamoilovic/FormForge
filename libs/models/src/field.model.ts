@@ -11,6 +11,7 @@ export enum FieldType {
   Date = 'date',
   Email = 'email',
   TextArea = 'textArea',
+  FileUpload = 'fileUpload',
 }
 
 export interface FieldOption {
