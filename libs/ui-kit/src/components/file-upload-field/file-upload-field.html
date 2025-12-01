@@ -1,0 +1,10 @@
+<div class="form-field-container">
+    <label class="form-field-label">{{ label() }}</label>
+
+    <input type="file" class="form-field-input" [attr.accept]="accept() || null"
+        [attr.multiple]="multiple() ? '' : null" (change)="onFileChange($event)" />
+
+    <div class="form-field-helper" *ngIf="placeholder()">
+        {{ placeholder() }}
+    </div>
+</div>
