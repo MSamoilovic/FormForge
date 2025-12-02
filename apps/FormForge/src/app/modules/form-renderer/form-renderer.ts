@@ -12,6 +12,7 @@ import {
   SelectorField,
   TextAreaField,
   TextField,
+  RichTextField,
 } from '@form-forge/ui-kit';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -61,6 +62,7 @@ export class FormRenderer implements OnInit {
     [FieldType.Email]: EmailField,
     [FieldType.TextArea]: TextAreaField,
     [FieldType.FileUpload]: FileUploadField,
+    [FieldType.RichText]: RichTextField,
   };
 
   ngOnInit(): void {

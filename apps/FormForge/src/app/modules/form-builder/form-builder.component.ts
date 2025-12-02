@@ -18,6 +18,7 @@ import {
   SelectorField,
   TextAreaField,
   TextField,
+  RichTextField,
 } from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './components/form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './components/form-builder-canvas/form-builder-canvas';
@@ -63,6 +64,7 @@ export class FormBuilderComponent {
     FieldType.Email,
     FieldType.TextArea,
     FieldType.FileUpload,
+    FieldType.RichText,
   ];
 
   availableFields: AvailableField[] = [
@@ -79,6 +81,7 @@ export class FormBuilderComponent {
     { type: FieldType.Checkbox, label: 'Checkbox', icon: '' },
     { type: FieldType.Radio, label: 'Radio', icon: '' },
     { type: FieldType.Date, label: 'Date', icon: '' },
+    { type: FieldType.RichText, label: 'Rich Text', icon: '' },
   ];
 
   formBuilderService = inject(FormBuilderService);
@@ -100,6 +103,7 @@ export class FormBuilderComponent {
     [FieldType.Email]: EmailField,
     [FieldType.TextArea]: TextAreaField,
     [FieldType.FileUpload]: FileUploadField,
+    [FieldType.RichText]: RichTextField,
   };
 
   constructor() {
