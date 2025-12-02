@@ -12,6 +12,7 @@ export enum FieldType {
   Email = 'email',
   TextArea = 'textArea',
   FileUpload = 'fileUpload',
+  RichText = 'richText',
 }
 
 export interface FieldOption {
