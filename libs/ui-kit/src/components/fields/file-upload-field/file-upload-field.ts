@@ -6,33 +6,35 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { FieldType } from '../../../../models/src';
+import { FieldType } from '../../../../../models/src';
 
 @Component({
-  selector: 'app-text-field',
+  selector: 'app-file-upload-field',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './text-field.html',
-  styleUrl: './text-field.scss',
+  templateUrl: './file-upload-field.html',
+  styleUrl: './file-upload-field.scss',
   standalone: true,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TextField),
+      useExisting: forwardRef(() => FileUploadField),
       multi: true,
     },
   ],
 })
-export class TextField implements ControlValueAccessor {
+export class FileUploadField implements ControlValueAccessor {
   label = input<string>('');
   placeholder = input<string>('');
   formControl = input<FormControl | undefined>(undefined);
-  fieldType = input<FieldType>(FieldType.Text);
+  fieldType = input<FieldType>(FieldType.FileUpload);
+  accept = input<string>('*/*');
+  multiple = input<boolean>(false);
 
-  writeValue(value: string | null): void {
+  writeValue(value: File[] | null): void {
     this.formControl()?.setValue(value, { emitEvent: false });
   }
 
-  registerOnChange(fn: (value: string | null) => void): void {
+  registerOnChange(fn: (value: File[] | null) => void): void {
     this.formControl()?.valueChanges.subscribe(fn);
   }
 
@@ -44,5 +46,16 @@ export class TextField implements ControlValueAccessor {
     return isDisabled
       ? this.formControl()?.disable()
       : this.formControl()?.enable();
+  }
+
+  onFileChange(event: Event): void {
+    const inputEl = event.target as HTMLInputElement;
+    const files = Array.from(inputEl.files || []);
+
+    const value = this.multiple() ? files : files.slice(0, 1);
+
+    this.formControl()?.setValue(value);
+    this.formControl()?.markAsDirty();
+    this.formControl()?.markAsTouched();
   }
 }

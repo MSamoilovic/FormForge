@@ -1,41 +1,42 @@
 import { Component, forwardRef, input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   ControlValueAccessor,
   FormControl,
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { FieldType } from '../../../../models/src';
+import { FieldType } from '../../../../../models/src';
 
 @Component({
-  selector: 'app-email-field',
+  selector: 'app-text-field',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './email-field.html',
-  styleUrl: './email-field.scss',
+  templateUrl: './text-field.html',
+  styleUrl: './text-field.scss',
+  standalone: true,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => EmailField),
+      useExisting: forwardRef(() => TextField),
       multi: true,
     },
   ],
 })
-export class EmailField implements ControlValueAccessor {
+export class TextField implements ControlValueAccessor {
   label = input<string>('');
   placeholder = input<string>('');
   formControl = input<FormControl | undefined>(undefined);
-  fieldType = input<FieldType>(FieldType.Email);
+  fieldType = input<FieldType>(FieldType.Text);
 
-  writeValue(value: any): void {
+  writeValue(value: string | null): void {
     this.formControl()?.setValue(value, { emitEvent: false });
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: string | null) => void): void {
     this.formControl()?.valueChanges.subscribe(fn);
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.formControl()?.statusChanges.subscribe(() => fn());
   }
 
