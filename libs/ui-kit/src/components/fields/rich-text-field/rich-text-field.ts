@@ -1,37 +1,43 @@
 import { Component, forwardRef, input } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FieldType } from '../../../../models/src';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { FieldType } from '../../../../../models/src';
 
 @Component({
-  selector: 'app-date-field',
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './date-field.html',
-  styleUrl: './date-field.css',
+  selector: 'app-rich-text-field',
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './rich-text-field.html',
+  styleUrl: './rich-text-field.scss',
   standalone: true,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DateField),
+      useExisting: forwardRef(() => RichTextField),
       multi: true,
     },
   ],
 })
-export class DateField implements ControlValueAccessor {
+export class RichTextField implements ControlValueAccessor {
   label = input<string>('');
   placeholder = input<string>('');
   formControl = input<FormControl | undefined>(undefined);
-  fieldType = input<FieldType>(FieldType.Date);
+  fieldType = input<FieldType>(FieldType.RichText);
 
-  writeValue(value: any): void {
+  writeValue(value: string | null): void {
     this.formControl()?.setValue(value, { emitEvent: false });
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: string | null) => void): void {
     this.formControl()?.valueChanges.subscribe(fn);
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.formControl()?.statusChanges.subscribe(() => fn());
   }
 

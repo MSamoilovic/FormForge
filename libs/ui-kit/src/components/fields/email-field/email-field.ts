@@ -1,27 +1,31 @@
 import { Component, forwardRef, input } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FieldOption, FieldType } from '../../../../models/src';
+import { FieldType } from '../../../../../models/src';
 
 @Component({
-  selector: 'app-radio-field',
+  selector: 'app-email-field',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './radio-field.html',
-  styleUrl: './radio-field.css',
-  standalone: true,
+  templateUrl: './email-field.html',
+  styleUrl: './email-field.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => RadioField),
+      useExisting: forwardRef(() => EmailField),
       multi: true,
     },
   ],
 })
-export class RadioField implements ControlValueAccessor {
+export class EmailField implements ControlValueAccessor {
   label = input<string>('');
+  placeholder = input<string>('');
   formControl = input<FormControl | undefined>(undefined);
-  options = input<FieldOption[]>([]);
-  fieldType = input<FieldType>(FieldType.Radio);
+  fieldType = input<FieldType>(FieldType.Email);
 
   writeValue(value: any): void {
     this.formControl()?.setValue(value, { emitEvent: false });

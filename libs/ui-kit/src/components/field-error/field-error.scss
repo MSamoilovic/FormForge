@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.field-error {
+  margin-top: var(--ff-spacing-xs);
+  font-size: 0.75rem;
+  color: var(--ff-color-error, #d32f2f);
+  display: flex;
+  align-items: center;
+  gap: var(--ff-spacing-xs);
+}
+
+.field-error__text {
+  line-height: 1.4;
+}

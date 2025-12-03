@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+.field-hint {
+  margin-top: var(--ff-spacing-2xs, 0.125rem);
+  font-size: 0.75rem;
+  color: var(--ff-text-secondary);
+}
