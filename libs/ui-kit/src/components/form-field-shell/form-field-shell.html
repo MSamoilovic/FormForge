@@ -1,0 +1,21 @@
+<div class="form-field-shell">
+  <label class="form-field-shell__label">
+    {{ label() }} @if (required()) {
+    <span
+      class="form-field-shell__required-indicator"
+      aria-label="Obavezno polje"
+      >*</span
+    >
+    }
+  </label>
+
+  <div class="form-field-shell__input-wrapper">
+    <ng-content></ng-content>
+  </div>
+
+  @if (shouldShowError()) {
+  <app-field-error [message]="errorMessage()" />
+  } @else if (shouldShowHint()) {
+  <app-field-hint [hint]="hint()" />
+  }
+</div>
