@@ -10,3 +10,4 @@ export * from './components/fields/file-upload-field/file-upload-field';
 export * from './components/fields/rich-text-field/rich-text-field';
 export * from './components/field-error/field-error';
 export * from './components/field-hint/field-hint';
+export * from './components/form-field-shell/form-field-shell';

@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.form-field-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-field-shell__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: var(--ff-spacing-xs, 0.5rem);
+  color: var(--form-text-color, var(--ff-text-secondary));
+  display: flex;
+  align-items: center;
+  gap: var(--ff-spacing-2xs, 0.125rem);
+}
+
+.form-field-shell__required-indicator {
+  color: var(--ff-color-error, #d32f2f);
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+.form-field-shell__input-wrapper {
+  width: 100%;
+
+  ::ng-deep>* {
+    width: 100%;
+  }
+}
