@@ -1,17 +1,5 @@
-host {
+:host {
   display: block;
-}
-
-.form-field-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-field-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin-bottom: var(--ff-spacing-sm);
-  color: var(--form-text-color, var(--ff-text-secondary));
 }
 
 .radio-group {

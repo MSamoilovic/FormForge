@@ -1,5 +1,15 @@
-<div class="form-field-container">
-    <label class="form-field-label">{{ label() }}</label>
-    <textarea class="form-field-input rich-textarea" [attr.rows]="6" [placeholder]="placeholder()"
-        [attr.aria-invalid]="formControl()?.invalid ? 'true' : 'false'" [formControl]="formControl()!"></textarea>
-</div>
+<app-form-field-shell
+  [label]="label()"
+  [required]="required()"
+  [formControl]="formControl()!"
+  [errorMessage]="computedErrorMessage()"
+  [hint]="hint()"
+>
+  <textarea
+    class="form-field-input rich-textarea"
+    [attr.rows]="6"
+    [placeholder]="placeholder()"
+    [attr.aria-invalid]="formControl()?.invalid ? 'true' : 'false'"
+    [formControl]="formControl()!"
+  ></textarea>
+</app-form-field-shell>

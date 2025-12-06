@@ -1,10 +1,15 @@
-<div class="form-field-container">
-    <label class="form-field-label">{{ label() }}</label>
-
-    <input type="file" class="form-field-input" [attr.accept]="accept() || null"
-        [attr.multiple]="multiple() ? '' : null" (change)="onFileChange($event)" />
-
-    <div class="form-field-helper" *ngIf="placeholder()">
-        {{ placeholder() }}
-    </div>
-</div>
+<app-form-field-shell
+  [label]="label()"
+  [required]="required()"
+  [formControl]="formControl()!"
+  [errorMessage]="computedErrorMessage()"
+  [hint]="hint()"
+>
+  <input
+    type="file"
+    [accept]="accept()"
+    [multiple]="multiple()"
+    (change)="onFileChange($event)"
+    class="form-field-file-input"
+  />
+</app-form-field-shell>

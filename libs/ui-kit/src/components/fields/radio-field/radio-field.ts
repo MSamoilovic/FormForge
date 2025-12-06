@@ -1,4 +1,4 @@
-import { Component, forwardRef, input } from '@angular/core';
+import { Component, computed, forwardRef, input } from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
@@ -7,12 +7,13 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FieldOption, FieldType } from '../../../../../models/src';
+import { FormFieldShell } from '../../form-field-shell/form-field-shell';
 
 @Component({
   selector: 'app-radio-field',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormFieldShell],
   templateUrl: './radio-field.html',
-  styleUrl: './radio-field.css',
+  styleUrl: './radio-field.scss',
   standalone: true,
   providers: [
     {
@@ -27,6 +28,21 @@ export class RadioField implements ControlValueAccessor {
   formControl = input<FormControl | undefined>(undefined);
   options = input<FieldOption[]>([]);
   fieldType = input<FieldType>(FieldType.Radio);
+  required = input<boolean>(false);
+  hint = input<string | null>(null);
+
+  computedErrorMessage = computed(() => {
+    const control = this.formControl();
+    if (!control || !control.errors) {
+      return null;
+    }
+
+    if (control.errors['required']) {
+      return 'Ovo polje je obavezno.';
+    }
+
+    return 'Unesena vrednost nije validna.';
+  });
 
   writeValue(value: any): void {
     this.formControl()?.setValue(value, { emitEvent: false });

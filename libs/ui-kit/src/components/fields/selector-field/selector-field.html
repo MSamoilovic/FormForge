@@ -1,12 +1,13 @@
-<div class="form-field-container">
-  <label class="form-field-label">{{ label() }}</label>
-  <select class="form-field-select" [formControl]="formControl()!">
-    @if (placeholder()) {
-    <option disabled selected>{{ placeholder() }}</option>
-    }
-    @for (option of options(); track option) {
-    <option [value]="option.value">{{ option.label }}</option>
-    }
-  </select>
-  <span class="custom-arrow"></span>
-</div>
+<app-form-field-shell [label]="label()" [required]="required()" [formControl]="formControl()!"
+  [errorMessage]="computedErrorMessage()" [hint]="hint()">
+  <div class="select-wrapper">
+    <select class="form-field-select" [formControl]="formControl()!">
+      @if (placeholder()) {
+      <option disabled selected>{{ placeholder() }}</option>
+      } @for (option of options(); track option) {
+      <option [value]="option.value">{{ option.label }}</option>
+      }
+    </select>
+    <span class="custom-arrow"></span>
+  </div>
+</app-form-field-shell>

@@ -1,4 +1,4 @@
-import { Component, forwardRef, input } from '@angular/core';
+import { Component, computed, forwardRef, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ControlValueAccessor,
@@ -8,10 +8,11 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { FieldType } from '../../../../../models/src';
+import { FormFieldShell } from '../../form-field-shell/form-field-shell';
 
 @Component({
   selector: 'app-rich-text-field',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, FormFieldShell],
   templateUrl: './rich-text-field.html',
   styleUrl: './rich-text-field.scss',
   standalone: true,
@@ -28,6 +29,21 @@ export class RichTextField implements ControlValueAccessor {
   placeholder = input<string>('');
   formControl = input<FormControl | undefined>(undefined);
   fieldType = input<FieldType>(FieldType.RichText);
+  required = input<boolean>(false);
+  hint = input<string | null>(null);
+
+  computedErrorMessage = computed(() => {
+    const control = this.formControl();
+    if (!control || !control.errors) {
+      return null;
+    }
+
+    if (control.errors['required']) {
+      return 'This field is required.';
+    }
+
+    return 'Unesena vrednost nije validna.';
+  });
 
   writeValue(value: string | null): void {
     this.formControl()?.setValue(value, { emitEvent: false });

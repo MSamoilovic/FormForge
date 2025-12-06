@@ -1,5 +1,10 @@
-<div class="form-field-container">
-  <label class="form-field-label">{{ label() }}</label>
+<app-form-field-shell
+  [label]="label()"
+  [required]="required()"
+  [formControl]="formControl()!"
+  [errorMessage]="computedErrorMessage()"
+  [hint]="hint()"
+>
   <input
     type="number"
     [placeholder]="placeholder()"
@@ -9,4 +14,4 @@
     [attr.max]="max()"
     [attr.step]="step()"
   />
-</div>
+</app-form-field-shell>
