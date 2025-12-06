@@ -13,7 +13,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 })
 export class FormFieldShell {
   label = input<string>('');
-  required = input<boolean | undefined>(undefined);
+  required = input<boolean>(false);
   formControl = input<FormControl | null>(null);
   errorMessage = input<string | null>(null);
   hint = input<string | null>(null);

@@ -29,7 +29,7 @@ export class SelectorField implements ControlValueAccessor {
   readonly formControl = input<FormControl | undefined>(undefined);
   readonly placeholder = input<string>('');
   readonly fieldType = input<FieldType>(FieldType.Select);
-  readonly required = input<boolean | undefined>(undefined);
+  readonly required = input<boolean>(false);
   readonly hint = input<string | null>(null);
 
   computedErrorMessage = computed(() => {

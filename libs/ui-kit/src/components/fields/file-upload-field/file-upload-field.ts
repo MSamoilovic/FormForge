@@ -30,7 +30,7 @@ export class FileUploadField implements ControlValueAccessor {
   fieldType = input<FieldType>(FieldType.FileUpload);
   accept = input<string>('*/*');
   multiple = input<boolean>(false);
-  required = input<boolean | undefined>(undefined);
+  required = input<boolean>(false);
   hint = input<string | null>(null);
 
   computedErrorMessage = computed(() => {

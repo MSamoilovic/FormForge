@@ -6,11 +6,13 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { FieldError } from '../../field-error/field-error';
+import { FieldHint } from '../../field-hint/field-hint';
 
 @Component({
   selector: 'app-checkbox-field',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FieldError, FieldHint],
   templateUrl: './checkbox-field.html',
   styleUrls: ['./checkbox-field.scss'],
   providers: [
@@ -23,8 +25,8 @@ import {
 })
 export class CheckboxField implements ControlValueAccessor {
   label = input<string>('');
-  formControl = input.required<FormControl>();
-  required = input<boolean | undefined>(undefined);
+  formControl = input<FormControl>();
+  required = input<boolean>(false);
   hint = input<string | null>(null);
 
   computedErrorMessage = computed(() => {
@@ -40,21 +42,35 @@ export class CheckboxField implements ControlValueAccessor {
     return 'The entered value is not valid.';
   });
 
+  shouldShowError = computed(() => {
+    const control = this.formControl();
+    const errorMsg = this.computedErrorMessage();
+    return (
+      errorMsg !== null && control !== undefined && (control.touched || control.dirty) && control.invalid
+    );
+  });
+
+  shouldShowHint = computed(() => {
+    return (
+      !this.shouldShowError() && this.hint() !== null && this.hint() !== ''
+    );
+  });
+
   writeValue(value: boolean | null): void {
-    this.formControl().setValue(value, { emitEvent: false });
+    this.formControl()?.setValue(value, { emitEvent: false });
   }
 
   registerOnChange(fn: (value: boolean | null) => void): void {
-    this.formControl().valueChanges.subscribe(fn);
+    this.formControl()?.valueChanges.subscribe(fn);
   }
 
   registerOnTouched(fn: () => void): void {
-    this.formControl().statusChanges.subscribe(() => fn());
+    this.formControl()?.statusChanges.subscribe(() => fn());
   }
 
   setDisabledState?(isDisabled: boolean): void {
     return isDisabled
-      ? this.formControl().disable()
-      : this.formControl().enable();
+      ? this.formControl()?.disable()
+      : this.formControl()?.enable();
   }
 }

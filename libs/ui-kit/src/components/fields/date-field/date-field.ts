@@ -28,7 +28,7 @@ export class DateField implements ControlValueAccessor {
   placeholder = input<string>('');
   formControl = input<FormControl | undefined>(undefined);
   fieldType = input<FieldType>(FieldType.Date);
-  required = input<boolean | undefined>(undefined);
+  required = input<boolean>(false);
   hint = input<string | null>(null);
 
   computedErrorMessage = computed(() => {

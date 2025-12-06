@@ -13,7 +13,7 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
   selector: 'app-radio-field',
   imports: [CommonModule, ReactiveFormsModule, FormFieldShell],
   templateUrl: './radio-field.html',
-  styleUrl: './radio-field.css',
+  styleUrl: './radio-field.scss',
   standalone: true,
   providers: [
     {
@@ -28,7 +28,7 @@ export class RadioField implements ControlValueAccessor {
   formControl = input<FormControl | undefined>(undefined);
   options = input<FieldOption[]>([]);
   fieldType = input<FieldType>(FieldType.Radio);
-  required = input<boolean | undefined>(undefined);
+  required = input<boolean>(false);
   hint = input<string | null>(null);
 
   computedErrorMessage = computed(() => {

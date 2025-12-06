@@ -31,7 +31,7 @@ export class NumberField implements ControlValueAccessor {
   min = input<number | undefined>(undefined);
   max = input<number | undefined>(undefined);
   step = input<number | undefined>(undefined);
-  required = input<boolean | undefined>(undefined);
+  required = input<boolean>(false);
   hint = input<string | null>(null);
 
   computedErrorMessage = computed(() => {
