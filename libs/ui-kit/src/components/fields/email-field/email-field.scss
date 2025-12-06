@@ -1,20 +1,7 @@
-host {
+:host {
     display: block;
 }
 
-
-.form-field-container {
-    display: flex;
-    flex-direction: column;
-}
-
-
-.form-field-label {
-    font-size: 0.875rem; // 14px
-    font-weight: 500;
-    margin-bottom: var(--ff-spacing-xs);
-    color: var(--form-text-color, var(--ff-text-secondary));
-}
 
 
 .form-field-input {

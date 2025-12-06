@@ -1,4 +1,4 @@
-import { Component, forwardRef, input } from '@angular/core';
+import { Component, computed, forwardRef, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ControlValueAccessor,
@@ -7,10 +7,11 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { FieldOption, FieldType } from '@form-forge/models';
+import { FormFieldShell } from '../../form-field-shell/form-field-shell';
 
 @Component({
   selector: 'app-selector-field',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormFieldShell],
   templateUrl: './selector-field.html',
   styleUrl: './selector-field.scss',
   standalone: true,
@@ -28,6 +29,21 @@ export class SelectorField implements ControlValueAccessor {
   readonly formControl = input<FormControl | undefined>(undefined);
   readonly placeholder = input<string>('');
   readonly fieldType = input<FieldType>(FieldType.Select);
+  readonly required = input<boolean | undefined>(undefined);
+  readonly hint = input<string | null>(null);
+
+  computedErrorMessage = computed(() => {
+    const control = this.formControl();
+    if (!control || !control.errors) {
+      return null;
+    }
+
+    if (control.errors['required']) {
+      return 'This field is required.';
+    }
+
+    return 'Value is not valid.';
+  });
 
   writeValue(value: any): void {
     this.formControl()?.setValue(value, { emitEvent: false });

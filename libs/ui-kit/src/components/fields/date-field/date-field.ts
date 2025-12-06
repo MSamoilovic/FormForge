@@ -1,4 +1,4 @@
-import { Component, forwardRef, input } from '@angular/core';
+import { Component, computed, forwardRef, input } from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
@@ -7,12 +7,13 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FieldType } from '../../../../../models/src';
+import { FormFieldShell } from '../../form-field-shell/form-field-shell';
 
 @Component({
   selector: 'app-date-field',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormFieldShell],
   templateUrl: './date-field.html',
-  styleUrl: './date-field.css',
+  styleUrl: './date-field.scss',
   standalone: true,
   providers: [
     {
@@ -27,6 +28,24 @@ export class DateField implements ControlValueAccessor {
   placeholder = input<string>('');
   formControl = input<FormControl | undefined>(undefined);
   fieldType = input<FieldType>(FieldType.Date);
+  required = input<boolean | undefined>(undefined);
+  hint = input<string | null>(null);
+
+  computedErrorMessage = computed(() => {
+    const control = this.formControl();
+    if (!control || !control.errors) {
+      return null;
+    }
+
+    if (control.errors['required']) {
+      return 'Ovo polje je obavezno.';
+    }
+    if (control.errors['matDatepickerParse']) {
+      return 'Unesite validan datum.';
+    }
+
+    return 'Unesena vrednost nije validna.';
+  });
 
   writeValue(value: any): void {
     this.formControl()?.setValue(value, { emitEvent: false });

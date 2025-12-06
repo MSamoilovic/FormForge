@@ -1,4 +1,4 @@
-import { Component, forwardRef, input } from '@angular/core';
+import { Component, computed, forwardRef, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ControlValueAccessor,
@@ -7,10 +7,11 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { FieldType } from '../../../../../models/src';
+import { FormFieldShell } from '../../form-field-shell/form-field-shell';
 
 @Component({
   selector: 'app-file-upload-field',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormFieldShell],
   templateUrl: './file-upload-field.html',
   styleUrl: './file-upload-field.scss',
   standalone: true,
@@ -29,6 +30,27 @@ export class FileUploadField implements ControlValueAccessor {
   fieldType = input<FieldType>(FieldType.FileUpload);
   accept = input<string>('*/*');
   multiple = input<boolean>(false);
+  required = input<boolean | undefined>(undefined);
+  hint = input<string | null>(null);
+
+  computedErrorMessage = computed(() => {
+    const control = this.formControl();
+    if (!control || !control.errors) {
+      return null;
+    }
+
+    if (control.errors['required']) {
+      return 'This field is required.';
+    }
+    if (control.errors['fileSize']) {
+      return 'File size exceeds the allowed limit.';
+    }
+    if (control.errors['fileType']) {
+      return 'Invalid file type.';
+    }
+
+    return 'The entered value is not valid.';
+  });
 
   writeValue(value: File[] | null): void {
     this.formControl()?.setValue(value, { emitEvent: false });

@@ -1,5 +1,14 @@
-<div class="form-field-container">
-    <label class="form-field-label">{{ label() }}</label>
-    <input type="date" [placeholder]="placeholder()" class="form-field-input" [formControl]="formControl()!" />
-
-</div>
+<app-form-field-shell
+  [label]="label()"
+  [required]="required()"
+  [formControl]="formControl()"
+  [errorMessage]="computedErrorMessage()"
+  [hint]="hint()"
+>
+  <input
+    type="date"
+    [placeholder]="placeholder()"
+    class="form-field-input"
+    [formControl]="formControl()!"
+  />
+</app-form-field-shell>

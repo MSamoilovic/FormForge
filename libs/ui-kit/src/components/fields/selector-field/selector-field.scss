@@ -2,18 +2,6 @@
   display: block;
 }
 
-.form-field-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.form-field-label {
-  font-size: 0.875rem; // 14px
-  color: var(--ff-text-secondary);
-  margin-bottom: var(--ff-spacing-xs); // 4px
-  font-weight: 500;
-}
 
 .form-field-select {
   background-color: var(--ff-color-surface);
@@ -49,4 +37,10 @@
     border-right: 6px solid transparent;
     border-top: 6px solid var(--ff-text-secondary);
   }
+
+    .select-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
 }

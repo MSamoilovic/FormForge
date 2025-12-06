@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, forwardRef, input } from '@angular/core';
+import { Component, computed, forwardRef, input } from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
@@ -24,8 +24,22 @@ import {
 export class CheckboxField implements ControlValueAccessor {
   label = input<string>('');
   formControl = input.required<FormControl>();
+  required = input<boolean | undefined>(undefined);
+  hint = input<string | null>(null);
 
-  // Sva CVA logika ostaje POTPUNO ISTA.
+  computedErrorMessage = computed(() => {
+    const control = this.formControl();
+    if (!control || !control.errors) {
+      return null;
+    }
+
+    if (control.errors['required']) {
+      return 'This field is required.';
+    }
+
+    return 'The entered value is not valid.';
+  });
+
   writeValue(value: boolean | null): void {
     this.formControl().setValue(value, { emitEvent: false });
   }

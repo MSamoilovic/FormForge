@@ -1,5 +1,13 @@
-<label class="custom-checkbox-container">
-    <input type="checkbox" [formControl]="formControl()">
+<div class="checkbox-field-wrapper">
+  <label class="custom-checkbox-container">
+    <input type="checkbox" [formControl]="formControl()" />
     <span class="checkmark"></span>
-    <span class="label-text">{{ label() }}</span>
-</label>
+    <span class="label-text"> {{ label() }} </span>
+  </label>
+
+  @if (shouldShowError()) {
+  <app-field-error [message]="computedErrorMessage()" />
+  } @else if (shouldShowHint()) {
+  <app-field-hint [hint]="hint()" />
+  }
+</div>

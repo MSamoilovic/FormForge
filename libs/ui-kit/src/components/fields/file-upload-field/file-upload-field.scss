@@ -1,17 +1,5 @@
-host {
+:host {
     display: block;
-}
-
-.form-field-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-field-label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-bottom: var(--ff-spacing-xs);
-    color: var(--form-text-color, var(--ff-text-secondary));
 }
 
 .form-field-input {
@@ -27,15 +15,15 @@ host {
     box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
-    &::file-selector-button {
-        margin-right: var(--ff-spacing-sm);
-        padding: var(--ff-spacing-xs) var(--ff-spacing-sm);
-        border: none;
-        border-radius: var(--form-border-radius, var(--ff-border-radius));
-        background-color: var(--form-primary-color, var(--ff-color-primary));
-        color: #fff;
-        cursor: pointer;
-    }
+    // &::file-selector-button {
+    //     margin-right: var(--ff-spacing-sm);
+    //     padding: var(--ff-spacing-xs) var(--ff-spacing-sm);
+    //     border: none;
+    //     border-radius: var(--form-border-radius, var(--ff-border-radius));
+    //     background-color: var(--form-primary-color, var(--ff-color-primary));
+    //     color: #fff;
+    //     cursor: pointer;
+    // }
 
     &:hover {
         border-color: #bdbdbd;
