@@ -1,43 +1,130 @@
 :host {
-    display: block;
+  display: block;
 }
 
-.form-field-input {
-    background-color: var(--form-background-color, var(--ff-color-surface));
-    border: 1px solid var(--ff-color-border);
-    border-radius: var(--form-border-radius, var(--ff-border-radius));
-    padding: var(--ff-spacing-sm) var(--ff-spacing-md);
-    font-family: var(--form-font-family, var(--ff-font-family));
-    font-size: 1rem;
-    color: var(--form-text-color, var(--ff-text-primary));
-
-    width: 100%;
-    box-sizing: border-box;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-
-    // &::file-selector-button {
-    //     margin-right: var(--ff-spacing-sm);
-    //     padding: var(--ff-spacing-xs) var(--ff-spacing-sm);
-    //     border: none;
-    //     border-radius: var(--form-border-radius, var(--ff-border-radius));
-    //     background-color: var(--form-primary-color, var(--ff-color-primary));
-    //     color: #fff;
-    //     cursor: pointer;
-    // }
-
-    &:hover {
-        border-color: #bdbdbd;
-    }
-
-    &:focus {
-        outline: none;
-        border-color: var(--form-primary-color, var(--ff-color-primary));
-        box-shadow: 0 0 0 3px rgba(from var(--form-primary-color, var(--ff-color-primary)) r g b / 0.2);
-    }
+.file-upload-container {
+  width: 100%;
 }
 
-.form-field-helper {
-    margin-top: var(--ff-spacing-xs);
-    font-size: 0.75rem;
-    color: var(--ff-text-secondary);
+.file-input-hidden {
+  display: none;
+}
+
+.file-upload-dropzone {
+  background-color: var(--form-background-color, var(--ff-color-surface));
+  border: 2px dashed var(--ff-color-border);
+  border-radius: var(--form-border-radius, var(--ff-border-radius));
+  padding: var(--ff-spacing-xl) var(--ff-spacing-lg);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: var(--form-primary-color, var(--ff-color-primary));
+    background-color: rgba(from var(--form-primary-color, var(--ff-color-primary)) r g b / 0.05);
+  }
+
+  &.drag-over {
+    border-color: var(--form-primary-color, var(--ff-color-primary));
+    background-color: rgba(from var(--form-primary-color, var(--ff-color-primary)) r g b / 0.1);
+    transform: scale(1.02);
+  }
+}
+
+.upload-icon {
+  color: var(--form-primary-color, var(--ff-color-primary));
+  margin-bottom: var(--ff-spacing-sm);
+  
+  svg {
+    display: inline-block;
+  }
+}
+
+.upload-text {
+  font-size: 1rem;
+  color: var(--form-text-color, var(--ff-text-primary));
+  margin: 0 0 var(--ff-spacing-xs);
+  font-weight: 500;
+}
+
+.upload-hint {
+  font-size: 0.875rem;
+  color: var(--ff-text-secondary);
+  margin: 0;
+}
+
+.selected-files {
+  margin-top: var(--ff-spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ff-spacing-sm);
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ff-spacing-sm);
+  padding: var(--ff-spacing-sm) var(--ff-spacing-md);
+  background-color: var(--form-background-color, var(--ff-color-surface));
+  border: 1px solid var(--ff-color-border);
+  border-radius: var(--form-border-radius, var(--ff-border-radius));
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--form-primary-color, var(--ff-color-primary));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.file-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.file-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ff-spacing-2xs);
+  min-width: 0;
+}
+
+.file-name {
+  font-size: 0.875rem;
+  color: var(--form-text-color, var(--ff-text-primary));
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-size {
+  font-size: 0.75rem;
+  color: var(--ff-text-secondary);
+}
+
+.file-remove {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: var(--ff-text-secondary);
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(from var(--ff-color-error, #ef5350) r g b / 0.1);
+    color: var(--ff-color-error, #ef5350);
+  }
+
+  &:focus {
+    outline: 2px solid var(--form-primary-color, var(--ff-color-primary));
+    outline-offset: 2px;
+  }
 }

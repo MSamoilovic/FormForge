@@ -10,6 +10,7 @@ import {
 } from '@form-forge/models';
 import {
   CheckboxField,
+  ColorPickerField,
   DateField,
   EmailField,
   FileUploadField,
@@ -65,6 +66,7 @@ export class FormBuilderComponent {
     FieldType.TextArea,
     FieldType.FileUpload,
     FieldType.RichText,
+    FieldType.ColorPicker,
   ];
 
   availableFields: AvailableField[] = [
@@ -82,6 +84,7 @@ export class FormBuilderComponent {
     { type: FieldType.Radio, label: 'Radio', icon: '' },
     { type: FieldType.Date, label: 'Date', icon: '' },
     { type: FieldType.RichText, label: 'Rich Text', icon: '' },
+    { type: FieldType.ColorPicker, label: 'Color Picker', icon: '' },
   ];
 
   formBuilderService = inject(FormBuilderService);
@@ -104,6 +107,7 @@ export class FormBuilderComponent {
     [FieldType.TextArea]: TextAreaField,
     [FieldType.FileUpload]: FileUploadField,
     [FieldType.RichText]: RichTextField,
+    [FieldType.ColorPicker]: ColorPickerField,
   };
 
   constructor() {
