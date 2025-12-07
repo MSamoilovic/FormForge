@@ -1,5 +1,5 @@
 import { Component, effect, inject, input, output } from '@angular/core';
-import { FieldOption, FormField, FormRule, FormTheme, RuleCondition, RuleConditionGroup } from '@form-forge/models';
+import { ColorFormat, FieldOption, FormField, FormRule, FormTheme, RuleCondition, RuleConditionGroup } from '@form-forge/models';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormBuilderFieldRulesComponent } from '../form-builder-form-rules/form-builder-field-rules.component';
 import { MatCardModule } from '@angular/material/card';
@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
 import { FormBuilderThemeEditorComponent } from '../form-builder-theme-editor/form-builder-theme-editor.component';
 
 @Component({
@@ -31,6 +32,7 @@ import { FormBuilderThemeEditorComponent } from '../form-builder-theme-editor/fo
     MatIconModule,
     MatTabGroup,
     MatTab,
+    MatSelectModule,
     FormBuilderThemeEditorComponent,
   ],
   templateUrl: './form-builder-property-panel.html',
@@ -51,6 +53,15 @@ export class FormBuilderPropertyPanel {
 
   propertiesForm: FormGroup;
 
+  // Color format options for color picker
+  colorFormats = [
+    { value: ColorFormat.HEX, label: 'HEX (#RRGGBB)' },
+    { value: ColorFormat.RGB, label: 'RGB (r, g, b)' },
+    { value: ColorFormat.RGBA, label: 'RGBA (r, g, b, a)' },
+    { value: ColorFormat.HSL, label: 'HSL (h, s%, l%)' },
+    { value: ColorFormat.HSLA, label: 'HSLA (h, s%, l%, a)' },
+  ];
+
   constructor() {
     this.propertiesForm = this.fb.group({
       label: ['', Validators.required],
@@ -62,6 +73,8 @@ export class FormBuilderPropertyPanel {
       min: [null],
       max: [null],
       step: [null],
+      // Color picker specific properties
+      colorFormat: [ColorFormat.HEX],
 
       theme: this.fb.group({
         primaryColor: [''],
@@ -84,6 +97,7 @@ export class FormBuilderPropertyPanel {
             min: field.min ?? null,
             max: field.max ?? null,
             step: field.step ?? null,
+            colorFormat: field.colorFormat ?? ColorFormat.HEX,
             theme: this.formTheme(),
           },
           { emitEvent: false }

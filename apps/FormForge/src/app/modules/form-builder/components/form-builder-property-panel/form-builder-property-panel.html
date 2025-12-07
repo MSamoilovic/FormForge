@@ -40,6 +40,17 @@
           </div>
           }
 
+          @if (field.type === 'colorPicker') {
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Color Format</mat-label>
+            <mat-select formControlName="colorFormat">
+              @for (format of colorFormats; track format.value) {
+              <mat-option [value]="format.value">{{ format.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          }
+
           <mat-checkbox formControlName="required" color="primary">Required</mat-checkbox>
 
           @if (field.type === 'select' || field.type === 'radio') {
