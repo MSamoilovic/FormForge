@@ -16,6 +16,14 @@ export enum FieldType {
   ColorPicker = 'colorPicker',
 }
 
+export enum ColorFormat {
+  HEX = 'hex',
+  RGB = 'rgb',
+  RGBA = 'rgba',
+  HSL = 'hsl',
+  HSLA = 'hsla',
+}
+
 export interface FieldOption {
   label: string;
   value: any;
@@ -35,6 +43,8 @@ export interface FormField {
   min?: number;
   max?: number;
   step?: number;
+  // Color picker specific properties
+  colorFormat?: ColorFormat;
 }
 
 export interface AvailableField {

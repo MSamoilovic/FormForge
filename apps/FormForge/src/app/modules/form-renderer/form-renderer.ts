@@ -104,6 +104,9 @@ export class FormRenderer implements OnInit {
       if (field.max !== undefined) inputs['max'] = field.max;
       if (field.step !== undefined) inputs['step'] = field.step;
     }
+    if (field.type === FieldType.ColorPicker && field.colorFormat) {
+      inputs['colorFormat'] = field.colorFormat;
+    }
     if (field.type === FieldType.FileUpload) {
       // Za sada koristimo podrazumevane vrednosti iz FileUploadField;
       // kasnije se ovde mogu vezati specifične opcije (accept, multiple, maxSize, maxFiles).

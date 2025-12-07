@@ -48,6 +48,11 @@ export class FormBuilderCanvas {
     if (field.type === FieldType.Select || field.type === FieldType.Radio) {
       inputs['options'] = field.options;
     }
+
+    if (field.type === FieldType.ColorPicker && field.colorFormat) {
+      inputs['colorFormat'] = field.colorFormat;
+    }
+
     return inputs;
   }
 }

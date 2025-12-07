@@ -2,6 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  ColorFormat,
   FieldType,
   FormField,
   FormRule,
@@ -132,6 +133,10 @@ export class FormBuilderService {
         min: undefined,
         max: undefined,
         step: undefined,
+      }),
+      // Initialize color picker specific properties
+      ...(fieldType === FieldType.ColorPicker && {
+        colorFormat: ColorFormat.HEX,
       }),
     };
 
