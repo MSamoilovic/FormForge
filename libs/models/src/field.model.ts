@@ -13,6 +13,7 @@ export enum FieldType {
   TextArea = 'textArea',
   FileUpload = 'fileUpload',
   RichText = 'richText',
+  ColorPicker = 'colorPicker',
 }
 
 export interface FieldOption {

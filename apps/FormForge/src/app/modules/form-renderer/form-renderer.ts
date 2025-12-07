@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import {
   CheckboxField,
+  ColorPickerField,
   DateField,
   EmailField,
   FileUploadField,
@@ -63,6 +64,7 @@ export class FormRenderer implements OnInit {
     [FieldType.TextArea]: TextAreaField,
     [FieldType.FileUpload]: FileUploadField,
     [FieldType.RichText]: RichTextField,
+    [FieldType.ColorPicker]: ColorPickerField,
   };
 
   ngOnInit(): void {

@@ -1,0 +1,18 @@
+<app-form-field-shell
+  [label]="label()"
+  [required]="required()"
+  [errorMessage]="computedErrorMessage()"
+  [hint]="hint()"
+>
+  <div class="color-picker-container">
+    <input
+      type="color"
+      class="color-picker-input"
+      [formControl]="formControl()!"
+    />
+    <div
+      class="color-preview"
+      [style.background-color]="formControl()?.value || placeholder()"
+    ></div>
+  </div>
+</app-form-field-shell>
