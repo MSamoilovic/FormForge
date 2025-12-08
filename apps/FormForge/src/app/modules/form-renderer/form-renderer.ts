@@ -14,6 +14,7 @@ import {
   TextAreaField,
   TextField,
   RichTextField,
+  ToggleSwitchField,
 } from '@form-forge/ui-kit';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -58,6 +59,7 @@ export class FormRenderer implements OnInit {
     [FieldType.Number]: NumberField,
     [FieldType.Select]: SelectorField,
     [FieldType.Checkbox]: CheckboxField,
+    [FieldType.ToggleSwitch]: ToggleSwitchField,
     [FieldType.Radio]: RadioField,
     [FieldType.Date]: DateField,
     [FieldType.Email]: EmailField,
