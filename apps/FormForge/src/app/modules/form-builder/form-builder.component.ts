@@ -20,6 +20,7 @@ import {
   TextAreaField,
   TextField,
   RichTextField,
+  ToggleSwitchField,
 } from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './components/form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './components/form-builder-canvas/form-builder-canvas';
@@ -60,6 +61,7 @@ export class FormBuilderComponent {
     FieldType.Number,
     FieldType.Select,
     FieldType.Checkbox,
+    FieldType.ToggleSwitch,
     FieldType.Radio,
     FieldType.Date,
     FieldType.Email,
@@ -81,6 +83,7 @@ export class FormBuilderComponent {
     { type: FieldType.TextArea, label: 'Text Area', icon: '' },
     { type: FieldType.FileUpload, label: 'File Upload', icon: '' },
     { type: FieldType.Checkbox, label: 'Checkbox', icon: '' },
+    { type: FieldType.ToggleSwitch, label: 'Toggle Switch', icon: '' },
     { type: FieldType.Radio, label: 'Radio', icon: '' },
     { type: FieldType.Date, label: 'Date', icon: '' },
     { type: FieldType.RichText, label: 'Rich Text', icon: '' },
@@ -101,6 +104,7 @@ export class FormBuilderComponent {
     [FieldType.Number]: NumberField,
     [FieldType.Select]: SelectorField,
     [FieldType.Checkbox]: CheckboxField,
+    [FieldType.ToggleSwitch]: ToggleSwitchField,
     [FieldType.Radio]: RadioField,
     [FieldType.Date]: DateField,
     [FieldType.Email]: EmailField,

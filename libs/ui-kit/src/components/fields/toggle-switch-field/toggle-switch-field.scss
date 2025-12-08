@@ -1,0 +1,101 @@
+:host {
+    display: block;
+}
+
+.toggle-switch-field-wrapper {
+    margin-bottom: 16px;
+}
+
+.toggle-switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+
+    .label-text {
+        color: var(--ff-text-primary);
+        font-size: 16px;
+        flex: 1;
+    }
+
+    .switch-wrapper {
+        position: relative;
+        width: 52px;
+        height: 28px;
+        flex-shrink: 0;
+    }
+
+    input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    .slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--ff-color-border);
+        border-radius: 28px;
+        transition: all 0.3s ease-in-out;
+        border: 2px solid var(--ff-color-border);
+    }
+
+    .slider::before {
+        content: "";
+        position: absolute;
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 2px;
+        background-color: white;
+        border-radius: 50%;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    &:hover .slider {
+        border-color: var(--ff-color-primary);
+        background-color: var(--ff-color-border);
+    }
+
+    input:checked ~ .slider {
+        background-color: var(--ff-color-primary);
+        border-color: var(--ff-color-primary);
+    }
+
+    input:checked ~ .slider::before {
+        transform: translateX(24px);
+    }
+
+    input:focus ~ .slider {
+        box-shadow: 0 0 0 3px rgba(var(--ff-color-primary-rgb, 63, 81, 181), 0.2);
+    }
+
+    input:disabled ~ .slider {
+        background-color: #e0e0e0;
+        border-color: #bdbdbd;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    input:disabled ~ .slider::before {
+        background-color: #f5f5f5;
+    }
+
+    &:has(input:disabled) {
+        cursor: not-allowed;
+
+        .label-text {
+            color: var(--ff-text-secondary);
+            opacity: 0.6;
+        }
+    }
+}
+

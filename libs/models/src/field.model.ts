@@ -8,6 +8,7 @@ export enum FieldType {
   Select = 'select',
   Radio = 'radio',
   Checkbox = 'checkbox',
+  ToggleSwitch = 'toggleSwitch',
   Date = 'date',
   Email = 'email',
   TextArea = 'textArea',

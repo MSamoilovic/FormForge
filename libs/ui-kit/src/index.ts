@@ -1,6 +1,7 @@
 export * from './components/fields/selector-field/selector-field';
 export * from './components/fields/text-field/text-field';
 export * from './components/fields/checkbox-field/checkbox-field';
+export * from './components/fields/toggle-switch-field/toggle-switch-field';
 export * from './components/fields/date-field/date-field';
 export * from './components/fields/radio-field/radio-field';
 export * from './components/fields/number-field/number-field';

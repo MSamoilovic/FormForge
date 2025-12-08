@@ -1,0 +1,16 @@
+<div class="toggle-switch-field-wrapper">
+  <label class="toggle-switch-container">
+    <span class="label-text">{{ label() }}</span>
+    <div class="switch-wrapper">
+      <input type="checkbox" [formControl]="formControl()!" />
+      <span class="slider"></span>
+    </div>
+  </label>
+
+  @if (shouldShowError()) {
+  <app-field-error [message]="computedErrorMessage()" />
+  } @else if (shouldShowHint()) {
+  <app-field-hint [hint]="hint()" />
+  }
+</div>
+
