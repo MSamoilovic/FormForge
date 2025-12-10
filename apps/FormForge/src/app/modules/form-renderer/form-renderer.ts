@@ -11,6 +11,7 @@ import {
   NumberField,
   RadioField,
   SelectorField,
+  MultiSelectField,
   TextAreaField,
   TextField,
   RichTextField,
@@ -58,6 +59,7 @@ export class FormRenderer implements OnInit {
     [FieldType.Text]: TextField,
     [FieldType.Number]: NumberField,
     [FieldType.Select]: SelectorField,
+    [FieldType.MultiSelect]: MultiSelectField,
     [FieldType.Checkbox]: CheckboxField,
     [FieldType.ToggleSwitch]: ToggleSwitchField,
     [FieldType.Radio]: RadioField,
@@ -98,7 +100,7 @@ export class FormRenderer implements OnInit {
       placeholder: field.placeholder,
       formControl: formGroup.get(field.id),
     };
-    if (field.type === FieldType.Select || field.type === FieldType.Radio) {
+    if (field.type === FieldType.Select || field.type === FieldType.Radio || field.type === FieldType.MultiSelect) {
       inputs['options'] = field.options;
     }
     if (field.type === FieldType.Number) {

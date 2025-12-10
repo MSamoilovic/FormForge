@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { FormRendererDataService } from './form-renderer-data.service';
 import { RuleEngineService } from '@form-forge/rule-engine';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormField, FormSchema, ValidatorType } from '@form-forge/models';
+import { FieldType, FormField, FormSchema, ValidatorType } from '@form-forge/models';
 import { Subject } from 'rxjs';
 import { SubmissionPayload } from '../../core/models/SubmissionPayload';
 
@@ -106,6 +106,8 @@ export class FormRendererService implements OnDestroy {
         }
       }
     }
-    return this.fb.control('', validators);
+    // MultiSelect field should be initialized with an empty array
+    const initialValue = field.type === FieldType.MultiSelect ? [] : '';
+    return this.fb.control(initialValue, validators);
   }
 }
