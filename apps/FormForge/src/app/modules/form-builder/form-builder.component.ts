@@ -17,6 +17,7 @@ import {
   NumberField,
   RadioField,
   SelectorField,
+  MultiSelectField,
   TextAreaField,
   TextField,
   RichTextField,
@@ -60,6 +61,7 @@ export class FormBuilderComponent {
     FieldType.Text,
     FieldType.Number,
     FieldType.Select,
+    FieldType.MultiSelect,
     FieldType.Checkbox,
     FieldType.ToggleSwitch,
     FieldType.Radio,
@@ -77,6 +79,11 @@ export class FormBuilderComponent {
     {
       type: FieldType.Select,
       label: 'Dropdown',
+      icon: '',
+    },
+    {
+      type: FieldType.MultiSelect,
+      label: 'Multi Select',
       icon: '',
     },
     { type: FieldType.Email, label: 'Email', icon: '' },
@@ -103,6 +110,7 @@ export class FormBuilderComponent {
     [FieldType.Text]: TextField,
     [FieldType.Number]: NumberField,
     [FieldType.Select]: SelectorField,
+    [FieldType.MultiSelect]: MultiSelectField,
     [FieldType.Checkbox]: CheckboxField,
     [FieldType.ToggleSwitch]: ToggleSwitchField,
     [FieldType.Radio]: RadioField,
@@ -126,7 +134,11 @@ export class FormBuilderComponent {
 
       fields
         .filter((field) => !currentControlIds.includes(field.id))
-        .forEach((field) => this.form.addControl(field.id, new FormControl()));
+        .forEach((field) => {
+          // MultiSelect field should be initialized with an empty array
+          const initialValue = field.type === FieldType.MultiSelect ? [] : null;
+          this.form.addControl(field.id, new FormControl(initialValue));
+        });
     });
   }
 

@@ -6,6 +6,7 @@ export enum FieldType {
   Text = 'text',
   Number = 'number',
   Select = 'select',
+  MultiSelect = 'multiSelect',
   Radio = 'radio',
   Checkbox = 'checkbox',
   ToggleSwitch = 'toggleSwitch',

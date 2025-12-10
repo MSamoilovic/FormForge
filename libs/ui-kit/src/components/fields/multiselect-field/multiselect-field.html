@@ -1,0 +1,23 @@
+<app-form-field-shell [label]="label()" [required]="required()"
+  [errorMessage]="computedErrorMessage()" [hint]="hint()">
+  <div class="multiselect-wrapper">
+    <select 
+      class="form-field-multiselect" 
+      [formControl]="formControl()!" 
+      multiple
+      (change)="onSelectionChange($event)">
+      @if (placeholder() && (!formControl()?.value || formControl()?.value?.length === 0)) {
+      <option disabled>{{ placeholder() }}</option>
+      }
+      @for (option of options(); track option.value) {
+      <option [value]="option.value">
+        {{ option.label }}
+      </option>
+      }
+    </select>
+    <div class="selected-count" *ngIf="formControl()?.value?.length > 0">
+      {{ formControl()?.value?.length }} selected
+    </div>
+  </div>
+</app-form-field-shell>
+

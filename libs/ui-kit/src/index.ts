@@ -1,4 +1,5 @@
 export * from './components/fields/selector-field/selector-field';
+export * from './components/fields/multiselect-field/multiselect-field';
 export * from './components/fields/text-field/text-field';
 export * from './components/fields/checkbox-field/checkbox-field';
 export * from './components/fields/toggle-switch-field/toggle-switch-field';

@@ -123,7 +123,7 @@ export class FormBuilderService {
       label: `${fieldType} field`,
       placeholder: '',
       options:
-        fieldType === FieldType.Select || fieldType === FieldType.Radio
+        fieldType === FieldType.Select || fieldType === FieldType.Radio || fieldType === FieldType.MultiSelect
           ? [{ label: 'Option 1', value: 'option1' }]
           : [],
       rules: [],
