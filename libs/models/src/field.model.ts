@@ -16,6 +16,7 @@ export enum FieldType {
   FileUpload = 'fileUpload',
   RichText = 'richText',
   ColorPicker = 'colorPicker',
+  LikertScale = 'likertScale',
 }
 
 export enum ColorFormat {

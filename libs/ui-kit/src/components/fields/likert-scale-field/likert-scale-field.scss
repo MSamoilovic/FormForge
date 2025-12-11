@@ -1,0 +1,76 @@
+:host {
+  display: block;
+}
+
+.likert-scale-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.likert-scale {
+  display: flex;
+  flex-direction: row;
+  gap: var(--ff-spacing-sm);
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--ff-spacing-sm) 0;
+  min-width: min-content;
+}
+
+.likert-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: var(--ff-spacing-xs) var(--ff-spacing-sm);
+  border-radius: var(--form-border-radius, var(--ff-border-radius));
+  transition: background-color 0.2s ease;
+  flex: 1;
+  min-width: 80px;
+  max-width: 150px;
+  text-align: center;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.likert-input {
+  width: 20px;
+  height: 20px;
+  margin: 0 0 var(--ff-spacing-xs) 0;
+  cursor: pointer;
+  accent-color: var(--form-primary-color, var(--ff-color-primary));
+  flex-shrink: 0;
+
+  &:focus {
+    outline: 2px solid var(--form-primary-color, var(--ff-color-primary));
+    outline-offset: 2px;
+  }
+}
+
+.likert-label {
+  font-size: 0.875rem;
+  color: var(--form-text-color, var(--ff-text-primary));
+  user-select: none;
+  word-wrap: break-word;
+  line-height: 1.3;
+}
+
+// Responsive design for smaller screens
+@media (max-width: 768px) {
+  .likert-scale {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .likert-option {
+    min-width: 70px;
+    max-width: 120px;
+  }
+
+  .likert-label {
+    font-size: 0.75rem;
+  }
+}
+

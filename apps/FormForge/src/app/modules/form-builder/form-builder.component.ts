@@ -22,6 +22,7 @@ import {
   TextField,
   RichTextField,
   ToggleSwitchField,
+  LikertScaleField,
 } from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './components/form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './components/form-builder-canvas/form-builder-canvas';
@@ -71,6 +72,7 @@ export class FormBuilderComponent {
     FieldType.FileUpload,
     FieldType.RichText,
     FieldType.ColorPicker,
+    FieldType.LikertScale,
   ];
 
   availableFields: AvailableField[] = [
@@ -95,6 +97,7 @@ export class FormBuilderComponent {
     { type: FieldType.Date, label: 'Date', icon: '' },
     { type: FieldType.RichText, label: 'Rich Text', icon: '' },
     { type: FieldType.ColorPicker, label: 'Color Picker', icon: '' },
+    { type: FieldType.LikertScale, label: 'Likert Scale', icon: '' },
   ];
 
   formBuilderService = inject(FormBuilderService);
@@ -120,6 +123,7 @@ export class FormBuilderComponent {
     [FieldType.FileUpload]: FileUploadField,
     [FieldType.RichText]: RichTextField,
     [FieldType.ColorPicker]: ColorPickerField,
+    [FieldType.LikertScale]: LikertScaleField,
   };
 
   constructor() {

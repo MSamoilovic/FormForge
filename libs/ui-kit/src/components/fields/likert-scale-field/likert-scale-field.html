@@ -1,0 +1,23 @@
+<app-form-field-shell
+  [label]="label()"
+  [required]="required()"
+  [errorMessage]="computedErrorMessage()"
+  [hint]="hint()"
+>
+  <div class="likert-scale-container">
+    <div class="likert-scale">
+      @for (option of options(); track option.value) {
+      <label class="likert-option">
+        <input
+          type="radio"
+          [value]="option.value"
+          [formControl]="formControl()!"
+          class="likert-input"
+        />
+        <span class="likert-label">{{ option.label }}</span>
+      </label>
+      }
+    </div>
+  </div>
+</app-form-field-shell>
+

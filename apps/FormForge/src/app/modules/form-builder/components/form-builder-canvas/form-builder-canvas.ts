@@ -45,7 +45,7 @@ export class FormBuilderCanvas {
       formControl: control,
     };
 
-    if (field.type === FieldType.Select || field.type === FieldType.Radio || field.type === FieldType.MultiSelect) {
+    if (field.type === FieldType.Select || field.type === FieldType.Radio || field.type === FieldType.MultiSelect || field.type === FieldType.LikertScale) {
       inputs['options'] = field.options;
     }
 
