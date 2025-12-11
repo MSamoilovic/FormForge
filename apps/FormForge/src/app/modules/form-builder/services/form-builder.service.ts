@@ -125,6 +125,14 @@ export class FormBuilderService {
       options:
         fieldType === FieldType.Select || fieldType === FieldType.Radio || fieldType === FieldType.MultiSelect
           ? [{ label: 'Option 1', value: 'option1' }]
+          : fieldType === FieldType.LikertScale
+          ? [
+              { label: 'Strongly Disagree', value: 'strongly_disagree' },
+              { label: 'Disagree', value: 'disagree' },
+              { label: 'Neutral', value: 'neutral' },
+              { label: 'Agree', value: 'agree' },
+              { label: 'Strongly Agree', value: 'strongly_agree' },
+            ]
           : [],
       rules: [],
       validations: [],

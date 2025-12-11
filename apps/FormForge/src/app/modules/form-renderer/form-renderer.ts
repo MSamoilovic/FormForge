@@ -16,6 +16,7 @@ import {
   TextField,
   RichTextField,
   ToggleSwitchField,
+  LikertScaleField,
 } from '@form-forge/ui-kit';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -69,6 +70,7 @@ export class FormRenderer implements OnInit {
     [FieldType.FileUpload]: FileUploadField,
     [FieldType.RichText]: RichTextField,
     [FieldType.ColorPicker]: ColorPickerField,
+    [FieldType.LikertScale]: LikertScaleField,
   };
 
   ngOnInit(): void {
@@ -100,7 +102,7 @@ export class FormRenderer implements OnInit {
       placeholder: field.placeholder,
       formControl: formGroup.get(field.id),
     };
-    if (field.type === FieldType.Select || field.type === FieldType.Radio || field.type === FieldType.MultiSelect) {
+    if (field.type === FieldType.Select || field.type === FieldType.Radio || field.type === FieldType.MultiSelect || field.type === FieldType.LikertScale) {
       inputs['options'] = field.options;
     }
     if (field.type === FieldType.Number) {
