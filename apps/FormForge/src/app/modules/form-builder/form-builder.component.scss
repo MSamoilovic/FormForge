@@ -22,22 +22,56 @@
 .form-builder-header {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
   flex-shrink: 0;
+  padding: 1rem 1.5rem;
+  background: var(--ff-color-surface);
+  border-radius: 12px;
+  border: 1px solid var(--ff-color-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
 
   h1 {
     margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ff-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &::before {
+      content: '✨';
+      font-size: 1.25rem;
+    }
   }
 
   .spacer {
     flex-grow: 1;
   }
+
+  button {
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 0 1.5rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
 }
 
 .form-builder-content {
   display: grid;
-  grid-template-columns: 280px 1fr 380px;
-  gap: 1rem;
+  grid-template-columns: 300px 1fr 400px;
+  gap: 1.5rem;
   flex-grow: 1;
   overflow: hidden;
 }
@@ -46,13 +80,29 @@
   background-color: var(--form-background-color, var(--ff-color-surface));
   font-family: var(--form-font-family, var(--ff-font-family));
   padding: var(--ff-spacing-lg);
-  border-radius: var(--ff-border-radius);
+  border-radius: 12px;
   border: 1px solid var(--ff-color-border);
   overflow-y: auto;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
-  .dark-theme & {
-    background-color: var(--form-background-color, var(--ff-color-surface));
-    border-color: var(--ff-color-border);
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--ff-color-border);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--ff-text-secondary);
   }
 }

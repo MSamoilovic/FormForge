@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
   ],
   templateUrl: './form-builder-sidebar.html',
-  styleUrl: './form-builder-sidebar.css',
+  styleUrl: './form-builder-sidebar.scss',
   standalone: true,
 })
 export class FormBuilderSidebar {

@@ -76,28 +76,28 @@ export class FormBuilderComponent {
   ];
 
   availableFields: AvailableField[] = [
-    { type: FieldType.Text, label: 'Text Input', icon: '' },
-    { type: FieldType.Number, label: 'Number Input', icon: '' },
+    { type: FieldType.Text, label: 'Text Input', icon: 'text_fields' },
+    { type: FieldType.Number, label: 'Number Input', icon: 'pin' },
     {
       type: FieldType.Select,
       label: 'Dropdown',
-      icon: '',
+      icon: 'arrow_drop_down_circle',
     },
     {
       type: FieldType.MultiSelect,
       label: 'Multi Select',
-      icon: '',
+      icon: 'checklist',
     },
-    { type: FieldType.Email, label: 'Email', icon: '' },
-    { type: FieldType.TextArea, label: 'Text Area', icon: '' },
-    { type: FieldType.FileUpload, label: 'File Upload', icon: '' },
-    { type: FieldType.Checkbox, label: 'Checkbox', icon: '' },
-    { type: FieldType.ToggleSwitch, label: 'Toggle Switch', icon: '' },
-    { type: FieldType.Radio, label: 'Radio', icon: '' },
-    { type: FieldType.Date, label: 'Date', icon: '' },
-    { type: FieldType.RichText, label: 'Rich Text', icon: '' },
-    { type: FieldType.ColorPicker, label: 'Color Picker', icon: '' },
-    { type: FieldType.LikertScale, label: 'Likert Scale', icon: '' },
+    { type: FieldType.Email, label: 'Email', icon: 'alternate_email' },
+    { type: FieldType.TextArea, label: 'Text Area', icon: 'notes' },
+    { type: FieldType.FileUpload, label: 'File Upload', icon: 'cloud_upload' },
+    { type: FieldType.Checkbox, label: 'Checkbox', icon: 'check_box' },
+    { type: FieldType.ToggleSwitch, label: 'Toggle Switch', icon: 'toggle_on' },
+    { type: FieldType.Radio, label: 'Radio', icon: 'radio_button_checked' },
+    { type: FieldType.Date, label: 'Date', icon: 'calendar_today' },
+    { type: FieldType.RichText, label: 'Rich Text', icon: 'format_align_left' },
+    { type: FieldType.ColorPicker, label: 'Color Picker', icon: 'palette' },
+    { type: FieldType.LikertScale, label: 'Likert Scale', icon: 'linear_scale' },
   ];
 
   formBuilderService = inject(FormBuilderService);

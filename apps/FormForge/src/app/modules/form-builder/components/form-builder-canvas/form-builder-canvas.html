@@ -24,7 +24,11 @@
 <!--</main>-->
 <mat-card class="canvas-card">
   <mat-card-header>
-    <mat-card-title>Canvas</mat-card-title>
+    <mat-card-title class="canvas-title">
+      <mat-icon>dashboard_customize</mat-icon>
+      <span>Canvas</span>
+    </mat-card-title>
+    <mat-card-subtitle>Build your form here</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content
@@ -35,8 +39,15 @@
   >
     @if (!canvasFields().length) {
       <div class="empty-state">
-        <mat-icon>add_circle_outline</mat-icon>
-        <span>Drag Control from the toolbox</span>
+        <div class="empty-state-icon">
+          <mat-icon>touch_app</mat-icon>
+        </div>
+        <h3>Start Building Your Form</h3>
+        <p>Drag and drop fields from the toolbox to begin</p>
+        <div class="empty-state-hint">
+          <mat-icon>arrow_back</mat-icon>
+          <span>Choose a field type</span>
+        </div>
       </div>
     } @else {
       @for (field of canvasFields(); track field.id) {
@@ -46,14 +57,17 @@
           (click)="onSelectField(field)"
           [class.selected]="selectedField()?.id === field.id"
         >
-          <div class="drag-handle">
-            <mat-icon cdkDragHandle>drag_indicator</mat-icon>
+          <div class="drag-handle" cdkDragHandle>
+            <mat-icon>drag_indicator</mat-icon>
           </div>
           <div class="field-content">
             <ng-container
               [ngComponentOutlet]="getComponent(field.type)"
               [ngComponentOutletInputs]="getComponentInputs(field)"
             ></ng-container>
+          </div>
+          <div class="field-actions">
+            <mat-icon class="action-icon">settings</mat-icon>
           </div>
         </div>
       }

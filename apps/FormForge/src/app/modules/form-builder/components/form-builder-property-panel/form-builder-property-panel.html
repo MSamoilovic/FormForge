@@ -1,12 +1,20 @@
 <mat-card class="property-panel-card">
   <mat-card-header>
-    <mat-card-title>Properties</mat-card-title>
+    <mat-card-title class="panel-title">
+      <mat-icon>tune</mat-icon>
+      <span>Properties</span>
+    </mat-card-title>
+    <mat-card-subtitle>Configure field settings</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
     @if (selectedField(); as field) {
-    <mat-tab-group>
-      <mat-tab label="Field Properties">
+    <mat-tab-group class="properties-tabs">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">settings</mat-icon>
+          <span>Field</span>
+        </ng-template>
         <div class="properties-form-container" [formGroup]="propertiesForm">
 
           <mat-form-field appearance="outline" class="full-width">
@@ -86,7 +94,11 @@
         </div>
       </mat-tab>
 
-      <mat-tab label="Form Design">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">palette</mat-icon>
+          <span>Design</span>
+        </ng-template>
         <div class="tab-content">
           <app-theme-editor [themeForm]="themeFormGroup"></app-theme-editor>
         </div>
@@ -95,8 +107,15 @@
 
     } @else {
     <div class="no-field-selected">
-      <mat-icon>touch_app</mat-icon>
+      <div class="no-field-icon">
+        <mat-icon>settings_suggest</mat-icon>
+      </div>
+      <h3>No Field Selected</h3>
       <p>Select a field on the canvas to see its properties.</p>
+      <div class="hint">
+        <mat-icon>arrow_forward</mat-icon>
+        <span>Click on any field</span>
+      </div>
     </div>
     }
   </mat-card-content>

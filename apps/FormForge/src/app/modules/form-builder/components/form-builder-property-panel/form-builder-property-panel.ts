@@ -36,7 +36,7 @@ import { FormBuilderThemeEditorComponent } from '../form-builder-theme-editor/fo
     FormBuilderThemeEditorComponent,
   ],
   templateUrl: './form-builder-property-panel.html',
-  styleUrls: ['./form-builder-property-panel.css'],
+  styleUrls: ['./form-builder-property-panel.scss'],
 })
 export class FormBuilderPropertyPanel {
   private fb = inject(FormBuilder);
