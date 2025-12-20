@@ -4,6 +4,17 @@
   flex-direction: column;
   background: var(--ff-color-surface);
   transition: background-color 0.3s ease;
+  overflow: hidden;
+
+  mat-card-header {
+    flex-shrink: 0;
+  }
+
+  mat-card-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .sidebar-title {
@@ -23,8 +34,9 @@
 }
 
 .sidebar-content {
-  flex-grow: 1;
+  flex: 1 1 auto;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 0.5rem 0 !important;
 }
 

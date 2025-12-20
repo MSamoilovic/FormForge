@@ -72,8 +72,12 @@
   display: grid;
   grid-template-columns: 300px 1fr 400px;
   gap: 1.5rem;
-  flex-grow: 1;
+  flex: 1 1 auto;
   overflow: hidden;
+
+  > * {
+    height: 100%;
+  }
 }
 
 .canvas-preview-wrapper {

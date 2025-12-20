@@ -4,6 +4,17 @@
   flex-direction: column;
   background: var(--ff-color-surface);
   transition: background-color 0.3s ease;
+  overflow: hidden;
+
+  mat-card-header {
+    flex-shrink: 0;
+  }
+
+  mat-card-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .canvas-title {
@@ -23,27 +34,27 @@
 }
 
 .canvas-content {
-  flex-grow: 1;
+  flex: 1 1 auto;
   padding: 24px !important;
   border-radius: 4px;
   background: var(--ff-color-surface);
   overflow-y: auto;
+  overflow-x: hidden;
   transition: background-color 0.3s ease;
-  min-height: 400px;
 }
 
 .empty-state {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   height: 100%;
-  min-height: 400px;
   color: var(--ff-text-secondary);
   border: 2px dashed var(--ff-color-border);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.02);
   padding: 3rem;
+  padding-top: 15%;
   transition: all 0.3s ease;
 
   &:hover {
