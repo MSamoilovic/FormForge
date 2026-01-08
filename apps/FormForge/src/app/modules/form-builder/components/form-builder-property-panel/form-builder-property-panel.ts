@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilderThemeEditorComponent } from '../form-builder-theme-editor/form-builder-theme-editor.component';
+import { Countries, Country } from '@form-forge/ui-kit';
 
 @Component({
   selector: 'app-form-builder-property-panel',
@@ -62,6 +63,9 @@ export class FormBuilderPropertyPanel {
     { value: ColorFormat.HSLA, label: 'HSLA (h, s%, l%, a)' },
   ];
 
+  // Countries list for phone field
+  countries: Country[] = Countries;
+
   constructor() {
     this.propertiesForm = this.fb.group({
       label: ['', Validators.required],
@@ -75,6 +79,9 @@ export class FormBuilderPropertyPanel {
       step: [null],
       // Color picker specific properties
       colorFormat: [ColorFormat.HEX],
+      // Phone field specific properties
+      defaultCountry: ['RS'],
+      showCountrySelector: [true],
 
       theme: this.fb.group({
         primaryColor: [''],
@@ -98,6 +105,8 @@ export class FormBuilderPropertyPanel {
             max: field.max ?? null,
             step: field.step ?? null,
             colorFormat: field.colorFormat ?? ColorFormat.HEX,
+            defaultCountry: field.defaultCountry ?? 'RS',
+            showCountrySelector: field.showCountrySelector !== false,
             theme: this.formTheme(),
           },
           { emitEvent: false }

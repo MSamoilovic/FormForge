@@ -94,10 +94,18 @@ mat-card-content {
   min-width: 0;
 }
 
-.number-field-properties {
+.number-field-properties,
+.phone-field-properties {
   display: flex;
+  flex-direction: column;
   gap: var(--ff-spacing-sm);
   width: 100%;
+}
+
+.country-option-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 mat-divider {

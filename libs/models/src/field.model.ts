@@ -12,6 +12,7 @@ export enum FieldType {
   ToggleSwitch = 'toggleSwitch',
   Date = 'date',
   Email = 'email',
+  Phone = 'phone',
   TextArea = 'textArea',
   FileUpload = 'fileUpload',
   RichText = 'richText',
@@ -48,6 +49,9 @@ export interface FormField {
   step?: number;
   // Color picker specific properties
   colorFormat?: ColorFormat;
+  // Phone field specific properties
+  defaultCountry?: string; // ISO 3166-1 alpha-2 country code (e.g., 'RS', 'US')
+  showCountrySelector?: boolean;
 }
 
 export interface AvailableField {

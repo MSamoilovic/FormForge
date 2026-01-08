@@ -7,6 +7,8 @@ export * from './components/fields/date-field/date-field';
 export * from './components/fields/radio-field/radio-field';
 export * from './components/fields/number-field/number-field';
 export * from './components/fields/email-field/email-field';
+export * from './components/fields/phone-field/phone-field';
+export * from './components/fields/phone-field/countries';
 export * from './components/fields/text-area-field/text-area-field';
 export * from './components/fields/file-upload-field/file-upload-field';
 export * from './components/fields/rich-text-field/rich-text-field';

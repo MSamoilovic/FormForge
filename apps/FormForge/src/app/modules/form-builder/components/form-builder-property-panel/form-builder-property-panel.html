@@ -22,68 +22,89 @@
             <input matInput formControlName="label" placeholder="Enter field label">
           </mat-form-field>
 
-          @if (field.type === 'text' || field.type === 'number' || field.type === 'email' || field.type === 'date') {
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Placeholder</mat-label>
-            <input matInput formControlName="placeholder" placeholder="Enter placeholder text">
-          </mat-form-field>
+          @if (field.type === 'text' || field.type === 'number' || field.type === 'email' || field.type === 'date' || field.type === 'phone') {
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Placeholder</mat-label>
+              <input matInput formControlName="placeholder" placeholder="Enter placeholder text">
+            </mat-form-field>
           }
 
           @if (field.type === 'number') {
-          <div class="number-field-properties">
-            <mat-form-field appearance="outline" class="third-width">
-              <mat-label>Min</mat-label>
-              <input matInput type="number" formControlName="min" placeholder="Min value">
-            </mat-form-field>
+            <div class="number-field-properties">
+              <mat-form-field appearance="outline" class="third-width">
+                <mat-label>Min</mat-label>
+                <input matInput type="number" formControlName="min" placeholder="Min value">
+              </mat-form-field>
 
-            <mat-form-field appearance="outline" class="third-width">
-              <mat-label>Max</mat-label>
-              <input matInput type="number" formControlName="max" placeholder="Max value">
-            </mat-form-field>
+              <mat-form-field appearance="outline" class="third-width">
+                <mat-label>Max</mat-label>
+                <input matInput type="number" formControlName="max" placeholder="Max value">
+              </mat-form-field>
 
-            <mat-form-field appearance="outline" class="third-width">
-              <mat-label>Step</mat-label>
-              <input matInput type="number" formControlName="step" placeholder="Step">
-            </mat-form-field>
-          </div>
+              <mat-form-field appearance="outline" class="third-width">
+                <mat-label>Step</mat-label>
+                <input matInput type="number" formControlName="step" placeholder="Step">
+              </mat-form-field>
+            </div>
           }
 
           @if (field.type === 'colorPicker') {
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Color Format</mat-label>
-            <mat-select formControlName="colorFormat">
-              @for (format of colorFormats; track format.value) {
-              <mat-option [value]="format.value">{{ format.label }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Color Format</mat-label>
+              <mat-select formControlName="colorFormat">
+                @for (format of colorFormats; track format.value) {
+                <mat-option [value]="format.value">{{ format.label }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          }
+
+          @if (field.type === 'phone') {
+            <div class="phone-field-properties">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Default Country</mat-label>
+                <mat-select formControlName="defaultCountry">
+                  @for (country of countries; track country.code) {
+                  <mat-option [value]="country.code">
+                    <span class="country-option-inline">
+                      <span>{{ country.flag }}</span>
+                      <span>{{ country.name }} ({{ country.dialCode }})</span>
+                    </span>
+                  </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <mat-checkbox formControlName="showCountrySelector" color="primary">
+                Show Country Selector
+              </mat-checkbox>
+            </div>
           }
 
           <mat-checkbox formControlName="required" color="primary">Required</mat-checkbox>
 
           @if (field.type === 'select' || field.type === 'radio' || field.type === 'likertScale') {
-          <mat-divider></mat-divider>
-          <div class="options-container" formArrayName="options">
-            <h4>Options</h4>
-            @for (optionGroup of optionsFormArray.controls; let i = $index; track i) {
-            <div class="option-item-group" [formGroupName]="i">
-              <mat-form-field appearance="outline">
-                <mat-label>Label</mat-label>
-                <input matInput formControlName="label">
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Value</mat-label>
-                <input matInput formControlName="value">
-              </mat-form-field>
-              <button mat-icon-button color="warn" (click)="removeOption(i)" title="Remove Option">
-                <mat-icon>remove_circle_outline</mat-icon>
-              </button>
+            <mat-divider></mat-divider>
+            <div class="options-container" formArrayName="options">
+              <h4>Options</h4>
+              @for (optionGroup of optionsFormArray.controls; let i = $index; track i) {
+              <div class="option-item-group" [formGroupName]="i">
+                <mat-form-field appearance="outline">
+                  <mat-label>Label</mat-label>
+                  <input matInput formControlName="label">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Value</mat-label>
+                  <input matInput formControlName="value">
+                </mat-form-field>
+                <button mat-icon-button color="warn" (click)="removeOption(i)" title="Remove Option">
+                  <mat-icon>remove_circle_outline</mat-icon>
+                </button>
+              </div>
+              }
+              <div class="add-option-button">
+                <button type="button" mat-stroked-button (click)="addOption()">+ Add Option</button>
+              </div>
             </div>
-            }
-            <div class="add-option-button">
-              <button type="button" mat-stroked-button (click)="addOption()">+ Add Option</button>
-            </div>
-          </div>
           }
 
           <mat-divider></mat-divider>

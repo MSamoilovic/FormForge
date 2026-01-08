@@ -7,6 +7,7 @@ import {
   ColorPickerField,
   DateField,
   EmailField,
+  PhoneField,
   FileUploadField,
   NumberField,
   RadioField,
@@ -66,6 +67,7 @@ export class FormRenderer implements OnInit {
     [FieldType.Radio]: RadioField,
     [FieldType.Date]: DateField,
     [FieldType.Email]: EmailField,
+    [FieldType.Phone]: PhoneField,
     [FieldType.TextArea]: TextAreaField,
     [FieldType.FileUpload]: FileUploadField,
     [FieldType.RichText]: RichTextField,
@@ -112,6 +114,10 @@ export class FormRenderer implements OnInit {
     }
     if (field.type === FieldType.ColorPicker && field.colorFormat) {
       inputs['colorFormat'] = field.colorFormat;
+    }
+    if (field.type === FieldType.Phone) {
+      inputs['defaultCountry'] = field.defaultCountry || 'RS';
+      inputs['showCountrySelector'] = field.showCountrySelector !== false;
     }
     if (field.type === FieldType.FileUpload) {
       // Za sada koristimo podrazumevane vrednosti iz FileUploadField;

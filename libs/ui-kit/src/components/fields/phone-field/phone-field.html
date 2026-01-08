@@ -1,0 +1,42 @@
+<app-form-field-shell
+  [label]="label()"
+  [required]="required()"
+  [errorMessage]="computedErrorMessage()"
+  [hint]="hint()"
+>
+  <div class="phone-field-container">
+    @if (showCountrySelector()) {
+      <mat-form-field appearance="outline" class="country-selector">
+        <mat-select
+          [value]="selectedCountry()"
+          (selectionChange)="onCountryChange($event.value)"
+          class="country-select"
+        >
+          @for (country of countries; track country.code) {
+            <mat-option [value]="country.code">
+              <span class="country-option">
+                <span class="country-flag">{{ country.flag }}</span>
+                <span class="country-name">{{ country.name }}</span>
+                <span class="country-dial-code">{{ country.dialCode }}</span>
+              </span>
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+    
+    <div class="phone-input-wrapper">
+      @if (!showCountrySelector()) {
+        <span class="country-prefix">{{ countryFlag() }} {{ getCountryByCode(selectedCountry())?.dialCode || '+381' }}</span>
+      }
+      <input
+        type="tel"
+        [placeholder]="placeholder() || 'Enter phone number'"
+        class="form-field-input phone-input"
+        [formControl]="formControl()!"
+        (input)="onPhoneInput($event)"
+      />
+    </div>
+  </div>
+</app-form-field-shell>
+

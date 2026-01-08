@@ -13,6 +13,7 @@ import {
   ColorPickerField,
   DateField,
   EmailField,
+  PhoneField,
   FileUploadField,
   NumberField,
   RadioField,
@@ -68,6 +69,7 @@ export class FormBuilderComponent {
     FieldType.Radio,
     FieldType.Date,
     FieldType.Email,
+    FieldType.Phone,
     FieldType.TextArea,
     FieldType.FileUpload,
     FieldType.RichText,
@@ -89,6 +91,7 @@ export class FormBuilderComponent {
       icon: 'checklist',
     },
     { type: FieldType.Email, label: 'Email', icon: 'alternate_email' },
+    { type: FieldType.Phone, label: 'Phone', icon: 'phone' },
     { type: FieldType.TextArea, label: 'Text Area', icon: 'notes' },
     { type: FieldType.FileUpload, label: 'File Upload', icon: 'cloud_upload' },
     { type: FieldType.Checkbox, label: 'Checkbox', icon: 'check_box' },
@@ -119,6 +122,7 @@ export class FormBuilderComponent {
     [FieldType.Radio]: RadioField,
     [FieldType.Date]: DateField,
     [FieldType.Email]: EmailField,
+    [FieldType.Phone]: PhoneField,
     [FieldType.TextArea]: TextAreaField,
     [FieldType.FileUpload]: FileUploadField,
     [FieldType.RichText]: RichTextField,
@@ -140,7 +144,9 @@ export class FormBuilderComponent {
         .filter((field) => !currentControlIds.includes(field.id))
         .forEach((field) => {
           // MultiSelect field should be initialized with an empty array
-          const initialValue = field.type === FieldType.MultiSelect ? [] : null;
+          // Phone field should be initialized with empty string
+          const initialValue = field.type === FieldType.MultiSelect ? [] : 
+                               field.type === FieldType.Phone ? '' : null;
           this.form.addControl(field.id, new FormControl(initialValue));
         });
     });

@@ -53,6 +53,11 @@ export class FormBuilderCanvas {
       inputs['colorFormat'] = field.colorFormat;
     }
 
+    if (field.type === FieldType.Phone) {
+      inputs['defaultCountry'] = field.defaultCountry || 'RS';
+      inputs['showCountrySelector'] = field.showCountrySelector !== false;
+    }
+
     return inputs;
   }
 }
