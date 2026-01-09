@@ -5,10 +5,12 @@ import { NgComponentOutlet } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { MatCard, MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-form-builder-canvas',
-  imports: [CdkDropList, NgComponentOutlet, MatCardModule, MatIconModule],
+  imports: [CdkDropList, NgComponentOutlet, MatCardModule, MatIconModule, MatButtonModule, MatTooltipModule],
   templateUrl: './form-builder-canvas.html',
   styleUrl: './form-builder-canvas.scss',
   standalone: true,
@@ -22,6 +24,7 @@ export class FormBuilderCanvas {
 
   fieldDropped = output<CdkDragDrop<any[]>>();
   fieldSelected = output<FormField>();
+  fieldDuplicated = output<string>();
 
   onDrop(event: CdkDragDrop<any[]>) {
     this.fieldDropped.emit(event);
@@ -29,6 +32,11 @@ export class FormBuilderCanvas {
 
   onSelectField(field: FormField) {
     this.fieldSelected.emit(field);
+  }
+
+  onDuplicateField(fieldId: string, event: Event): void {
+    event.stopPropagation();
+    this.fieldDuplicated.emit(fieldId);
   }
 
   getComponent(fieldType: FieldType): Type<any> | null {

@@ -67,6 +67,16 @@
             ></ng-container>
           </div>
           <div class="field-actions">
+            <button
+              mat-icon-button
+              class="action-button"
+              (click)="onDuplicateField(field.id, $event)"
+              matTooltip="Duplicate field (Ctrl/Cmd + D)"
+              matTooltipPosition="left"
+              type="button"
+            >
+              <mat-icon class="action-icon">content_copy</mat-icon>
+            </button>
             <mat-icon class="action-icon">settings</mat-icon>
           </div>
         </div>

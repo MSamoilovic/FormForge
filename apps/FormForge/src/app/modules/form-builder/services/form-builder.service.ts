@@ -171,6 +171,35 @@ export class FormBuilderService {
     this.theme.set(theme);
   }
 
+  public duplicateField(fieldId: string): void {
+    const fieldToDuplicate = this.canvasFields().find((f) => f.id === fieldId);
+    if (!fieldToDuplicate) {
+      this.notificationService.showError('Field not found for duplication.');
+      return;
+    }
+
+    const duplicatedField: FormField = JSON.parse(JSON.stringify(fieldToDuplicate));
+    
+    duplicatedField.id = crypto.randomUUID();
+    duplicatedField.label = `${fieldToDuplicate.label} (Copy)`;
+    
+    if (duplicatedField.rules) {
+      duplicatedField.rules = duplicatedField.rules.map((rule) => {
+        return JSON.parse(JSON.stringify(rule));
+      });
+    }
+
+    const currentFields = this.canvasFields();
+    const originalIndex = currentFields.findIndex((f) => f.id === fieldId);
+    const newFields = [...currentFields];
+    newFields.splice(originalIndex + 1, 0, duplicatedField);
+
+    this.canvasFields.set(newFields);
+    this.selectField(duplicatedField);
+
+    this.notificationService.showSuccess('Field duplicated successfully.');
+  }
+
   public saveForm(): void {
     const currentFields = this.canvasFields();
     if (currentFields.length === 0) {

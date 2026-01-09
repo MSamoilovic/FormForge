@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, Type } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
@@ -171,4 +171,18 @@ export class FormBuilderComponent {
   onThemeChange(theme: FormTheme): void {
     this.formBuilderService.updateTheme(theme);
   }
-}
+
+  onDuplicateField(fieldId: string): void {
+    this.formBuilderService.duplicateField(fieldId);
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent): void {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'd') {
+      const selectedField = this.formBuilderService.selected();
+      if (selectedField) {
+        event.preventDefault();
+        this.onDuplicateField(selectedField.id);
+      }
+    }
+  }

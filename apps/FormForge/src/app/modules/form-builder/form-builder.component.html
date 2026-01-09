@@ -30,7 +30,7 @@
       [style.--form-border-radius.px]="formBuilderService.currentTheme()?.borderRadius || null">
       <app-form-builder-canvas [form]="form" [canvasFields]="formBuilderService.fields()"
         [selectedField]="formBuilderService.selected()" [componentMap]="componentMap" (fieldDropped)="onDrop($event)"
-        (fieldSelected)="onSelectField($event)"></app-form-builder-canvas>
+        (fieldSelected)="onSelectField($event)" (fieldDuplicated)="onDuplicateField($event)"></app-form-builder-canvas>
     </div>
 
     <app-form-builder-property-panel [selectedField]="formBuilderService.selected()"
