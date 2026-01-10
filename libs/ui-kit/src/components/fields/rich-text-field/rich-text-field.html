@@ -4,11 +4,108 @@
   [errorMessage]="computedErrorMessage()"
   [hint]="hint()"
 >
-  <textarea
-    class="form-field-input rich-textarea"
-    [attr.rows]="6"
-    [placeholder]="placeholder()"
-    [attr.aria-invalid]="formControl()?.invalid ? 'true' : 'false'"
-    [formControl]="formControl()!"
-  ></textarea>
+  <div class="rich-text-editor-wrapper">
+    <div class="rich-text-toolbar">
+      <button
+        type="button"
+        mat-icon-button
+        (click)="execCommand('bold', undefined, $event)"
+        matTooltip="Bold"
+        [disabled]="formControl()?.disabled"
+        class="toolbar-button"
+      >
+        <mat-icon>format_bold</mat-icon>
+      </button>
+      <button
+        type="button"
+        mat-icon-button
+        (click)="execCommand('italic', undefined, $event)"
+        matTooltip="Italic"
+        [disabled]="formControl()?.disabled"
+        class="toolbar-button"
+      >
+        <mat-icon>format_italic</mat-icon>
+      </button>
+      <button
+        type="button"
+        mat-icon-button
+        (click)="execCommand('underline', undefined, $event)"
+        matTooltip="Underline"
+        [disabled]="formControl()?.disabled"
+        class="toolbar-button"
+      >
+        <mat-icon>format_underlined</mat-icon>
+      </button>
+      <div class="toolbar-divider"></div>
+      <button
+        type="button"
+        mat-icon-button
+        (click)="execCommand('justifyLeft', undefined, $event)"
+        matTooltip="Align Left"
+        [disabled]="formControl()?.disabled"
+        class="toolbar-button"
+      >
+        <mat-icon>format_align_left</mat-icon>
+      </button>
+      <button
+        type="button"
+        mat-icon-button
+        (click)="execCommand('justifyCenter', undefined, $event)"
+        matTooltip="Align Center"
+        [disabled]="formControl()?.disabled"
+        class="toolbar-button"
+      >
+        <mat-icon>format_align_center</mat-icon>
+      </button>
+      <button
+        type="button"
+        mat-icon-button
+        (click)="execCommand('justifyRight', undefined, $event)"
+        matTooltip="Align Right"
+        [disabled]="formControl()?.disabled"
+        class="toolbar-button"
+      >
+        <mat-icon>format_align_right</mat-icon>
+      </button>
+      <div class="toolbar-divider"></div>
+      <button
+        type="button"
+        mat-icon-button
+        (click)="execCommand('insertUnorderedList', undefined, $event)"
+        matTooltip="Bullet List"
+        [disabled]="formControl()?.disabled"
+        class="toolbar-button"
+      >
+        <mat-icon>format_list_bulleted</mat-icon>
+      </button>
+      <button
+        type="button"
+        mat-icon-button
+        (click)="execCommand('insertOrderedList', undefined, $event)"
+        matTooltip="Numbered List"
+        [disabled]="formControl()?.disabled"
+        class="toolbar-button"
+      >
+        <mat-icon>format_list_numbered</mat-icon>
+      </button>
+      <div class="toolbar-divider"></div>
+      <button
+        type="button"
+        mat-icon-button
+        (click)="execCommand('removeFormat', undefined, $event)"
+        matTooltip="Remove Formatting"
+        [disabled]="formControl()?.disabled"
+        class="toolbar-button"
+      >
+        <mat-icon>format_clear</mat-icon>
+      </button>
+    </div>
+    <div
+      #editor
+      class="rich-text-editor"
+      [contentEditable]="!formControl()?.disabled"
+      [attr.aria-invalid]="formControl()?.invalid ? 'true' : 'false'"
+      [attr.data-placeholder]="placeholder() || 'Enter text...'"
+    ></div>
+  </div>
 </app-form-field-shell>

@@ -100,7 +100,11 @@ export class FormBuilderComponent {
     { type: FieldType.Date, label: 'Date', icon: 'calendar_today' },
     { type: FieldType.RichText, label: 'Rich Text', icon: 'format_align_left' },
     { type: FieldType.ColorPicker, label: 'Color Picker', icon: 'palette' },
-    { type: FieldType.LikertScale, label: 'Likert Scale', icon: 'linear_scale' },
+    {
+      type: FieldType.LikertScale,
+      label: 'Likert Scale',
+      icon: 'linear_scale',
+    },
   ];
 
   formBuilderService = inject(FormBuilderService);
@@ -145,8 +149,12 @@ export class FormBuilderComponent {
         .forEach((field) => {
           // MultiSelect field should be initialized with an empty array
           // Phone field should be initialized with empty string
-          const initialValue = field.type === FieldType.MultiSelect ? [] : 
-                               field.type === FieldType.Phone ? '' : null;
+          const initialValue =
+            field.type === FieldType.MultiSelect
+              ? []
+              : field.type === FieldType.Phone
+              ? ''
+              : null;
           this.form.addControl(field.id, new FormControl(initialValue));
         });
     });
@@ -186,3 +194,4 @@ export class FormBuilderComponent {
       }
     }
   }
+}
