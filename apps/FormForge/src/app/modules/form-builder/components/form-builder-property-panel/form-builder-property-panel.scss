@@ -41,16 +41,21 @@
 }
 
 mat-card-content {
-  overflow: visible;
+  overflow: hidden;
   padding: 0 !important;
   flex: 1 1 auto;
+  min-height: 0;
   background: var(--ff-color-surface);
+  display: flex;
+  flex-direction: column;
 }
 
 .properties-tabs {
   height: 100%;
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
 
   ::ng-deep .mat-mdc-tab-labels {
     background: var(--ff-color-surface);
@@ -60,13 +65,29 @@ mat-card-content {
   }
 
   ::ng-deep .mat-mdc-tab-body-wrapper {
-    flex-grow: 1;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
     background: var(--ff-color-surface);
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  ::ng-deep .mat-mdc-tab-body {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   ::ng-deep .mat-mdc-tab-body-content {
     background: var(--ff-color-surface);
-    overflow: visible;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    box-sizing: border-box;
   }
 }
 
@@ -81,8 +102,33 @@ mat-card-content {
 .tab-content {
   display: flex;
   flex-direction: column;
-  gap: var(--ff-spacing-md);
-  padding: var(--ff-spacing-lg);
+  gap: var(--ff-spacing-sm);
+  padding: var(--ff-spacing-md);
+  padding-bottom: var(--ff-spacing-lg);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+// Scrollbar styling for property panel
+.properties-tabs {
+  ::ng-deep .mat-mdc-tab-body-content::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::ng-deep .mat-mdc-tab-body-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+  }
+
+  ::ng-deep .mat-mdc-tab-body-content::-webkit-scrollbar-thumb {
+    background: var(--ff-color-border);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  ::ng-deep .mat-mdc-tab-body-content::-webkit-scrollbar-thumb:hover {
+    background: var(--ff-text-secondary);
+  }
 }
 
 .full-width {
@@ -98,8 +144,9 @@ mat-card-content {
 .phone-field-properties {
   display: flex;
   flex-direction: column;
-  gap: var(--ff-spacing-sm);
+  gap: var(--ff-spacing-xs);
   width: 100%;
+  margin-top: var(--ff-spacing-xs);
 }
 
 .country-option-inline {
@@ -109,12 +156,12 @@ mat-card-content {
 }
 
 mat-divider {
-  margin: var(--ff-spacing-md) 0;
+  margin: var(--ff-spacing-sm) 0;
 }
 
 .options-container {
   h4 {
-    margin: var(--ff-spacing-md) 0 var(--ff-spacing-sm) 0;
+    margin: var(--ff-spacing-sm) 0 var(--ff-spacing-xs) 0;
     color: var(--ff-text-primary);
     font-weight: 600;
     font-size: 0.95rem;
@@ -134,8 +181,8 @@ mat-divider {
   display: flex;
   align-items: center;
   gap: var(--ff-spacing-sm);
-  margin-bottom: var(--ff-spacing-sm);
-  padding: var(--ff-spacing-md);
+  margin-bottom: var(--ff-spacing-xs);
+  padding: var(--ff-spacing-sm);
   background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   border: 1px solid var(--ff-color-border);
@@ -153,7 +200,7 @@ mat-divider {
 }
 
 .add-option-button {
-  margin-top: var(--ff-spacing-sm);
+  margin-top: var(--ff-spacing-xs);
 
   button {
     width: 100%;

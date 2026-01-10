@@ -12,7 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilderThemeEditorComponent } from '../form-builder-theme-editor/form-builder-theme-editor.component';
 import { Countries, Country } from '@form-forge/ui-kit';
@@ -35,6 +35,7 @@ import { Countries, Country } from '@form-forge/ui-kit';
     MatTab,
     MatSelectModule,
     FormBuilderThemeEditorComponent,
+    MatTabLabel,
   ],
   templateUrl: './form-builder-property-panel.html',
   styleUrls: ['./form-builder-property-panel.scss'],

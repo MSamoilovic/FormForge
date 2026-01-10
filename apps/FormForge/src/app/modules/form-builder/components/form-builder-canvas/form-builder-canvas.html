@@ -23,18 +23,21 @@
 <!--  }-->
 <!--</main>-->
 <mat-card class="canvas-card">
-  <mat-card-header>
-    <mat-card-title class="canvas-title">
-      <mat-icon>dashboard_customize</mat-icon>
-      <span>Canvas</span>
-    </mat-card-title>
-    <mat-card-subtitle>Build your form here</mat-card-subtitle>
-  </mat-card-header>
+  @if (!canvasFields().length) {
+    <mat-card-header>
+      <mat-card-title class="canvas-title">
+        <mat-icon>dashboard_customize</mat-icon>
+        <span>Canvas</span>
+      </mat-card-title>
+      <mat-card-subtitle>Build your form here</mat-card-subtitle>
+    </mat-card-header>
+  }
 
   <mat-card-content
     id="canvasDropList"
     cdkDropList
     class="canvas-content"
+    [class.has-fields]="canvasFields().length > 0"
     (cdkDropListDropped)="onDrop($event)"
   >
     @if (!canvasFields().length) {

@@ -70,43 +70,40 @@
 
 .form-builder-content {
   display: grid;
-  grid-template-columns: 300px 1fr 400px;
+  grid-template-columns: 300px minmax(0, 2fr) 500px;
   gap: 1.5rem;
   flex: 1 1 auto;
+  min-height: 0;
   overflow: hidden;
+  width: 100%;
 
   > * {
     height: 100%;
+    min-height: 0;
   }
 }
 
 .canvas-preview-wrapper {
   background-color: var(--form-background-color, var(--ff-color-surface));
   font-family: var(--form-font-family, var(--ff-font-family));
-  padding: var(--ff-spacing-lg);
+  padding: 0;
   border-radius: 12px;
   border: 1px solid var(--ff-color-border);
-  overflow-y: auto;
+  overflow: hidden;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   height: 100%;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  max-width: 100%;
+  box-sizing: border-box;
 
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--ff-color-border);
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: var(--ff-text-secondary);
+  app-form-builder-canvas {
+    display: block;
+    height: 100%;
+    width: 100%;
+    min-height: 0;
+    flex: 1 1 auto;
   }
 }

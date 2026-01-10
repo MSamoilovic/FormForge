@@ -6,14 +6,18 @@
   transition: background-color 0.3s ease;
   overflow: hidden;
 
-  mat-card-header {
+  ::ng-deep mat-card-header {
     flex-shrink: 0;
+    padding-bottom: 0.5rem;
   }
 
-  mat-card-content {
+  ::ng-deep mat-card-content.sidebar-content {
     flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
+    min-height: 0 !important;
+    height: 0 !important; // Force flexbox to constrain height
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 0 !important;
   }
 }
 
@@ -34,17 +38,20 @@
 }
 
 .sidebar-content {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 0.5rem 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 0 !important;
+  min-height: 0;
+  position: relative;
+  -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
 }
 
 .field-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 0 0.5rem;
+  padding: 0.75rem;
+  padding-bottom: 1rem;
 }
 
 .field-item {
@@ -148,18 +155,19 @@
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-/* Scrollbar styling */
 .sidebar-content::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 .sidebar-content::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
 }
 
 .sidebar-content::-webkit-scrollbar-thumb {
   background: var(--ff-color-border);
-  border-radius: 3px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
 }
 
 .sidebar-content::-webkit-scrollbar-thumb:hover {
