@@ -77,7 +77,10 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((color: (primary: $form-forge-p
 html,
 body {
   height: 100%;
+  width: 100%;
   margin: 0;
+  padding: 0;
+  overflow: hidden;
   font-family: var(--ff-font-family), serif;
   background-color: var(--ff-color-background);
   color: var(--ff-text-primary);
