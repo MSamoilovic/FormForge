@@ -1,17 +1,24 @@
 :host {
   display: block;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
 }
 
 .form-builder-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  padding: 1rem;
+  height: 100%;
+  width: 100%;
+  padding: 1rem 1rem 1rem 1rem;
   box-sizing: border-box;
   background-color: var(--ff-color-background);
   color: var(--ff-text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow: hidden;
+  position: relative;
 
   &.dark-theme {
     background-color: var(--ff-color-background);
@@ -23,11 +30,11 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   flex-shrink: 0;
-  padding: 1rem 1.5rem;
+  padding: 0.5rem 1rem;
   background: var(--ff-color-surface);
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid var(--ff-color-border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.3s ease;
@@ -70,16 +77,36 @@
 
 .form-builder-content {
   display: grid;
-  grid-template-columns: 300px minmax(0, 2fr) 500px;
-  gap: 1.5rem;
-  flex: 1 1 auto;
+  grid-template-columns: 300px 1fr 500px;
+  gap: 1rem;
+  flex: 1 1 0;
   min-height: 0;
   overflow: hidden;
   width: 100%;
+  box-sizing: border-box;
 
   > * {
-    height: 100%;
     min-height: 0;
+    overflow: hidden;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+
+  p {
+    margin-top: 1rem;
+    color: var(--ff-text-secondary);
   }
 }
 
@@ -87,23 +114,21 @@
   background-color: var(--form-background-color, var(--ff-color-surface));
   font-family: var(--form-font-family, var(--ff-font-family));
   padding: 0;
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid var(--ff-color-border);
   overflow: hidden;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  height: 100%;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  max-width: 100%;
   box-sizing: border-box;
 
   app-form-builder-canvas {
-    display: block;
-    height: 100%;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
     min-height: 0;
-    flex: 1 1 auto;
+    overflow: hidden;
   }
 }
