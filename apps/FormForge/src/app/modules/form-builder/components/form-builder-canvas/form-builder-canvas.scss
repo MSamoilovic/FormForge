@@ -7,15 +7,6 @@
   box-sizing: border-box;
 }
 
-::ng-deep mat-card.canvas-card.mat-mdc-card {
-  height: 100% !important;
-  min-height: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
-  border-radius: 8px !important;
-}
 
 .canvas-card {
   height: 100%;
@@ -29,18 +20,7 @@
   box-sizing: border-box;
   border-radius: 8px;
 
-  ::ng-deep mat-card-header {
-    flex-shrink: 0;
-    padding: 0.75rem 1rem 0.5rem 1rem;
-  }
-
-  ::ng-deep mat-card-content {
-    flex: 1 1 0;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+  
 }
 
 .canvas-title {
@@ -76,16 +56,7 @@
   }
 }
 
-// Ensure mat-card-content takes full height
-::ng-deep mat-card.canvas-card .mat-mdc-card-content {
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
-  height: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-}
+
 
 .empty-state {
   display: flex;
@@ -268,24 +239,6 @@
   overflow: visible;
   z-index: 1;
   
-  // Ensure form fields don't overflow and respect parent width
-  ::ng-deep app-multiselect-field,
-  ::ng-deep app-selector-field,
-  ::ng-deep app-text-field,
-  ::ng-deep app-number-field,
-  ::ng-deep app-email-field,
-  ::ng-deep app-phone-field,
-  ::ng-deep app-text-area-field,
-  ::ng-deep app-date-field,
-  ::ng-deep app-checkbox-field,
-  ::ng-deep app-radio-field,
-  ::ng-deep app-toggle-switch-field {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    min-width: 0;
-  }
 }
 
 .field-actions {

@@ -1,0 +1,19 @@
+
+
+.ff-card-full-height {
+  @include mat-card-full-height-layout;
+}
+
+
+.ff-tabs-full-height {
+  @include mat-tabs-full-height-layout;
+
+  .mat-mdc-tab-body-content {
+    @include custom-scrollbar;
+  }
+}
+
+
+.ff-hide-subscript {
+  @include hide-form-field-subscript;
+}
