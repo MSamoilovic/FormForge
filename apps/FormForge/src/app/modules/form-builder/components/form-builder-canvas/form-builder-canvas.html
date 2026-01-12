@@ -1,28 +1,5 @@
-<!--<main-->
-<!--  id="canvasDropList"-->
-<!--  cdkDropList-->
-<!--  class="canvas"-->
-<!--  (cdkDropListDropped)="onDrop($event)"-->
-<!--&gt;-->
-<!--  <h3>Canvas</h3>-->
-<!--  @for (field of canvasFields(); track field.id) {-->
-<!--    <div-->
-<!--      class="canvas-field"-->
-<!--      (click)="onSelectField(field)"-->
-<!--      [class.selected]="selectedField()?.id === field.id"-->
-<!--      tabindex="1"-->
-<!--      type="button"-->
-<!--    >-->
-<!--      <ng-container-->
-<!--        *ngComponentOutlet="-->
-<!--          getComponent(field.type);-->
-<!--          inputs: getComponentInputs(field)-->
-<!--        "-->
-<!--      ></ng-container>-->
-<!--    </div>-->
-<!--  }-->
-<!--</main>-->
-<mat-card class="canvas-card">
+
+<mat-card class="canvas-card ff-card-full-height">
   @if (!canvasFields().length) {
     <mat-card-header>
       <mat-card-title class="canvas-title">
@@ -63,7 +40,7 @@
           <div class="drag-handle" cdkDragHandle>
             <mat-icon>drag_indicator</mat-icon>
           </div>
-          <div class="field-content">
+          <div class="field-content ff-field-content">
             <ng-container
               [ngComponentOutlet]="getComponent(field.type)"
               [ngComponentOutletInputs]="getComponentInputs(field)"

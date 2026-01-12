@@ -6,11 +6,11 @@
 >
   <div class="phone-field-container">
     @if (showCountrySelector()) {
-      <mat-form-field appearance="outline" class="country-selector">
+      <mat-form-field appearance="outline" class="country-selector ff-hide-subscript">
         <mat-select
           [value]="selectedCountry()"
           (selectionChange)="onCountryChange($event.value)"
-          class="country-select"
+          class="country-select "
         >
           @for (country of countries; track country.code) {
             <mat-option [value]="country.code">

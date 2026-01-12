@@ -6,15 +6,6 @@
   box-sizing: border-box;
 }
 
-::ng-deep mat-card.property-panel-card.mat-mdc-card {
-  height: 100% !important;
-  min-height: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
-  border-radius: 8px !important;
-}
 
 .property-panel-card {
   display: flex;
@@ -80,32 +71,6 @@ mat-card-content {
     padding: 0 1rem;
     flex-shrink: 0;
   }
-
-  ::ng-deep .mat-mdc-tab-body-wrapper {
-    flex: 1 1 auto !important;
-    min-height: 0 !important;
-    background: var(--ff-color-surface);
-    overflow: hidden !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  ::ng-deep .mat-mdc-tab-body {
-    flex: 1 1 auto !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  ::ng-deep .mat-mdc-tab-body-content {
-    background: var(--ff-color-surface);
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    height: 100% !important;
-    max-height: 100% !important;
-    box-sizing: border-box;
-  }
 }
 
 .tab-icon {
@@ -126,27 +91,6 @@ mat-card-content {
   box-sizing: border-box;
 }
 
-// Scrollbar styling for property panel
-.properties-tabs {
-  ::ng-deep .mat-mdc-tab-body-content::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::ng-deep .mat-mdc-tab-body-content::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 4px;
-  }
-
-  ::ng-deep .mat-mdc-tab-body-content::-webkit-scrollbar-thumb {
-    background: var(--ff-color-border);
-    border-radius: 4px;
-    transition: background 0.2s ease;
-  }
-
-  ::ng-deep .mat-mdc-tab-body-content::-webkit-scrollbar-thumb:hover {
-    background: var(--ff-text-secondary);
-  }
-}
 
 .full-width {
   width: 100%;

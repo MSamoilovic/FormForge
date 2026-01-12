@@ -6,15 +6,6 @@
   box-sizing: border-box;
 }
 
-::ng-deep mat-card.sidebar-card.mat-mdc-card {
-  height: 100% !important;
-  min-height: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
-  border-radius: 8px !important;
-}
 
 .sidebar-card {
   height: 100%;
@@ -25,19 +16,6 @@
   overflow: hidden;
   box-sizing: border-box;
   border-radius: 8px;
-
-  ::ng-deep mat-card-header {
-    flex-shrink: 0;
-    padding: 0.75rem 1rem 0.5rem 1rem;
-  }
-
-  ::ng-deep mat-card-content.sidebar-content {
-    flex: 1 1 0;
-    min-height: 0 !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    padding: 0 !important;
-  }
 }
 
 .sidebar-title {
@@ -62,7 +40,7 @@
   padding: 0 !important;
   min-height: 0;
   position: relative;
-  -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+  -webkit-overflow-scrolling: touch;
 }
 
 .field-list {
@@ -133,7 +111,7 @@
   height: 32px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 6px;
-  
+
   mat-icon {
     font-size: 20px;
     width: 20px;
