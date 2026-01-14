@@ -17,3 +17,4 @@ export * from './components/fields/likert-scale-field/likert-scale-field';
 export * from './components/field-error/field-error';
 export * from './components/field-hint/field-hint';
 export * from './components/form-field-shell/form-field-shell';
+export * from './config/field-component.config'
