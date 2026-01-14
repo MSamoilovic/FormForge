@@ -2,23 +2,7 @@ import { Component, computed, inject, OnInit, Type } from '@angular/core';
 import { FieldType, FormField } from '@form-forge/models';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import {
-  CheckboxField,
-  ColorPickerField,
-  DateField,
-  EmailField,
-  PhoneField,
-  FileUploadField,
-  NumberField,
-  RadioField,
-  SelectorField,
-  MultiSelectField,
-  TextAreaField,
-  TextField,
-  RichTextField,
-  ToggleSwitchField,
-  LikertScaleField,
-} from '@form-forge/ui-kit';
+import { FIELD_TYPE_MAP } from '@form-forge/ui-kit';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatError } from '@angular/material/form-field';
@@ -57,23 +41,7 @@ export class FormRenderer implements OnInit {
     () => this.themeService.currentTheme() === 'dark'
   );
 
-  private componentMap: Record<FieldType, Type<any>> = {
-    [FieldType.Text]: TextField,
-    [FieldType.Number]: NumberField,
-    [FieldType.Select]: SelectorField,
-    [FieldType.MultiSelect]: MultiSelectField,
-    [FieldType.Checkbox]: CheckboxField,
-    [FieldType.ToggleSwitch]: ToggleSwitchField,
-    [FieldType.Radio]: RadioField,
-    [FieldType.Date]: DateField,
-    [FieldType.Email]: EmailField,
-    [FieldType.Phone]: PhoneField,
-    [FieldType.TextArea]: TextAreaField,
-    [FieldType.FileUpload]: FileUploadField,
-    [FieldType.RichText]: RichTextField,
-    [FieldType.ColorPicker]: ColorPickerField,
-    [FieldType.LikertScale]: LikertScaleField,
-  };
+  private componentMap = FIELD_TYPE_MAP;
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -104,7 +72,12 @@ export class FormRenderer implements OnInit {
       placeholder: field.placeholder,
       formControl: formGroup.get(field.id),
     };
-    if (field.type === FieldType.Select || field.type === FieldType.Radio || field.type === FieldType.MultiSelect || field.type === FieldType.LikertScale) {
+    if (
+      field.type === FieldType.Select ||
+      field.type === FieldType.Radio ||
+      field.type === FieldType.MultiSelect ||
+      field.type === FieldType.LikertScale
+    ) {
       inputs['options'] = field.options;
     }
     if (field.type === FieldType.Number) {

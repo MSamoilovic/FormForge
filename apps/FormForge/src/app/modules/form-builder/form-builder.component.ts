@@ -1,4 +1,10 @@
-import { Component, computed, effect, HostListener, inject, Type } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  HostListener,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
@@ -8,23 +14,7 @@ import {
   FormField,
   FormTheme,
 } from '@form-forge/models';
-import {
-  CheckboxField,
-  ColorPickerField,
-  DateField,
-  EmailField,
-  PhoneField,
-  FileUploadField,
-  NumberField,
-  RadioField,
-  SelectorField,
-  MultiSelectField,
-  TextAreaField,
-  TextField,
-  RichTextField,
-  ToggleSwitchField,
-  LikertScaleField,
-} from '@form-forge/ui-kit';
+import { FIELD_TYPE_MAP } from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './components/form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './components/form-builder-canvas/form-builder-canvas';
 import { FormBuilderPropertyPanel } from './components/form-builder-property-panel/form-builder-property-panel';
@@ -116,23 +106,7 @@ export class FormBuilderComponent {
     () => this.themeService.currentTheme() === 'dark'
   );
 
-  componentMap: Record<FieldType, Type<any>> = {
-    [FieldType.Text]: TextField,
-    [FieldType.Number]: NumberField,
-    [FieldType.Select]: SelectorField,
-    [FieldType.MultiSelect]: MultiSelectField,
-    [FieldType.Checkbox]: CheckboxField,
-    [FieldType.ToggleSwitch]: ToggleSwitchField,
-    [FieldType.Radio]: RadioField,
-    [FieldType.Date]: DateField,
-    [FieldType.Email]: EmailField,
-    [FieldType.Phone]: PhoneField,
-    [FieldType.TextArea]: TextAreaField,
-    [FieldType.FileUpload]: FileUploadField,
-    [FieldType.RichText]: RichTextField,
-    [FieldType.ColorPicker]: ColorPickerField,
-    [FieldType.LikertScale]: LikertScaleField,
-  };
+  componentMap = FIELD_TYPE_MAP;
 
   constructor() {
     effect(() => {
