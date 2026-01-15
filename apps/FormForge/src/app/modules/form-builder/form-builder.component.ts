@@ -134,7 +134,7 @@ export class FormBuilderComponent {
     });
   }
 
-  onDrop(event: CdkDragDrop<any[]>): void {
+  onDrop(event: CdkDragDrop<FormField[], AvailableField[], FieldType>): void {
     this.formBuilderService.dropField(event);
   }
 

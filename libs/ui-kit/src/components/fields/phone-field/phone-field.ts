@@ -103,7 +103,7 @@ export class PhoneField implements ControlValueAccessor {
     control.updateValueAndValidity({ emitEvent: false });
   }
 
-  private phoneValidator(control: FormControl): { [key: string]: any } | null {
+  private phoneValidator(control: FormControl): { [key: string]: { message: string } } | null {
     const value = control?.value;
     if (!value || (this.required() === false && !value.trim())) {
       return null;

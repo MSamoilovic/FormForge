@@ -45,15 +45,15 @@ export class SelectorField implements ControlValueAccessor {
     return 'Value is not valid.';
   });
 
-  writeValue(value: any): void {
+  writeValue(value: string | null): void {
     this.formControl()?.setValue(value, { emitEvent: false });
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: string | null) => void): void {
     this.formControl()?.valueChanges.subscribe(fn);
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.formControl()?.statusChanges.subscribe(() => fn());
   }
 

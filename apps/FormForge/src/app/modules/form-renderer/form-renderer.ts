@@ -1,8 +1,8 @@
-import { Component, computed, inject, OnInit, Type } from '@angular/core';
-import { FieldType, FormField } from '@form-forge/models';
+import { Component, computed, inject, OnInit } from '@angular/core';
+import { FieldComponentInputs, FieldType, FormField } from '@form-forge/models';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { FIELD_TYPE_MAP } from '@form-forge/ui-kit';
+import { FIELD_TYPE_MAP, FieldComponentType } from '@form-forge/ui-kit';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatError } from '@angular/material/form-field';
@@ -59,43 +59,56 @@ export class FormRenderer implements OnInit {
     }
   }
 
-  getComponent(fieldType: FieldType): Type<any> | null {
+  getComponent(fieldType: FieldType): FieldComponentType | null {
     return this.componentMap[fieldType] || null;
   }
 
-  getComponentInputs(field: FormField): Record<string, any> {
+  getComponentInputs(field: FormField): FieldComponentInputs {
     const formGroup = this.rendererService.formGroup();
-    if (!formGroup) return {};
+    if (!formGroup) {
+      return { label: field.label };
+    }
 
-    const inputs: Record<string, any> = {
+    const inputs: FieldComponentInputs = {
       label: field.label,
       placeholder: field.placeholder,
-      formControl: formGroup.get(field.id),
+      formControl: formGroup.get(field.id) ?? undefined,
     };
+
     if (
       field.type === FieldType.Select ||
       field.type === FieldType.Radio ||
       field.type === FieldType.MultiSelect ||
       field.type === FieldType.LikertScale
     ) {
-      inputs['options'] = field.options;
+      (inputs as { options?: typeof field.options }).options = field.options;
     }
+
     if (field.type === FieldType.Number) {
-      if (field.min !== undefined) inputs['min'] = field.min;
-      if (field.max !== undefined) inputs['max'] = field.max;
-      if (field.step !== undefined) inputs['step'] = field.step;
+      const numberInputs = inputs as {
+        min?: number;
+        max?: number;
+        step?: number;
+      };
+      if (field.min !== undefined) numberInputs.min = field.min;
+      if (field.max !== undefined) numberInputs.max = field.max;
+      if (field.step !== undefined) numberInputs.step = field.step;
     }
+
     if (field.type === FieldType.ColorPicker && field.colorFormat) {
-      inputs['colorFormat'] = field.colorFormat;
+      (inputs as { colorFormat?: typeof field.colorFormat }).colorFormat =
+        field.colorFormat;
     }
+
     if (field.type === FieldType.Phone) {
-      inputs['defaultCountry'] = field.defaultCountry || 'RS';
-      inputs['showCountrySelector'] = field.showCountrySelector !== false;
+      (inputs as { defaultCountry?: string }).defaultCountry =
+        field.defaultCountry || 'RS';
+      (inputs as { showCountrySelector?: boolean }).showCountrySelector =
+        field.showCountrySelector !== false;
     }
-    if (field.type === FieldType.FileUpload) {
-      // Za sada koristimo podrazumevane vrednosti iz FileUploadField;
-      // kasnije se ovde mogu vezati specifične opcije (accept, multiple, maxSize, maxFiles).
-    }
+
+   
+
     return inputs;
   }
 }
