@@ -2,6 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  AvailableField,
   ColorFormat,
   FieldType,
   FormField,
@@ -114,7 +115,9 @@ export class FormBuilderService {
     this.selectedField.set(field);
   }
 
-  public dropField(event: CdkDragDrop<any[]>): void {
+  public dropField(
+    event: CdkDragDrop<FormField[], AvailableField[], FieldType>
+  ): void {
     const fieldType: FieldType = event.item.data;
 
     const newField: FormField = {

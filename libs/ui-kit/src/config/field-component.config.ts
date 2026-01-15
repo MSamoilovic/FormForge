@@ -1,4 +1,5 @@
 import { Type } from '@angular/core';
+import { ControlValueAccessor } from '@angular/forms';
 import { FieldType } from '@form-forge/models';
 import {
   TextField,
@@ -18,7 +19,11 @@ import {
   LikertScaleField,
 } from '@form-forge/ui-kit';
 
-export const FIELD_TYPE_MAP: Record<FieldType, Type<any>> = {
+
+export type FieldComponentType = Type<ControlValueAccessor>;
+
+
+export const FIELD_TYPE_MAP: Record<FieldType, FieldComponentType> = {
   [FieldType.Text]: TextField,
   [FieldType.Number]: NumberField,
   [FieldType.Select]: SelectorField,
