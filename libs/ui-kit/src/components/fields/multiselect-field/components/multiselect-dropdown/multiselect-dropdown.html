@@ -1,0 +1,14 @@
+<div class="multiselect-dropdown" role="listbox">
+  @if (options().length === 0) {
+    <div class="dropdown-empty">No options available</div>
+  } @else {
+    @for (option of options(); track option.value) {
+      <app-multiselect-option
+        [option]="option"
+        [selected]="isSelected(option.value)"
+        [disabled]="disabled()"
+        (toggled)="onOptionToggle($event)" />
+    }
+  }
+</div>
+

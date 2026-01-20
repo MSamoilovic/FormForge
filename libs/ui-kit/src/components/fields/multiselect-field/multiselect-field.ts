@@ -1,4 +1,14 @@
-import { Component, computed, forwardRef, input, signal, HostListener, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  forwardRef,
+  input,
+  signal,
+  HostListener,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ControlValueAccessor,
@@ -6,12 +16,20 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { FieldOption, FieldType } from '@form-forge/models';
+import { FieldOption, FieldType, OptionValue } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
+import { MultiSelectTrigger } from './components/multiselect-trigger/multiselect-trigger';
+import { MultiSelectDropdown } from './components/multiselect-dropdown/multiselect-dropdown';
 
 @Component({
   selector: 'app-multiselect-field',
-  imports: [CommonModule, ReactiveFormsModule, FormFieldShell],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormFieldShell,
+    MultiSelectTrigger,
+    MultiSelectDropdown,
+  ],
   templateUrl: './multiselect-field.html',
   styleUrl: './multiselect-field.scss',
   standalone: true,
@@ -23,7 +41,7 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
     },
   ],
 })
-export class MultiSelectField implements ControlValueAccessor, AfterViewInit {
+export class MultiSelectField implements ControlValueAccessor {
   readonly label = input<string>('');
   readonly options = input<FieldOption[]>([]);
   readonly formControl = input<FormControl | undefined>(undefined);
@@ -35,11 +53,19 @@ export class MultiSelectField implements ControlValueAccessor, AfterViewInit {
   @ViewChild('wrapper', { static: false }) wrapperRef?: ElementRef<HTMLElement>;
 
   isOpen = signal(false);
-  private onChangeFn?: (value: any) => void;
+  private internalValue = signal<OptionValue[]>([]);
+  private onChangeFn?: (value: OptionValue[]) => void;
   private onTouchedFn?: () => void;
 
-  ngAfterViewInit(): void {
-    // Setup is done in template
+  constructor() {
+    // Initialize internal value when form control changes
+    effect(() => {
+      const control = this.formControl();
+      if (control) {
+        const value = control.value;
+        this.internalValue.set(Array.isArray(value) ? value : []);
+      }
+    }, { allowSignalWrites: true });
   }
 
   computedErrorMessage = computed(() => {
@@ -55,9 +81,8 @@ export class MultiSelectField implements ControlValueAccessor, AfterViewInit {
     return 'Value is not valid.';
   });
 
-  selectedValues = computed(() => {
-    const control = this.formControl();
-    return control?.value || [];
+  selectedValues = computed<OptionValue[]>(() => {
+    return this.internalValue();
   });
 
   selectedOptions = computed(() => {
@@ -65,32 +90,19 @@ export class MultiSelectField implements ControlValueAccessor, AfterViewInit {
     return this.options().filter((opt) => selected.includes(opt.value));
   });
 
-  toggleDropdown(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
+  onTriggerClick(): void {
     if (this.formControl()?.disabled) return;
     this.isOpen.update((open) => !open);
     if (!this.isOpen()) {
-      this.formControl()?.markAsTouched();
-      this.onTouchedFn?.();
+      this.markAsTouched();
     }
   }
 
-  closeDropdown(): void {
-    this.isOpen.set(false);
-    this.formControl()?.markAsTouched();
-    this.onTouchedFn?.();
-  }
-
-  toggleOption(optionValue: any, event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
+  onOptionToggle(optionValue: OptionValue): void {
     const control = this.formControl();
     if (!control || control.disabled) return;
 
-    const currentValue = Array.isArray(control.value) ? [...control.value] : [];
+    const currentValue = [...this.internalValue()];
     const index = currentValue.indexOf(optionValue);
 
     if (index > -1) {
@@ -99,42 +111,49 @@ export class MultiSelectField implements ControlValueAccessor, AfterViewInit {
       currentValue.push(optionValue);
     }
 
+    this.internalValue.set(currentValue);
     control.setValue(currentValue);
     this.onChangeFn?.(currentValue);
     control.markAsTouched();
   }
 
-  isSelected(optionValue: any): boolean {
-    const selected = this.selectedValues();
-    return selected.includes(optionValue);
-  }
-
-  removeOption(event: Event, optionValue: any): void {
-    event.stopPropagation();
+  onChipRemove(optionValue: OptionValue): void {
     const control = this.formControl();
     if (!control || control.disabled) return;
 
-    const currentValue = Array.isArray(control.value) ? [...control.value] : [];
+    const currentValue = [...this.internalValue()];
     const index = currentValue.indexOf(optionValue);
 
     if (index > -1) {
       currentValue.splice(index, 1);
+      this.internalValue.set(currentValue);
       control.setValue(currentValue);
       this.onChangeFn?.(currentValue);
     }
   }
 
-  writeValue(value: any): void {
+  private markAsTouched(): void {
+    this.formControl()?.markAsTouched();
+    this.onTouchedFn?.();
+  }
+
+  private closeDropdown(): void {
+    this.isOpen.set(false);
+    this.markAsTouched();
+  }
+
+  writeValue(value: OptionValue[] | OptionValue | null): void {
     const arrayValue = Array.isArray(value) ? value : value ? [value] : [];
+    this.internalValue.set(arrayValue);
     this.formControl()?.setValue(arrayValue, { emitEvent: false });
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: OptionValue[]) => void): void {
     this.onChangeFn = fn;
     this.formControl()?.valueChanges.subscribe(fn);
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouchedFn = fn;
   }
 
@@ -151,15 +170,14 @@ export class MultiSelectField implements ControlValueAccessor, AfterViewInit {
   onDocumentClick(event: MouseEvent): void {
     if (!this.isOpen() || !this.wrapperRef?.nativeElement) return;
     const target = event.target as HTMLElement;
-    // Close if clicked outside the wrapper, but allow clicks on dropdown options
+
     if (!this.wrapperRef.nativeElement.contains(target)) {
-      // Also check if click is on a duplicate button or other canvas actions
-      const isCanvasAction = target.closest('.field-actions') || 
-                            target.closest('.action-button') ||
-                            target.closest('.canvas-field-wrapper');
-      if (isCanvasAction) {
-        this.closeDropdown();
-      } else if (!target.closest('.multiselect-dropdown')) {
+      const isCanvasAction =
+        target.closest('.field-actions') ||
+        target.closest('.action-button') ||
+        target.closest('.canvas-field-wrapper');
+
+      if (isCanvasAction || !target.closest('.multiselect-dropdown')) {
         this.closeDropdown();
       }
     }
@@ -172,4 +190,3 @@ export class MultiSelectField implements ControlValueAccessor, AfterViewInit {
     }
   }
 }
-

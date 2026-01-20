@@ -1,0 +1,23 @@
+<div
+  class="multiselect-input"
+  [class.disabled]="disabled()"
+  [class.open]="isOpen()"
+  (click)="onClick($event)"
+  role="combobox"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-disabled]="disabled()">
+  <div class="selected-chips">
+    @if (selectedOptions().length === 0) {
+      <span class="placeholder">{{ placeholder() }}</span>
+    } @else {
+      @for (option of selectedOptions(); track option.value) {
+        <app-multiselect-chip
+          [option]="option"
+          [disabled]="disabled()"
+          (removed)="onChipRemove($event)" />
+      }
+    }
+  </div>
+  <span class="custom-arrow" [class.rotated]="isOpen()"></span>
+</div>
+

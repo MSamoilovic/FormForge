@@ -1,0 +1,13 @@
+<span class="chip">
+  <span class="chip-label">{{ option().label }}</span>
+  <button
+    type="button"
+    class="chip-remove"
+    (click)="onRemove($event)"
+    [disabled]="disabled()"
+    tabindex="-1"
+    [attr.aria-label]="'Remove ' + option().label">
+    ×
+  </button>
+</span>
+

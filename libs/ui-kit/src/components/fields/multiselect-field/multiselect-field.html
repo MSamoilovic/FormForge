@@ -1,55 +1,23 @@
-<app-form-field-shell [label]="label()" [required]="required()"
-  [errorMessage]="computedErrorMessage()" [hint]="hint()">
+<app-form-field-shell
+  [label]="label()"
+  [required]="required()"
+  [errorMessage]="computedErrorMessage()"
+  [hint]="hint()">
   <div class="multiselect-wrapper" #wrapper>
-    <div 
-      class="multiselect-input" 
-      [class.disabled]="formControl()?.disabled"
-      [class.open]="isOpen()"
-      (click)="toggleDropdown($event)">
-      <div class="selected-chips">
-        @if (selectedOptions().length === 0) {
-          <span class="placeholder">{{ placeholder() || 'Select options...' }}</span>
-        } @else {
-          @for (option of selectedOptions(); track option.value) {
-            <span class="chip">
-              <span class="chip-label">{{ option.label }}</span>
-              <button 
-                type="button"
-                class="chip-remove"
-                (click)="removeOption($event, option.value)"
-                [disabled]="formControl()?.disabled"
-                tabindex="-1">
-                ×
-              </button>
-            </span>
-          }
-        }
-      </div>
-      <span class="custom-arrow" [class.rotated]="isOpen()"></span>
-    </div>
+    <app-multiselect-trigger
+      [selectedOptions]="selectedOptions()"
+      [placeholder]="placeholder() || 'Select options...'"
+      [disabled]="formControl()?.disabled ?? false"
+      [isOpen]="isOpen()"
+      (clicked)="onTriggerClick()"
+      (chipRemoved)="onChipRemove($event)" />
+
     @if (isOpen()) {
-      <div class="multiselect-dropdown">
-        @if (options().length === 0) {
-          <div class="dropdown-empty">No options available</div>
-        } @else {
-          @for (option of options(); track option.value) {
-            <div 
-              class="dropdown-option" 
-              [class.selected]="isSelected(option.value)"
-              (click)="toggleOption(option.value, $event)">
-              <input 
-                type="checkbox" 
-                [checked]="isSelected(option.value)"
-                [disabled]="formControl()?.disabled"
-                readonly
-                tabindex="-1"
-                (click)="$event.stopPropagation()">
-              <span class="option-label">{{ option.label }}</span>
-            </div>
-          }
-        }
-      </div>
+      <app-multiselect-dropdown
+        [options]="options()"
+        [selectedValues]="selectedValues()"
+        [disabled]="formControl()?.disabled ?? false"
+        (optionToggled)="onOptionToggle($event)" />
     }
   </div>
 </app-form-field-shell>
-

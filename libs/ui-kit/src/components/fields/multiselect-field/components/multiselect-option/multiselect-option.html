@@ -1,0 +1,17 @@
+<div
+  class="dropdown-option"
+  [class.selected]="selected()"
+  [class.disabled]="disabled()"
+  (click)="onToggle($event)"
+  role="option"
+  [attr.aria-selected]="selected()">
+  <input
+    type="checkbox"
+    [checked]="selected()"
+    [disabled]="disabled()"
+    readonly
+    tabindex="-1"
+    (click)="onCheckboxClick($event)" />
+  <span class="option-label">{{ option().label }}</span>
+</div>
+
