@@ -24,6 +24,7 @@ import { MatInput } from '@angular/material/input';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { ThemeService } from '../core/services/theme.service';
+import { ErrorHandlerService } from '../core/services/error-handler.service';
 
 @Component({
   selector: 'app-submissions',
@@ -49,6 +50,7 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
   private submissionDataService = inject(SubmissionsDataService);
   private fb = inject(FormBuilder);
   private themeService = inject(ThemeService);
+  private errorHandler = inject(ErrorHandlerService);
 
   private formId: number | null = null;
   submissions = signal<SubmissionResponse[]>([]);
@@ -101,7 +103,7 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
       this.formId = +idParam;
       this.loadSubmissions(this.formId);
     } else {
-      console.error('Form ID is missing from URL');
+      this.errorHandler.showError('Form ID is missing from URL', 'Submissions.init');
       this.isLoading.set(false);
     }
   }
@@ -158,8 +160,8 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
         this.isLoading.set(false);
       },
       error: (error) => {
-        console.error('Error loading Submissions:', error);
         this.isLoading.set(false);
+        this.errorHandler.handle(error, 'Submissions.load');
       },
     });
   }

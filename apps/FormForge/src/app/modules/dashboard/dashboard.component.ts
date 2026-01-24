@@ -8,10 +8,10 @@ import { FormSchema } from '@form-forge/models';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { DashboardDataService } from './services/dashboard-data.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { NotificationService } from '../core/services/notification.service';
+import { ErrorHandlerService } from '../core/services/error-handler.service';
 import { GenerateFormDialogComponent } from './components/generate-form/generate-form-dialog.component';
 import { AIApiService } from '../core/services/ai-api.service';
 import { ThemeService } from '../core/services/theme.service';
@@ -36,10 +36,10 @@ export class DashboardComponent implements OnInit {
   private router = inject(Router);
   private apiService = inject(DashboardDataService);
   private notificationService = inject(NotificationService);
+  private errorHandler = inject(ErrorHandlerService);
   private themeService = inject(ThemeService);
 
   dialog = inject(MatDialog);
-  snackBar = inject(MatSnackBar);
 
   forms = signal<FormSchema[]>([]);
   isLoading = signal<boolean>(true);
@@ -58,11 +58,10 @@ export class DashboardComponent implements OnInit {
       next: (data) => {
         this.forms.set(data as FormSchema[]);
         this.isLoading.set(false);
-        console.log('Uspešno učitane forme:', data);
       },
       error: (err) => {
-        console.error('Greška pri učitavanju formi:', err);
         this.isLoading.set(false);
+        this.errorHandler.handle(err, 'Dashboard.loadForms');
       },
     });
   }
@@ -96,10 +95,7 @@ export class DashboardComponent implements OnInit {
             );
           },
           error: (err) => {
-            console.error('Error deleting form:', err);
-            this.notificationService.showError(
-              'Could not delete form. Please try again.'
-            );
+            this.errorHandler.handle(err, 'Dashboard.deleteForm');
           },
         });
       }

@@ -1,5 +1,5 @@
 import { Component, effect, inject, input, output } from '@angular/core';
-import { ColorFormat, FieldOption, FormField, FormRule, FormTheme, RuleCondition, RuleConditionGroup } from '@form-forge/models';
+import { FieldOption, FormField, FormRule, FormTheme, RuleCondition, RuleConditionGroup } from '@form-forge/models';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormBuilderFieldRulesComponent } from '../form-builder-form-rules/form-builder-field-rules.component';
 import { MatCardModule } from '@angular/material/card';
@@ -16,6 +16,7 @@ import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilderThemeEditorComponent } from '../form-builder-theme-editor/form-builder-theme-editor.component';
 import { Countries, Country } from '@form-forge/ui-kit';
+import { COLOR_PICKER_DEFAULTS, PHONE_FIELD_DEFAULTS } from '@form-forge/config';
 
 @Component({
   selector: 'app-form-builder-property-panel',
@@ -55,14 +56,8 @@ export class FormBuilderPropertyPanel {
 
   propertiesForm: FormGroup;
 
-  // Color format options for color picker
-  colorFormats = [
-    { value: ColorFormat.HEX, label: 'HEX (#RRGGBB)' },
-    { value: ColorFormat.RGB, label: 'RGB (r, g, b)' },
-    { value: ColorFormat.RGBA, label: 'RGBA (r, g, b, a)' },
-    { value: ColorFormat.HSL, label: 'HSL (h, s%, l%)' },
-    { value: ColorFormat.HSLA, label: 'HSLA (h, s%, l%, a)' },
-  ];
+  // Color format options for color picker (from centralized config)
+  colorFormats = COLOR_PICKER_DEFAULTS.formatOptions;
 
   // Countries list for phone field
   countries: Country[] = Countries;
@@ -79,10 +74,10 @@ export class FormBuilderPropertyPanel {
       max: [null],
       step: [null],
       // Color picker specific properties
-      colorFormat: [ColorFormat.HEX],
+      colorFormat: [COLOR_PICKER_DEFAULTS.colorFormat],
       // Phone field specific properties
-      defaultCountry: ['RS'],
-      showCountrySelector: [true],
+      defaultCountry: [PHONE_FIELD_DEFAULTS.defaultCountry],
+      showCountrySelector: [PHONE_FIELD_DEFAULTS.showCountrySelector],
 
       theme: this.fb.group({
         primaryColor: [''],
@@ -105,9 +100,9 @@ export class FormBuilderPropertyPanel {
             min: field.min ?? null,
             max: field.max ?? null,
             step: field.step ?? null,
-            colorFormat: field.colorFormat ?? ColorFormat.HEX,
-            defaultCountry: field.defaultCountry ?? 'RS',
-            showCountrySelector: field.showCountrySelector !== false,
+            colorFormat: field.colorFormat ?? COLOR_PICKER_DEFAULTS.colorFormat,
+            defaultCountry: field.defaultCountry ?? PHONE_FIELD_DEFAULTS.defaultCountry,
+            showCountrySelector: field.showCountrySelector ?? PHONE_FIELD_DEFAULTS.showCountrySelector,
             theme: this.formTheme(),
           },
           { emitEvent: false }

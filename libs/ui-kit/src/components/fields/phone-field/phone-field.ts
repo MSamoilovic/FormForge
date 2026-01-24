@@ -1,13 +1,7 @@
-import { Component, computed, effect, forwardRef, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, forwardRef, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { FieldType } from '../../../../../models/src';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
+import { FieldType } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Countries } from './countries';
+import { PHONE_FIELD_DEFAULTS } from '@form-forge/config';
+import { BaseFieldComponent } from '../../../base';
 
 @Component({
   selector: 'app-phone-field',
@@ -31,6 +27,7 @@ import { Countries } from './countries';
   templateUrl: './phone-field.html',
   styleUrl: './phone-field.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -39,22 +36,21 @@ import { Countries } from './countries';
     },
   ],
 })
-export class PhoneField implements ControlValueAccessor {
-  label = input<string>('');
-  placeholder = input<string>('');
-  formControl = input<FormControl | undefined>(undefined);
-  fieldType = input<FieldType>(FieldType.Phone);
-  required = input<boolean>(false);
-  hint = input<string | null>(null);
-  defaultCountry = input<string>('RS'); // ISO 3166-1 alpha-2 country code
-  showCountrySelector = input<boolean>(true);
+export class PhoneField extends BaseFieldComponent<string> {
+  protected override readonly defaultFieldType = FieldType.Phone;
 
-  selectedCountry = signal<string>('RS');
+  // PhoneField-specific inputs
+  readonly defaultCountry = input<string>(PHONE_FIELD_DEFAULTS.defaultCountry);
+  readonly showCountrySelector = input<boolean>(PHONE_FIELD_DEFAULTS.showCountrySelector);
+
+  // PhoneField-specific state
+  selectedCountry = signal<string>(PHONE_FIELD_DEFAULTS.defaultCountry);
   phoneNumber = signal<string>('');
   countries = Countries;
+  
   countryFlag = computed(() => {
     const country = this.countries.find(c => c.code === this.selectedCountry());
-    return country?.flag || '🇷🇸';
+    return country?.flag || PHONE_FIELD_DEFAULTS.defaultFlag;
   });
 
   computedErrorMessage = computed(() => {
@@ -77,6 +73,8 @@ export class PhoneField implements ControlValueAccessor {
   });
 
   constructor() {
+    super();
+    
     effect(() => {
       const defaultCountry = this.defaultCountry();
       if (defaultCountry) {
@@ -109,10 +107,7 @@ export class PhoneField implements ControlValueAccessor {
       return null;
     }
 
-    // Try to dynamically import libphonenumber-js if available
     try {
-      // For now, we'll use a basic validation pattern
-      // In production, this would use libphonenumber-js
       const phoneValue = this.formatPhoneNumber(value);
       const isValid = this.validatePhoneNumber(phoneValue, this.selectedCountry());
       
@@ -133,35 +128,25 @@ export class PhoneField implements ControlValueAccessor {
   private validatePhoneNumber(phone: string, countryCode: string): boolean {
     if (!phone) return false;
     
-    // Basic validation - accepts international format
-    // Remove all non-digit characters except +
     const cleaned = phone.replace(/[^\d+]/g, '');
     
-    // Must start with + for international format
     if (cleaned.startsWith('+')) {
-      // International format: + followed by 7-15 digits
       const digits = cleaned.substring(1);
       return digits.length >= 7 && digits.length <= 15 && /^\d+$/.test(digits);
     }
     
-    // National format: 7-15 digits
     return cleaned.length >= 7 && cleaned.length <= 15 && /^\d+$/.test(cleaned);
   }
 
   private formatPhoneNumber(value: string): string {
     if (!value) return '';
     
-    // Remove all non-digit characters except +
     let cleaned = value.replace(/[^\d+]/g, '');
     
-    // If value doesn't start with +, assume it's a national number
     if (!cleaned.startsWith('+')) {
-      // If user is typing national format, keep it as is for now
-      // The validation will check if it's valid
       return cleaned;
     }
     
-    // If it starts with +, it's already in international format
     return cleaned;
   }
 
@@ -180,7 +165,6 @@ export class PhoneField implements ControlValueAccessor {
     const input = event.target as HTMLInputElement;
     let value = input.value;
     
-    // Format as user types
     const formatted = this.formatPhoneNumber(value);
     
     const control = this.formControl();
@@ -188,9 +172,7 @@ export class PhoneField implements ControlValueAccessor {
       this.phoneNumber.set(value);
       control.setValue(formatted, { emitEvent: true });
       
-      // Update input display with formatted value if different
       if (input.value !== formatted) {
-        // Use setTimeout to avoid conflicts with Angular's form control
         setTimeout(() => {
           input.value = formatted;
         }, 0);
@@ -210,7 +192,8 @@ export class PhoneField implements ControlValueAccessor {
     return this.countries.find(c => c.code === code);
   }
 
-  writeValue(value: string | null): void {
+  // Override writeValue for custom phone formatting
+  override writeValue(value: string | null): void {
     if (value) {
       const formatted = this.formatPhoneNumber(value);
       this.phoneNumber.set(formatted);
@@ -220,19 +203,4 @@ export class PhoneField implements ControlValueAccessor {
       this.formControl()?.setValue('', { emitEvent: false });
     }
   }
-
-  registerOnChange(fn: (value: string | null) => void): void {
-    this.formControl()?.valueChanges.subscribe(fn);
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.formControl()?.statusChanges.subscribe(() => fn());
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    return isDisabled
-      ? this.formControl()?.disable()
-      : this.formControl()?.enable();
-  }
 }
-

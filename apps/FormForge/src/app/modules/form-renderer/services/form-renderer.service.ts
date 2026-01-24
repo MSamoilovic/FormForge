@@ -2,10 +2,11 @@ import { inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormRendererDataService } from './form-renderer-data.service';
 import { RuleEngineService } from '@form-forge/rule-engine';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FieldType, FormField, FormSchema, ValidatorType } from '@form-forge/models';
 import { Subject } from 'rxjs';
 import { SubmissionPayload } from '../../core/models/SubmissionPayload';
+import { NotificationService } from '../../core/services/notification.service';
+import { ErrorHandlerService } from '../../core/services/error-handler.service';
 
 @Injectable()
 export class FormRendererService implements OnDestroy {
@@ -13,7 +14,8 @@ export class FormRendererService implements OnDestroy {
 
   private dataService = inject(FormRendererDataService);
   private ruleEngine = inject(RuleEngineService);
-  private snackBar = inject(MatSnackBar);
+  private notificationService = inject(NotificationService);
+  private errorHandler = inject(ErrorHandlerService);
 
   private formSchema = signal<FormSchema | null>(null);
   private form = signal<FormGroup | null>(null);
@@ -42,9 +44,8 @@ export class FormRendererService implements OnDestroy {
         this.isLoading.set(false);
       },
       error: (err) => {
-        console.error('Error loading form schema:', err);
         this.isLoading.set(false);
-        this.snackBar.open('Could not load the form.', 'Error');
+        this.errorHandler.handle(err, 'FormRenderer.loadForm');
       },
     });
   }
@@ -55,11 +56,7 @@ export class FormRendererService implements OnDestroy {
 
     if (formGroup.invalid) {
       formGroup.markAllAsTouched();
-      this.snackBar.open(
-        'Please fill out all required fields correctly.',
-        'Close',
-        { duration: 3000 }
-      );
+      this.notificationService.showError('Please fill out all required fields correctly.');
       return;
     }
 
@@ -69,19 +66,11 @@ export class FormRendererService implements OnDestroy {
 
     this.dataService.createSubmission(formId, submissionData).subscribe({
       next: () => {
-        this.snackBar.open(
-          'Your response has been successfully submitted!',
-          'OK',
-          { duration: 5000 }
-        );
+        this.notificationService.showSuccess('Your response has been successfully submitted!');
         formGroup.reset();
       },
       error: (err) => {
-        console.error('Submission failed:', err);
-        this.snackBar.open(
-          'There was an error submitting your response.',
-          'Error'
-        );
+        this.errorHandler.handle(err, 'FormRenderer.submit');
       },
     });
   }

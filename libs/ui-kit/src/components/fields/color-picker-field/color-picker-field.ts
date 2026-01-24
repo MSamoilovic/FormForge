@@ -1,13 +1,10 @@
-import { Component, computed, effect, forwardRef, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, forwardRef, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { ColorFormat, FieldType } from '../../../../../models/src';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { ColorFormat, FieldType } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
+import { COLOR_PICKER_DEFAULTS } from '@form-forge/config';
+import { BaseFieldComponent } from '../../../base';
 
 @Component({
   selector: 'app-color-picker-field',
@@ -15,6 +12,7 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
   templateUrl: './color-picker-field.html',
   styleUrl: './color-picker-field.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -23,17 +21,15 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
     },
   ],
 })
-export class ColorPickerField implements ControlValueAccessor {
-  label = input<string>('');
-  placeholder = input<string>('#000000');
-  formControl = input<FormControl | undefined>(undefined);
-  fieldType = input<FieldType>(FieldType.ColorPicker);
-  colorFormat = input<ColorFormat>(ColorFormat.HEX);
-  required = input<boolean>(false);
-  hint = input<string | null>(null);
+export class ColorPickerField extends BaseFieldComponent<string> {
+  protected override readonly defaultFieldType = FieldType.ColorPicker;
+
+  // ColorPickerField-specific inputs
+  override readonly placeholder = input<string>(COLOR_PICKER_DEFAULTS.defaultColor);
+  readonly colorFormat = input<ColorFormat>(COLOR_PICKER_DEFAULTS.colorFormat);
 
   // Internal control for native color picker (always HEX)
-  internalColorControl = new FormControl<string>('#000000');
+  internalColorControl = new FormControl<string>(COLOR_PICKER_DEFAULTS.defaultColor);
   // Internal control for text input (formatted color)
   internalTextControl = new FormControl<string>('');
 
@@ -57,6 +53,8 @@ export class ColorPickerField implements ControlValueAccessor {
   });
 
   constructor() {
+    super();
+    
     // Watch for changes in native color picker
     this.internalColorControl.valueChanges.subscribe((hexColor) => {
       if (!this.isUpdatingInternally && hexColor) {
@@ -100,7 +98,8 @@ export class ColorPickerField implements ControlValueAccessor {
     });
   }
 
-  writeValue(value: string | null): void {
+  // Override CVA methods for custom color picker behavior
+  override writeValue(value: string | null): void {
     if (value) {
       this.isUpdatingInternally = true;
       const hex = this.convertToHex(value);
@@ -113,15 +112,7 @@ export class ColorPickerField implements ControlValueAccessor {
     this.formControl()?.setValue(value, { emitEvent: false });
   }
 
-  registerOnChange(fn: (value: string | null) => void): void {
-    this.formControl()?.valueChanges.subscribe(fn);
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.formControl()?.statusChanges.subscribe(() => fn());
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
+  override setDisabledState(isDisabled: boolean): void {
     if (isDisabled) {
       this.internalColorControl.disable();
       this.internalTextControl.disable();
@@ -249,4 +240,3 @@ export class ColorPickerField implements ControlValueAccessor {
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
   }
 }
-

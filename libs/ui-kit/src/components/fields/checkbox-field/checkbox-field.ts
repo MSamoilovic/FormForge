@@ -1,13 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, forwardRef, input } from '@angular/core';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FieldType } from '@form-forge/models';
 import { FieldError } from '../../field-error/field-error';
 import { FieldHint } from '../../field-hint/field-hint';
+import { BaseFieldComponent } from '../../../base';
 
 @Component({
   selector: 'app-checkbox-field',
@@ -15,6 +12,7 @@ import { FieldHint } from '../../field-hint/field-hint';
   imports: [CommonModule, ReactiveFormsModule, FieldError, FieldHint],
   templateUrl: './checkbox-field.html',
   styleUrls: ['./checkbox-field.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -23,11 +21,8 @@ import { FieldHint } from '../../field-hint/field-hint';
     },
   ],
 })
-export class CheckboxField implements ControlValueAccessor {
-  label = input<string>('');
-  formControl = input<FormControl>();
-  required = input<boolean>(false);
-  hint = input<string | null>(null);
+export class CheckboxField extends BaseFieldComponent<boolean> {
+  protected override readonly defaultFieldType = FieldType.Checkbox;
 
   computedErrorMessage = computed(() => {
     const control = this.formControl();
@@ -42,6 +37,7 @@ export class CheckboxField implements ControlValueAccessor {
     return 'The entered value is not valid.';
   });
 
+  // Checkbox-specific computed signals for template
   shouldShowError = computed(() => {
     const control = this.formControl();
     const errorMsg = this.computedErrorMessage();
@@ -55,22 +51,4 @@ export class CheckboxField implements ControlValueAccessor {
       !this.shouldShowError() && this.hint() !== null && this.hint() !== ''
     );
   });
-
-  writeValue(value: boolean | null): void {
-    this.formControl()?.setValue(value, { emitEvent: false });
-  }
-
-  registerOnChange(fn: (value: boolean | null) => void): void {
-    this.formControl()?.valueChanges.subscribe(fn);
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.formControl()?.statusChanges.subscribe(() => fn());
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    return isDisabled
-      ? this.formControl()?.disable()
-      : this.formControl()?.enable();
-  }
 }

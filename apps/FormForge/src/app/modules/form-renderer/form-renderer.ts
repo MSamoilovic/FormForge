@@ -12,6 +12,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormRendererService } from './services/form-renderer.service';
 import { FormRendererDataService } from './services/form-renderer-data.service';
 import { ThemeService } from '../core/services/theme.service';
+import { ErrorHandlerService } from '../core/services/error-handler.service';
+import { PHONE_FIELD_DEFAULTS } from '@form-forge/config';
 
 @Component({
   imports: [
@@ -34,6 +36,7 @@ export class FormRenderer implements OnInit {
   public readonly rendererService = inject(FormRendererService);
   private readonly route = inject(ActivatedRoute);
   private themeService = inject(ThemeService);
+  private errorHandler = inject(ErrorHandlerService);
 
   private formId: number | null = null;
 
@@ -49,7 +52,7 @@ export class FormRenderer implements OnInit {
       this.formId = +idParam;
       this.rendererService.initialize(this.formId);
     } else {
-      console.error('Form ID is missing from the URL.');
+      this.errorHandler.showError('Form ID is missing from the URL.', 'FormRenderer.init');
     }
   }
 
@@ -102,9 +105,9 @@ export class FormRenderer implements OnInit {
 
     if (field.type === FieldType.Phone) {
       (inputs as { defaultCountry?: string }).defaultCountry =
-        field.defaultCountry || 'RS';
+        field.defaultCountry || PHONE_FIELD_DEFAULTS.defaultCountry;
       (inputs as { showCountrySelector?: boolean }).showCountrySelector =
-        field.showCountrySelector !== false;
+        field.showCountrySelector ?? PHONE_FIELD_DEFAULTS.showCountrySelector;
     }
 
    

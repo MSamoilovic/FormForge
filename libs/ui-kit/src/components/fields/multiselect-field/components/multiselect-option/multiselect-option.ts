@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FieldOption, OptionValue } from '@form-forge/models';
 
@@ -8,6 +8,7 @@ import { FieldOption, OptionValue } from '@form-forge/models';
   imports: [CommonModule],
   templateUrl: './multiselect-option.html',
   styleUrl: './multiselect-option.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiSelectOption {
   option = input.required<FieldOption>();

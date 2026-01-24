@@ -1,13 +1,9 @@
-import { Component, computed, forwardRef, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { FieldType } from '../../../../../models/src';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FieldType } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
+import { BaseFieldComponent } from '../../../base';
 
 @Component({
   selector: 'app-text-field',
@@ -15,6 +11,7 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
   templateUrl: './text-field.html',
   styleUrl: './text-field.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -23,13 +20,8 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
     },
   ],
 })
-export class TextField implements ControlValueAccessor {
-  label = input<string>('');
-  placeholder = input<string>('');
-  formControl = input<FormControl | undefined>(undefined);
-  fieldType = input<FieldType>(FieldType.Text);
-  required = input<boolean>(false);
-  hint = input<string | null>(null);
+export class TextField extends BaseFieldComponent<string> {
+  protected override readonly defaultFieldType = FieldType.Text;
 
   computedErrorMessage = computed(() => {
     const control = this.formControl();
@@ -54,22 +46,4 @@ export class TextField implements ControlValueAccessor {
     }
     return 'Value is not valid.';
   });
-
-  writeValue(value: string | null): void {
-    this.formControl()?.setValue(value, { emitEvent: false });
-  }
-
-  registerOnChange(fn: (value: string | null) => void): void {
-    this.formControl()?.valueChanges.subscribe(fn);
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.formControl()?.statusChanges.subscribe(() => fn());
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    return isDisabled
-      ? this.formControl()?.disable()
-      : this.formControl()?.enable();
-  }
 }

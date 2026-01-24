@@ -1,3 +1,7 @@
+// =============================================================================
+// Form Builder Canvas Component
+// =============================================================================
+
 :host {
   display: flex;
   flex-direction: column;
@@ -7,34 +11,31 @@
   box-sizing: border-box;
 }
 
-
 .canvas-card {
   height: 100%;
   min-height: 0;
   display: flex;
   flex-direction: column;
   background: var(--ff-color-surface);
-  transition: background-color 0.3s ease;
+  transition: background-color var(--ff-transition-slow);
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
-  border-radius: 8px;
-
-  
+  border-radius: var(--ff-radius-md);
 }
 
 .canvas-title {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.25rem !important;
-  font-weight: 600 !important;
+  gap: var(--ff-space-2);
+  font-size: var(--ff-text-xl) !important;
+  font-weight: var(--ff-font-bold) !important;
   color: var(--ff-text-primary);
 
   mat-icon {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
+    font-size: var(--ff-icon-md);
+    width: var(--ff-icon-md);
+    height: var(--ff-icon-md);
     color: var(--ff-color-primary);
   }
 }
@@ -42,22 +43,41 @@
 .canvas-content {
   flex: 1 1 auto;
   min-height: 0;
-  padding: 24px !important;
-  border-radius: 4px;
+  padding: var(--ff-space-6) !important;
+  border-radius: var(--ff-radius-sm);
   background: var(--ff-color-surface);
   overflow-y: auto;
   overflow-x: hidden;
-  transition: background-color 0.3s ease;
+  transition: background-color var(--ff-transition-slow);
   height: 100%;
   box-sizing: border-box;
 
   &.has-fields {
-    padding-top: 24px;
+    padding-top: var(--ff-space-6);
+  }
+
+  // Scrollbar styling
+  &::-webkit-scrollbar {
+    width: var(--ff-scrollbar-width);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--ff-color-border);
+    border-radius: var(--ff-radius-sm);
+
+    &:hover {
+      background: var(--ff-text-secondary);
+    }
   }
 }
 
-
-
+// =============================================================================
+// Empty State
+// =============================================================================
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -67,11 +87,11 @@
   min-height: 0;
   color: var(--ff-text-secondary);
   border: 2px dashed var(--ff-color-border);
-  border-radius: 12px;
+  border-radius: var(--ff-radius-lg);
   background: rgba(255, 255, 255, 0.02);
-  padding: 3rem;
+  padding: var(--ff-space-8);
   padding-top: min(15%, 10vh);
-  transition: all 0.3s ease;
+  transition: all var(--ff-transition-slow);
   width: 100%;
   box-sizing: border-box;
 
@@ -81,15 +101,15 @@
   }
 
   h3 {
-    margin: 1rem 0 0.5rem;
-    font-size: 1.5rem;
-    font-weight: 600;
+    margin: var(--ff-space-4) 0 var(--ff-space-2);
+    font-size: var(--ff-text-2xl);
+    font-weight: var(--ff-font-bold);
     color: var(--ff-text-primary);
   }
 
   p {
-    margin: 0 0 2rem;
-    font-size: 1rem;
+    margin: 0 0 var(--ff-space-8);
+    font-size: var(--ff-text-base);
     color: var(--ff-text-secondary);
   }
 }
@@ -101,13 +121,13 @@
   width: 80px;
   height: 80px;
   background: linear-gradient(135deg, var(--ff-color-primary) 0%, var(--ff-color-primary) 100%);
-  border-radius: 50%;
+  border-radius: var(--ff-radius-full);
   animation: pulse 2s ease-in-out infinite;
 
   mat-icon {
-    font-size: 48px;
-    width: 48px;
-    height: 48px;
+    font-size: var(--ff-icon-xl);
+    width: var(--ff-icon-xl);
+    height: var(--ff-icon-xl);
     color: white;
   }
 }
@@ -115,19 +135,19 @@
 .empty-state-hint {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  gap: var(--ff-space-2);
+  padding: var(--ff-space-3) var(--ff-space-6);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--ff-color-border);
-  border-radius: 24px;
+  border-radius: var(--ff-radius-2xl);
   color: var(--ff-text-secondary);
-  font-size: 0.9rem;
+  font-size: var(--ff-text-sm);
   animation: slideLeft 1.5s ease-in-out infinite;
 
   mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
+    font-size: var(--ff-icon-sm);
+    width: var(--ff-icon-sm);
+    height: var(--ff-icon-sm);
   }
 }
 
@@ -151,23 +171,26 @@
   }
 }
 
+// =============================================================================
+// Canvas Field Wrapper
+// =============================================================================
 .canvas-field-wrapper {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
+  gap: var(--ff-space-3);
+  padding: var(--ff-space-4);
   border: 2px solid var(--ff-color-border);
-  border-radius: 8px;
-  margin-bottom: 12px;
+  border-radius: var(--ff-radius-md);
+  margin-bottom: var(--ff-space-3);
   background-color: rgba(255, 255, 255, 0.05);
-  transition: all 0.2s ease;
+  transition: all var(--ff-transition-normal);
   cursor: pointer;
   position: relative;
   overflow: visible;
 
   &:hover {
     border-color: var(--ff-color-primary);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--ff-shadow-md);
     transform: translateY(-2px);
     background-color: rgba(255, 255, 255, 0.08);
 
@@ -192,7 +215,7 @@
       top: -2px;
       right: -2px;
       bottom: -2px;
-      border-radius: 8px;
+      border-radius: var(--ff-radius-md);
       background: linear-gradient(135deg, var(--ff-color-primary), transparent);
       opacity: 0.1;
       pointer-events: none;
@@ -213,7 +236,7 @@
   cursor: grab;
   color: var(--ff-text-secondary);
   opacity: 0.5;
-  transition: all 0.2s ease;
+  transition: all var(--ff-transition-normal);
   display: flex;
   align-items: center;
 
@@ -226,9 +249,9 @@
   }
 
   mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
+    font-size: var(--ff-icon-sm);
+    width: var(--ff-icon-sm);
+    height: var(--ff-icon-sm);
   }
 }
 
@@ -238,14 +261,13 @@
   position: relative;
   overflow: visible;
   z-index: 1;
-  
 }
 
 .field-actions {
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--ff-transition-normal);
   display: flex;
-  gap: 0.25rem;
+  gap: var(--ff-space-1);
   align-items: center;
   position: relative;
   z-index: 10;
@@ -254,14 +276,14 @@
 
   .action-button {
     padding: 0;
-    min-width: 32px;
-    width: 32px;
-    height: 32px;
+    min-width: var(--ff-btn-height-sm);
+    width: var(--ff-btn-height-sm);
+    height: var(--ff-btn-height-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
-    transition: all 0.2s ease;
+    border-radius: var(--ff-radius-sm);
+    transition: all var(--ff-transition-normal);
     color: var(--ff-text-secondary);
 
     &:hover {
@@ -275,19 +297,19 @@
     }
 
     mat-icon {
-      font-size: 18px;
-      width: 18px;
-      height: 18px;
+      font-size: var(--ff-icon-sm);
+      width: var(--ff-icon-sm);
+      height: var(--ff-icon-sm);
     }
   }
 
   .action-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
+    font-size: var(--ff-icon-sm);
+    width: var(--ff-icon-sm);
+    height: var(--ff-icon-sm);
     color: var(--ff-text-secondary);
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: color var(--ff-transition-normal);
 
     &:hover {
       color: var(--ff-color-primary);
@@ -295,7 +317,9 @@
   }
 }
 
-// Stil za placeholder dok se vuče element
+// =============================================================================
+// Drag & Drop States
+// =============================================================================
 .cdk-drag-placeholder {
   opacity: 0.3;
   border: 2px dashed var(--ff-color-primary);
@@ -304,25 +328,7 @@
 }
 
 .cdk-drag-preview {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--ff-shadow-xl);
   opacity: 0.9;
   border-color: var(--ff-color-primary) !important;
-}
-
-/* Scrollbar styling */
-.canvas-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.canvas-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.canvas-content::-webkit-scrollbar-thumb {
-  background: var(--ff-color-border);
-  border-radius: 4px;
-}
-
-.canvas-content::-webkit-scrollbar-thumb:hover {
-  background: var(--ff-text-secondary);
 }

@@ -1,38 +1,38 @@
 .multiselect-dropdown {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + var(--ff-space-1));
   left: 0;
   right: 0;
   background-color: var(--ff-color-surface);
   border: 1px solid var(--ff-color-border);
-  border-radius: var(--ff-border-radius);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 10000;
+  border-radius: var(--ff-radius-md);
+  box-shadow: var(--ff-shadow-lg);
+  z-index: var(--ff-z-dropdown);
   max-height: 300px;
   overflow-y: auto;
-  animation: slideDown 0.2s ease-out;
+  animation: slideDown var(--ff-duration-normal) var(--ff-ease-out);
   pointer-events: auto;
 
   &::-webkit-scrollbar {
-    width: 8px;
+    width: var(--ff-scrollbar-width);
   }
 
   &::-webkit-scrollbar-track {
     background: var(--ff-color-surface);
-    border-radius: 4px;
+    border-radius: var(--ff-radius-sm);
   }
 
   &::-webkit-scrollbar-thumb {
     background: var(--ff-color-border);
-    border-radius: 4px;
+    border-radius: var(--ff-radius-sm);
 
     &:hover {
-      background: #bdbdbd;
+      background: var(--ff-text-secondary);
     }
   }
 
   .dropdown-empty {
-    padding: var(--ff-spacing-md);
+    padding: var(--ff-space-4);
     text-align: center;
     color: var(--ff-text-secondary);
     font-style: italic;

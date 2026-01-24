@@ -9,7 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { AIApiService } from '../../../core/services/ai-api.service';
-import { NotificationService } from '../../../core/services/notification.service';
+import { ErrorHandlerService } from '../../../core/services/error-handler.service';
 
 @Component({
   selector: 'app-generate-form-dialog.component',
@@ -24,7 +24,7 @@ import { NotificationService } from '../../../core/services/notification.service
     MatIconModule,
     TextFieldModule,
   ],
-  providers: [AIApiService, NotificationService],
+  providers: [AIApiService],
   templateUrl: './generate-form-dialog.component.html',
   styleUrl: './generate-form-dialog.component.scss',
 })
@@ -32,7 +32,7 @@ export class GenerateFormDialogComponent {
   public dialogRef = inject(MatDialogRef<GenerateFormDialogComponent>);
 
   private aiApiService = inject(AIApiService);
-  private notificationService = inject(NotificationService);
+  private errorHandler = inject(ErrorHandlerService);
 
   promptControl = new FormControl('', Validators.required);
 
@@ -53,10 +53,7 @@ export class GenerateFormDialogComponent {
       },
       error: (err) => {
         this.isLoading.set(false);
-        console.error('AI form generation failed:', err);
-        this.notificationService.showError(
-          'AI failed to generate the form. Please try again.'
-        );
+        this.errorHandler.handle(err, 'AI.generateForm');
       },
     });
   }

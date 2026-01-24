@@ -1,13 +1,9 @@
-import { Component, computed, forwardRef, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, forwardRef, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { FieldType } from '../../../../../models/src';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FieldType } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
+import { BaseFieldComponent } from '../../../base';
 
 @Component({
   selector: 'app-file-upload-field',
@@ -15,6 +11,7 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
   templateUrl: './file-upload-field.html',
   styleUrl: './file-upload-field.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -23,16 +20,15 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
     },
   ],
 })
-export class FileUploadField implements ControlValueAccessor {
-  label = input<string>('');
-  placeholder = input<string>('Click to upload or drag and drop');
-  formControl = input<FormControl | undefined>(undefined);
-  fieldType = input<FieldType>(FieldType.FileUpload);
-  accept = input<string>('*/*');
-  multiple = input<boolean>(false);
-  required = input<boolean>(false);
-  hint = input<string | null>(null);
+export class FileUploadField extends BaseFieldComponent<File[]> {
+  protected override readonly defaultFieldType = FieldType.FileUpload;
 
+  // FileUploadField-specific inputs
+  override readonly placeholder = input<string>('Click to upload or drag and drop');
+  readonly accept = input<string>('*/*');
+  readonly multiple = input<boolean>(false);
+
+  // FileUploadField-specific state
   selectedFiles = signal<File[]>([]);
   isDragOver = signal<boolean>(false);
 
@@ -54,24 +50,6 @@ export class FileUploadField implements ControlValueAccessor {
 
     return 'The entered value is not valid.';
   });
-
-  writeValue(value: File[] | null): void {
-    this.formControl()?.setValue(value, { emitEvent: false });
-  }
-
-  registerOnChange(fn: (value: File[] | null) => void): void {
-    this.formControl()?.valueChanges.subscribe(fn);
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.formControl()?.statusChanges.subscribe(() => fn());
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    return isDisabled
-      ? this.formControl()?.disable()
-      : this.formControl()?.enable();
-  }
 
   onFileChange(event: Event): void {
     const inputEl = event.target as HTMLInputElement;
