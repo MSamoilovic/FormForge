@@ -1,9 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   AvailableField,
-  ColorFormat,
   FieldType,
   FormField,
   FormRule,
@@ -16,16 +14,23 @@ import { FormSchemaPayload } from '../../core/models/FormSchemaPayload';
 import { FormBuilderDataService } from './form-builder.data.service';
 import { FormSchemaResponse } from '../../core/models/FormSchemaResponse';
 import { NotificationService } from '../../core/services/notification.service';
+import { ErrorHandlerService } from '../../core/services/error-handler.service';
+import {
+  COLOR_PICKER_DEFAULTS,
+  LIKERT_SCALE_DEFAULTS,
+  NUMBER_FIELD_DEFAULTS,
+  SELECT_FIELD_DEFAULTS,
+} from '@form-forge/config';
 
 @Injectable({
   providedIn: 'any',
 })
 export class FormBuilderService {
   private apiService = inject(FormBuilderDataService);
-  private snackBar = inject(MatSnackBar);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private notificationService = inject(NotificationService);
+  private errorHandler = inject(ErrorHandlerService);
 
   private canvasFields = signal<FormField[]>([]);
   private selectedField = signal<FormField | null>(null);
@@ -66,7 +71,7 @@ export class FormBuilderService {
           ''
         );
       } catch (e) {
-        console.error('Failed to process AI generated schema from state', e);
+        this.errorHandler.log(e, 'FormBuilder.initialize');
         this.initializeFromUrl();
       }
     } else {
@@ -103,9 +108,8 @@ export class FormBuilderService {
         this.isLoading.set(false);
       },
       error: (err) => {
-        console.error('Error', err);
         this.isLoading.set(false);
-        this.notificationService.showError(`Form with ID ${id} not found.`);
+        this.errorHandler.handle(err, 'FormBuilder.loadForm');
         this.router.navigate(['/dashboard']);
       },
     });
@@ -127,27 +131,21 @@ export class FormBuilderService {
       placeholder: '',
       options:
         fieldType === FieldType.Select || fieldType === FieldType.Radio || fieldType === FieldType.MultiSelect
-          ? [{ label: 'Option 1', value: 'option1' }]
+          ? [...SELECT_FIELD_DEFAULTS.defaultOptions]
           : fieldType === FieldType.LikertScale
-          ? [
-              { label: 'Strongly Disagree', value: 'strongly_disagree' },
-              { label: 'Disagree', value: 'disagree' },
-              { label: 'Neutral', value: 'neutral' },
-              { label: 'Agree', value: 'agree' },
-              { label: 'Strongly Agree', value: 'strongly_agree' },
-            ]
+          ? [...LIKERT_SCALE_DEFAULTS.defaultOptions]
           : [],
       rules: [],
       validations: [],
       // Initialize number field specific properties
       ...(fieldType === FieldType.Number && {
-        min: undefined,
-        max: undefined,
-        step: undefined,
+        min: NUMBER_FIELD_DEFAULTS.min,
+        max: NUMBER_FIELD_DEFAULTS.max,
+        step: NUMBER_FIELD_DEFAULTS.step,
       }),
       // Initialize color picker specific properties
       ...(fieldType === FieldType.ColorPicker && {
-        colorFormat: ColorFormat.HEX,
+        colorFormat: COLOR_PICKER_DEFAULTS.colorFormat,
       }),
     };
 
@@ -248,10 +246,7 @@ export class FormBuilderService {
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        console.log(err);
-        this.notificationService.showError(
-          'Error saving form. Please try again.'
-        );
+        this.errorHandler.handle(err, 'FormBuilder.saveForm');
       },
     });
   }

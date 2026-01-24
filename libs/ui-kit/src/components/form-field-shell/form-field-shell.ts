@@ -1,7 +1,7 @@
 import { FieldError } from '../field-error/field-error';
 import { FieldHint } from '../field-hint/field-hint';
 import { CommonModule } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -10,6 +10,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   imports: [CommonModule, ReactiveFormsModule, FieldHint, FieldError],
   templateUrl: './form-field-shell.html',
   styleUrl: './form-field-shell.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormFieldShell {
   label = input<string>('');

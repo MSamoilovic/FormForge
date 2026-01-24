@@ -1,13 +1,9 @@
-import { Component, computed, forwardRef, input } from '@angular/core';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FieldType } from '../../../../../models/src';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FieldType } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
+import { BaseFieldComponent } from '../../../base';
 
 @Component({
   selector: 'app-date-field',
@@ -15,6 +11,7 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
   templateUrl: './date-field.html',
   styleUrl: './date-field.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -23,13 +20,8 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
     },
   ],
 })
-export class DateField implements ControlValueAccessor {
-  label = input<string>('');
-  placeholder = input<string>('');
-  formControl = input<FormControl | undefined>(undefined);
-  fieldType = input<FieldType>(FieldType.Date);
-  required = input<boolean>(false);
-  hint = input<string | null>(null);
+export class DateField extends BaseFieldComponent<string> {
+  protected override readonly defaultFieldType = FieldType.Date;
 
   computedErrorMessage = computed(() => {
     const control = this.formControl();
@@ -38,30 +30,12 @@ export class DateField implements ControlValueAccessor {
     }
 
     if (control.errors['required']) {
-      return 'Ovo polje je obavezno.';
+      return 'This field is required.';
     }
     if (control.errors['matDatepickerParse']) {
-      return 'Unesite validan datum.';
+      return 'Please enter a valid date.';
     }
 
-    return 'Unesena vrednost nije validna.';
+    return 'Entered value is not valid.';
   });
-
-  writeValue(value: any): void {
-    this.formControl()?.setValue(value, { emitEvent: false });
-  }
-
-  registerOnChange(fn: any): void {
-    this.formControl()?.valueChanges.subscribe(fn);
-  }
-
-  registerOnTouched(fn: any): void {
-    this.formControl()?.statusChanges.subscribe(() => fn());
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    return isDisabled
-      ? this.formControl()?.disable()
-      : this.formControl()?.enable();
-  }
 }

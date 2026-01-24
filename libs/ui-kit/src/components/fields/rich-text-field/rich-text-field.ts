@@ -1,18 +1,14 @@
-import { Component, computed, forwardRef, input, ElementRef, ViewChild, AfterViewInit, OnDestroy, effect, inject, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, forwardRef, ElementRef, ViewChild, AfterViewInit, OnDestroy, effect, inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { FieldType } from '../../../../../models/src';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FieldType } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { fromEvent } from 'rxjs';
+import { BaseFieldComponent } from '../../../base';
 
 @Component({
   selector: 'app-rich-text-field',
@@ -20,6 +16,7 @@ import { fromEvent } from 'rxjs';
   templateUrl: './rich-text-field.html',
   styleUrl: './rich-text-field.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -28,15 +25,10 @@ import { fromEvent } from 'rxjs';
     },
   ],
 })
-export class RichTextField implements ControlValueAccessor, AfterViewInit, OnDestroy {
-  @ViewChild('editor', { static: false }) editorRef?: ElementRef<HTMLDivElement>;
+export class RichTextField extends BaseFieldComponent<string> implements AfterViewInit, OnDestroy {
+  protected override readonly defaultFieldType = FieldType.RichText;
 
-  label = input<string>('');
-  placeholder = input<string>('');
-  formControl = input<FormControl | undefined>(undefined);
-  fieldType = input<FieldType>(FieldType.RichText);
-  required = input<boolean>(false);
-  hint = input<string | null>(null);
+  @ViewChild('editor', { static: false }) editorRef?: ElementRef<HTMLDivElement>;
 
   private onChangeFn?: (value: string | null) => void;
   private onTouchedFn?: () => void;
@@ -44,6 +36,8 @@ export class RichTextField implements ControlValueAccessor, AfterViewInit, OnDes
   private destroyRef = inject(DestroyRef);
 
   constructor() {
+    super();
+    
     // Use effect to sync form control value to editor
     effect(() => {
       const control = this.formControl();
@@ -96,7 +90,7 @@ export class RichTextField implements ControlValueAccessor, AfterViewInit, OnDes
       return 'This field is required.';
     }
 
-    return 'Unesena vrednost nije validna.';
+    return 'Entered value is not valid.';
   });
 
   onEditorInput(): void {
@@ -129,7 +123,8 @@ export class RichTextField implements ControlValueAccessor, AfterViewInit, OnDes
     this.editorRef?.nativeElement.focus();
   }
 
-  writeValue(value: string | null): void {
+  // Override CVA methods for custom rich text behavior
+  override writeValue(value: string | null): void {
     if (!this.editorRef?.nativeElement) return;
     this.isWriting = true;
     this.editorRef.nativeElement.innerHTML = value || '';
@@ -139,15 +134,15 @@ export class RichTextField implements ControlValueAccessor, AfterViewInit, OnDes
     }
   }
 
-  registerOnChange(fn: (value: string | null) => void): void {
+  override registerOnChange(fn: (value: string | null) => void): void {
     this.onChangeFn = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  override registerOnTouched(fn: () => void): void {
     this.onTouchedFn = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
+  override setDisabledState(isDisabled: boolean): void {
     if (this.editorRef?.nativeElement) {
       this.editorRef.nativeElement.contentEditable = isDisabled ? 'false' : 'true';
     }

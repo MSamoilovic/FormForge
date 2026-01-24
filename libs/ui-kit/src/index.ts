@@ -1,3 +1,7 @@
+// Base
+export * from './base';
+
+// Field Components
 export * from './components/fields/selector-field/selector-field';
 export * from './components/fields/multiselect-field/multiselect-field';
 export * from './components/fields/text-field/text-field';
@@ -14,7 +18,11 @@ export * from './components/fields/file-upload-field/file-upload-field';
 export * from './components/fields/rich-text-field/rich-text-field';
 export * from './components/fields/color-picker-field/color-picker-field';
 export * from './components/fields/likert-scale-field/likert-scale-field';
+
+// Shared Components
 export * from './components/field-error/field-error';
 export * from './components/field-hint/field-hint';
 export * from './components/form-field-shell/form-field-shell';
-export * from './config/field-component.config'
+
+// Config
+export * from './config/field-component.config';

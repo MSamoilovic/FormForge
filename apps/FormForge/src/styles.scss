@@ -1,30 +1,37 @@
 @use '@angular/material' as mat;
 
+// =============================================================================
+// Angular Material Theme Setup
+// =============================================================================
 @include mat.core();
 
 $form-forge-primary: mat.m2-define-palette(mat.$m2-blue-palette, 700, 500, 900);
 $form-forge-accent: mat.m2-define-palette(mat.$m2-teal-palette, A200, A100, A400);
 $form-forge-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$form-forge-theme: mat.m2-define-light-theme((color: (primary: $form-forge-primary,
-        accent: $form-forge-accent,
-        warn: $form-forge-warn,
-      ),
-      typography: mat.m2-define-typography-config(),
-      density: 0,
-    ));
+$form-forge-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $form-forge-primary,
+    accent: $form-forge-accent,
+    warn: $form-forge-warn,
+  ),
+  typography: mat.m2-define-typography-config(),
+  density: 0,
+));
 
 $form-forge-primary-dark: mat.m2-define-palette(mat.$m2-blue-grey-palette, 700, 500, 900);
 $form-forge-accent-dark: mat.m2-define-palette(mat.$m2-amber-palette, A200, A100, A400);
 $form-forge-warn-dark: mat.m2-define-palette(mat.$m2-deep-orange-palette);
 
-$form-forge-dark-theme: mat.m2-define-dark-theme((color: (primary: $form-forge-primary-dark,
-        accent: $form-forge-accent-dark,
-        warn: $form-forge-warn-dark,
-      ),
-      typography: mat.m2-define-typography-config(),
-      density: 0,
-    ));
+$form-forge-dark-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $form-forge-primary-dark,
+    accent: $form-forge-accent-dark,
+    warn: $form-forge-warn-dark,
+  ),
+  typography: mat.m2-define-typography-config(),
+  density: 0,
+));
 
 @include mat.all-component-themes($form-forge-theme);
 
@@ -32,44 +39,155 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((color: (primary: $form-forge-p
   @include mat.all-component-colors($form-forge-dark-theme);
 }
 
+// =============================================================================
+// Design System Variables
+// =============================================================================
+// Design tokens for consistent styling across the application
+// Note: Variables are defined inline here because Angular's Sass compilation
+// doesn't support @use for relative lib paths. The source of truth is in
+// libs/ui-kit/src/styles/_variables.scss
+
+// Spacing scale (4px grid)
 :root {
+  --ff-space-1: 4px;
+  --ff-space-2: 8px;
+  --ff-space-3: 12px;
+  --ff-space-4: 16px;
+  --ff-space-5: 20px;
+  --ff-space-6: 24px;
+  --ff-space-8: 32px;
+
+  // Legacy spacing aliases (for backward compatibility with ui-kit)
+  --ff-spacing-2xs: 2px;
+  --ff-spacing-xs: var(--ff-space-1);
+  --ff-spacing-sm: var(--ff-space-2);
+  --ff-spacing-md: var(--ff-space-4);
+  --ff-spacing-lg: var(--ff-space-6);
+  --ff-spacing-xl: var(--ff-space-8);
+  --ff-spacing-unit: var(--ff-space-2);
+
+  // Border radius alias
+  --ff-border-radius: var(--ff-radius-md);
+
+  // Border radius scale
+  --ff-radius-xs: 2px;
+  --ff-radius-sm: 4px;
+  --ff-radius-md: 8px;
+  --ff-radius-lg: 12px;
+  --ff-radius-xl: 16px;
+  --ff-radius-2xl: 24px;
+  --ff-radius-full: 9999px;
+
+  // Shadows
+  --ff-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --ff-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --ff-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --ff-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --ff-shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.16);
+  --ff-shadow-focus: 0 0 0 3px rgba(var(--ff-color-primary-rgb, 25, 118, 210), 0.2);
+
+  // Transitions
+  --ff-duration-instant: 50ms;
+  --ff-duration-fast: 150ms;
+  --ff-duration-normal: 200ms;
+  --ff-duration-slow: 300ms;
+  --ff-duration-slower: 400ms;
+  --ff-ease-default: ease;
+  --ff-ease-in: ease-in;
+  --ff-ease-out: ease-out;
+  --ff-ease-in-out: ease-in-out;
+  --ff-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ff-transition-fast: var(--ff-duration-fast) var(--ff-ease-default);
+  --ff-transition-normal: var(--ff-duration-normal) var(--ff-ease-default);
+  --ff-transition-slow: var(--ff-duration-slow) var(--ff-ease-default);
+
+  // Z-index scale
+  --ff-z-base: 0;
+  --ff-z-dropdown: 1000;
+  --ff-z-sticky: 1020;
+  --ff-z-fixed: 1030;
+  --ff-z-modal-backdrop: 1040;
+  --ff-z-modal: 1050;
+  --ff-z-popover: 1060;
+  --ff-z-tooltip: 1070;
+  --ff-z-toast: 1080;
+
+  // Typography
+  --ff-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --ff-font-family-mono: 'Roboto Mono', 'Consolas', 'Monaco', monospace;
+  --ff-text-xs: 0.75rem;
+  --ff-text-sm: 0.875rem;
+  --ff-text-base: 1rem;
+  --ff-text-lg: 1.125rem;
+  --ff-text-xl: 1.25rem;
+  --ff-text-2xl: 1.5rem;
+  --ff-text-3xl: 1.875rem;
+  --ff-leading-tight: 1.25;
+  --ff-leading-normal: 1.5;
+  --ff-leading-relaxed: 1.75;
+  --ff-font-light: 300;
+  --ff-font-normal: 400;
+  --ff-font-medium: 500;
+  --ff-font-bold: 700;
+
+  // Component sizes
+  --ff-icon-xs: 14px;
+  --ff-icon-sm: 18px;
+  --ff-icon-md: 24px;
+  --ff-icon-lg: 32px;
+  --ff-icon-xl: 48px;
+  --ff-btn-height-sm: 32px;
+  --ff-btn-height-md: 40px;
+  --ff-btn-height-lg: 48px;
+  --ff-input-height-sm: 36px;
+  --ff-input-height-md: 44px;
+  --ff-input-height-lg: 52px;
+  --ff-scrollbar-width: 8px;
+  --ff-scrollbar-width-thin: 6px;
+}
+
+// =============================================================================
+// Color Custom Properties
+// =============================================================================
+// These are defined here because they depend on Material theme palettes
+:root {
+  // Theme colors from Material palette
   --ff-color-primary: #{mat.m2-get-color-from-palette($form-forge-primary, 500)};
+  --ff-color-primary-rgb: 25, 118, 210; // For rgba() usage
   --ff-color-accent: #{mat.m2-get-color-from-palette($form-forge-accent, A200)};
   --ff-color-warn: #{mat.m2-get-color-from-palette($form-forge-warn, 500)};
 
+  // Surface colors
   --ff-color-surface: #ffffff;
   --ff-color-background: #f4f7fa;
   --ff-color-border: #e0e0e0;
 
+  // Text colors
   --ff-text-primary: #212121;
   --ff-text-secondary: #757575;
 
-  --ff-font-family: 'Roboto', sans-serif;
-
-  --ff-spacing-unit: 8px;
-  --ff-spacing-xs: calc(0.5 * var(--ff-spacing-unit));
-  --ff-spacing-sm: var(--ff-spacing-unit);
-  --ff-spacing-md: calc(2 * var(--ff-spacing-unit));
-  --ff-spacing-lg: calc(3 * var(--ff-spacing-unit));
-  --ff-spacing-xl: calc(4 * var(--ff-spacing-unit));
-
-  --ff-border-radius: 8px;
-  --ff-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  // State colors
+  --ff-color-success: #4caf50;
+  --ff-color-error: #f44336;
+  --ff-color-info: #2196f3;
+  --ff-color-warning: #ff9800;
 }
 
 .dark-theme {
+  // Theme colors from Material dark palette
   --ff-color-primary: #{mat.m2-get-color-from-palette($form-forge-primary-dark, 500)};
+  --ff-color-primary-rgb: 96, 125, 139; // For rgba() usage
   --ff-color-accent: #{mat.m2-get-color-from-palette($form-forge-accent-dark, A200)};
   --ff-color-warn: #{mat.m2-get-color-from-palette($form-forge-warn-dark, 500)};
 
+  // Surface colors
   --ff-color-surface: #303030;
   --ff-color-background: #121212;
   --ff-color-border: #424242;
 
+  // Text colors
   --ff-text-primary: #ffffff;
   --ff-text-secondary: #b0b0b0;
-
-  --ff-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');

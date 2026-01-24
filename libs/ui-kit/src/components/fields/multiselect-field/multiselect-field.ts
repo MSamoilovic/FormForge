@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -10,16 +11,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { FieldOption, FieldType, OptionValue } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
 import { MultiSelectTrigger } from './components/multiselect-trigger/multiselect-trigger';
 import { MultiSelectDropdown } from './components/multiselect-dropdown/multiselect-dropdown';
+import { BaseFieldComponent } from '../../../base';
 
 @Component({
   selector: 'app-multiselect-field',
@@ -33,6 +30,7 @@ import { MultiSelectDropdown } from './components/multiselect-dropdown/multisele
   templateUrl: './multiselect-field.html',
   styleUrl: './multiselect-field.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -41,23 +39,23 @@ import { MultiSelectDropdown } from './components/multiselect-dropdown/multisele
     },
   ],
 })
-export class MultiSelectField implements ControlValueAccessor {
-  readonly label = input<string>('');
+export class MultiSelectField extends BaseFieldComponent<OptionValue[]> {
+  protected override readonly defaultFieldType = FieldType.MultiSelect;
+
+  // MultiSelectField-specific inputs
   readonly options = input<FieldOption[]>([]);
-  readonly formControl = input<FormControl | undefined>(undefined);
-  readonly placeholder = input<string>('');
-  readonly fieldType = input<FieldType>(FieldType.MultiSelect);
-  readonly required = input<boolean>(false);
-  readonly hint = input<string | null>(null);
 
   @ViewChild('wrapper', { static: false }) wrapperRef?: ElementRef<HTMLElement>;
 
+  // MultiSelectField-specific state
   isOpen = signal(false);
   private internalValue = signal<OptionValue[]>([]);
   private onChangeFn?: (value: OptionValue[]) => void;
   private onTouchedFn?: () => void;
 
   constructor() {
+    super();
+    
     // Initialize internal value when form control changes
     effect(() => {
       const control = this.formControl();
@@ -142,22 +140,23 @@ export class MultiSelectField implements ControlValueAccessor {
     this.markAsTouched();
   }
 
-  writeValue(value: OptionValue[] | OptionValue | null): void {
+  // Override CVA methods for custom multiselect behavior
+  override writeValue(value: OptionValue[] | OptionValue | null): void {
     const arrayValue = Array.isArray(value) ? value : value ? [value] : [];
     this.internalValue.set(arrayValue);
     this.formControl()?.setValue(arrayValue, { emitEvent: false });
   }
 
-  registerOnChange(fn: (value: OptionValue[]) => void): void {
+  override registerOnChange(fn: (value: OptionValue[]) => void): void {
     this.onChangeFn = fn;
     this.formControl()?.valueChanges.subscribe(fn);
   }
 
-  registerOnTouched(fn: () => void): void {
+  override registerOnTouched(fn: () => void): void {
     this.onTouchedFn = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
+  override setDisabledState(isDisabled: boolean): void {
     if (isDisabled) {
       this.formControl()?.disable();
       this.isOpen.set(false);

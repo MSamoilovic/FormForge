@@ -1,13 +1,9 @@
-import { Component, computed, forwardRef, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, forwardRef, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { FieldType } from '../../../../../models/src';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FieldType } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
+import { BaseFieldComponent } from '../../../base';
 
 @Component({
   selector: 'app-number-field',
@@ -15,6 +11,7 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
   templateUrl: './number-field.html',
   styleUrl: './number-field.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -23,16 +20,13 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
     },
   ],
 })
-export class NumberField implements ControlValueAccessor {
-  label = input<string>('');
-  placeholder = input<string>('');
-  formControl = input<FormControl | undefined>(undefined);
-  fieldType = input<FieldType>(FieldType.Number);
-  min = input<number | undefined>(undefined);
-  max = input<number | undefined>(undefined);
-  step = input<number | undefined>(undefined);
-  required = input<boolean>(false);
-  hint = input<string | null>(null);
+export class NumberField extends BaseFieldComponent<number> {
+  protected override readonly defaultFieldType = FieldType.Number;
+
+  // NumberField-specific inputs
+  readonly min = input<number | undefined>(undefined);
+  readonly max = input<number | undefined>(undefined);
+  readonly step = input<number | undefined>(undefined);
 
   computedErrorMessage = computed(() => {
     const control = this.formControl();
@@ -54,22 +48,4 @@ export class NumberField implements ControlValueAccessor {
 
     return 'Entered value is not valid.';
   });
-
-  writeValue(value: number | null): void {
-    this.formControl()?.setValue(value, { emitEvent: false });
-  }
-
-  registerOnChange(fn: (value: number | null) => void): void {
-    this.formControl()?.valueChanges.subscribe(fn);
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.formControl()?.statusChanges.subscribe(() => fn());
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    return isDisabled
-      ? this.formControl()?.disable()
-      : this.formControl()?.enable();
-  }
 }

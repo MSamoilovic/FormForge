@@ -1,19 +1,17 @@
-import { Component, computed, forwardRef, input } from '@angular/core';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FieldType } from '../../../../../models/src';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FieldType } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
+import { BaseFieldComponent } from '../../../base';
 
 @Component({
   selector: 'app-email-field',
   imports: [CommonModule, ReactiveFormsModule, FormFieldShell],
   templateUrl: './email-field.html',
   styleUrl: './email-field.scss',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -22,13 +20,8 @@ import { FormFieldShell } from '../../form-field-shell/form-field-shell';
     },
   ],
 })
-export class EmailField implements ControlValueAccessor {
-  label = input<string>('');
-  placeholder = input<string>('');
-  formControl = input<FormControl | undefined>(undefined);
-  fieldType = input<FieldType>(FieldType.Email);
-  required = input<boolean>(false);
-  hint = input<string | null>(null);
+export class EmailField extends BaseFieldComponent<string> {
+  protected override readonly defaultFieldType = FieldType.Email;
 
   computedErrorMessage = computed(() => {
     const control = this.formControl();
@@ -48,22 +41,4 @@ export class EmailField implements ControlValueAccessor {
 
     return 'Entered value is not valid.';
   });
-
-  writeValue(value: any): void {
-    this.formControl()?.setValue(value, { emitEvent: false });
-  }
-
-  registerOnChange(fn: any): void {
-    this.formControl()?.valueChanges.subscribe(fn);
-  }
-
-  registerOnTouched(fn: any): void {
-    this.formControl()?.statusChanges.subscribe(() => fn());
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    return isDisabled
-      ? this.formControl()?.disable()
-      : this.formControl()?.enable();
-  }
 }

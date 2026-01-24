@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-field-error',
@@ -7,6 +7,7 @@ import { Component, input } from '@angular/core';
   imports: [CommonModule],
   templateUrl: './field-error.html',
   styleUrl: './field-error.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FieldError {
   message = input<string | null>(null);

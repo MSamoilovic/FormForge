@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FieldOption, OptionValue } from '@form-forge/models';
 import { MultiSelectChip } from '../multiselect-chip/multiselect-chip';
@@ -9,6 +9,7 @@ import { MultiSelectChip } from '../multiselect-chip/multiselect-chip';
   imports: [CommonModule, MultiSelectChip],
   templateUrl: './multiselect-trigger.html',
   styleUrl: './multiselect-trigger.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiSelectTrigger {
   selectedOptions = input<FieldOption[]>([]);
