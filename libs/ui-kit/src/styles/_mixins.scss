@@ -1,0 +1,332 @@
+// =============================================================================
+// FormForge Design System - Mixins
+// =============================================================================
+// Reusable SCSS mixins for consistent component styling.
+// =============================================================================
+
+// =============================================================================
+// SCROLLBAR MIXINS
+// =============================================================================
+
+/// Standard scrollbar styling
+/// @param {Length} $width - Scrollbar width (default: 8px)
+/// @param {Color} $track-bg - Track background color
+/// @param {Color} $thumb-bg - Thumb background color
+@mixin scrollbar(
+  $width: var(--ff-scrollbar-width),
+  $track-bg: transparent,
+  $thumb-bg: var(--ff-color-border)
+) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-bg;
+    border-radius: var(--ff-radius-sm);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-bg;
+    border-radius: var(--ff-radius-sm);
+    
+    &:hover {
+      background: var(--ff-text-secondary);
+    }
+  }
+
+  // Firefox
+  scrollbar-width: thin;
+  scrollbar-color: $thumb-bg $track-bg;
+}
+
+/// Thin scrollbar variant
+@mixin scrollbar-thin {
+  @include scrollbar($width: var(--ff-scrollbar-width-thin));
+}
+
+/// Hidden scrollbar (still scrollable)
+@mixin scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+// =============================================================================
+// CARD & SURFACE MIXINS
+// =============================================================================
+
+/// Base card styling
+@mixin card-base {
+  background: var(--ff-color-surface);
+  border: 1px solid var(--ff-color-border);
+  border-radius: var(--ff-radius-md);
+  box-shadow: var(--ff-shadow-sm);
+}
+
+/// Elevated card (higher shadow)
+@mixin card-elevated {
+  @include card-base;
+  box-shadow: var(--ff-shadow-md);
+}
+
+/// Interactive card with hover state
+@mixin card-interactive {
+  @include card-base;
+  transition: box-shadow var(--ff-transition-fast), 
+              border-color var(--ff-transition-fast),
+              transform var(--ff-transition-fast);
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: var(--ff-shadow-md);
+    border-color: var(--ff-color-primary);
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+/// Panel/sidebar styling
+@mixin panel-base {
+  background: var(--ff-color-surface);
+  border: 1px solid var(--ff-color-border);
+}
+
+// =============================================================================
+// FORM FIELD MIXINS
+// =============================================================================
+
+/// Standard form field wrapper
+@mixin field-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ff-space-1);
+  width: 100%;
+}
+
+/// Form input base styling
+@mixin input-base {
+  width: 100%;
+  padding: var(--ff-space-2) var(--ff-space-3);
+  font-family: var(--ff-font-family);
+  font-size: var(--ff-text-base);
+  color: var(--ff-text-primary);
+  background: var(--ff-color-surface);
+  border: 1px solid var(--ff-color-border);
+  border-radius: var(--ff-radius-md);
+  transition: border-color var(--ff-transition-fast),
+              box-shadow var(--ff-transition-fast);
+  outline: none;
+
+  &::placeholder {
+    color: var(--ff-text-secondary);
+    opacity: 0.7;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: darken(#e0e0e0, 10%);
+  }
+
+  &:focus {
+    border-color: var(--ff-color-primary);
+    box-shadow: var(--ff-shadow-focus);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: rgba(0, 0, 0, 0.05);
+  }
+}
+
+// =============================================================================
+// BUTTON MIXINS
+// =============================================================================
+
+/// Icon button base
+@mixin icon-button($size: var(--ff-btn-height-md)) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $size;
+  height: $size;
+  min-width: $size;
+  padding: 0;
+  border: none;
+  border-radius: var(--ff-radius-sm);
+  background: transparent;
+  color: var(--ff-text-secondary);
+  cursor: pointer;
+  transition: background-color var(--ff-transition-fast),
+              color var(--ff-transition-fast);
+
+  &:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--ff-color-primary);
+  }
+
+  &:active:not(:disabled) {
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+/// Pill button styling
+@mixin button-pill {
+  border-radius: var(--ff-radius-2xl);
+}
+
+// =============================================================================
+// LAYOUT MIXINS
+// =============================================================================
+
+/// Flex center (both axes)
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/// Flex column
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/// Flex row with gap
+@mixin flex-row($gap: var(--ff-space-2)) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: $gap;
+}
+
+/// Absolutely centered
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/// Full height container (for full-height layouts)
+@mixin full-height {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+// =============================================================================
+// ANIMATION MIXINS
+// =============================================================================
+
+/// Fade in animation
+@mixin fade-in($duration: var(--ff-duration-normal)) {
+  animation: ff-fade-in $duration var(--ff-ease-out);
+}
+
+/// Slide in from bottom
+@mixin slide-in-up($duration: var(--ff-duration-normal)) {
+  animation: ff-slide-in-up $duration var(--ff-ease-out);
+}
+
+// Keyframes
+@keyframes ff-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ff-slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// =============================================================================
+// UTILITY MIXINS
+// =============================================================================
+
+/// Text truncation with ellipsis
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/// Multi-line text truncation
+@mixin text-truncate-lines($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/// Visually hidden (accessible)
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/// Focus visible outline
+@mixin focus-visible {
+  &:focus-visible {
+    outline: 2px solid var(--ff-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+// =============================================================================
+// RESPONSIVE MIXINS
+// =============================================================================
+
+/// Media query breakpoints
+$breakpoints: (
+  'sm': 640px,
+  'md': 768px,
+  'lg': 1024px,
+  'xl': 1280px,
+  '2xl': 1536px,
+);
+
+@mixin breakpoint($size) {
+  @if map-has-key($breakpoints, $size) {
+    @media (min-width: map-get($breakpoints, $size)) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$size}' not found.";
+  }
+}
+
+@mixin breakpoint-down($size) {
+  @if map-has-key($breakpoints, $size) {
+    @media (max-width: #{map-get($breakpoints, $size) - 1px}) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$size}' not found.";
+  }
+}
+

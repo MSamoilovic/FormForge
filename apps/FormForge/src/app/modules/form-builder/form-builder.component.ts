@@ -27,6 +27,8 @@ import { FormBuilderService } from './services/form-builder.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NotificationService } from '../core/services/notification.service';
 import { ThemeService } from '../core/services/theme.service';
+import { HistoryService } from './services/history.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   standalone: true,
@@ -44,9 +46,9 @@ import { ThemeService } from '../core/services/theme.service';
     MatButton,
     MatSnackBarModule,
     MatProgressSpinner,
-    FormBuilderPropertyPanel,
+    MatTooltipModule,
   ],
-  providers: [ApiService, HttpClient, FormBuilderService, NotificationService],
+  providers: [ApiService, HttpClient, FormBuilderService, NotificationService, HistoryService],
 })
 export class FormBuilderComponent {
   fields: FieldType[] = [
@@ -158,14 +160,62 @@ export class FormBuilderComponent {
     this.formBuilderService.duplicateField(fieldId);
   }
 
+  onRemoveField(fieldId: string): void {
+    this.formBuilderService.removeField(fieldId);
+  }
+
+  undo(): void {
+    this.formBuilderService.undo();
+  }
+
+  redo(): void {
+    this.formBuilderService.redo();
+  }
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    if ((event.ctrlKey || event.metaKey) && event.key === 'd') {
+    const isCtrlOrMeta = event.ctrlKey || event.metaKey;
+    
+    // Ctrl/Cmd + D: Duplicate field
+    if (isCtrlOrMeta && event.key === 'd') {
       const selectedField = this.formBuilderService.selected();
       if (selectedField) {
         event.preventDefault();
         this.onDuplicateField(selectedField.id);
       }
     }
+    
+    // Ctrl/Cmd + Z: Undo
+    if (isCtrlOrMeta && event.key === 'z' && !event.shiftKey) {
+      event.preventDefault();
+      this.undo();
+    }
+    
+    // Ctrl/Cmd + Shift + Z or Ctrl/Cmd + Y: Redo
+    if (isCtrlOrMeta && ((event.key === 'z' && event.shiftKey) || event.key === 'y')) {
+      event.preventDefault();
+      this.redo();
+    }
+    
+    // Delete/Backspace: Remove selected field
+    if ((event.key === 'Delete' || event.key === 'Backspace') && !this.isInputFocused()) {
+      const selectedField = this.formBuilderService.selected();
+      if (selectedField) {
+        event.preventDefault();
+        this.onRemoveField(selectedField.id);
+      }
+    }
+  }
+
+  /**
+   * Check if an input element is currently focused to avoid capturing delete in text fields
+   */
+  private isInputFocused(): boolean {
+    const activeElement = document.activeElement;
+    if (!activeElement) return false;
+    
+    const tagName = activeElement.tagName.toLowerCase();
+    return tagName === 'input' || tagName === 'textarea' || 
+           activeElement.hasAttribute('contenteditable');
   }
 }

@@ -38,6 +38,7 @@ export class FormBuilderCanvas {
   fieldDropped = output<CdkDragDrop<FormField[], AvailableField[], FieldType>>();
   fieldSelected = output<FormField>();
   fieldDuplicated = output<string>();
+  fieldRemoved = output<string>();
 
   onDrop(event: CdkDragDrop<FormField[], AvailableField[], FieldType>): void {
     this.fieldDropped.emit(event);
@@ -50,6 +51,11 @@ export class FormBuilderCanvas {
   onDuplicateField(fieldId: string, event: Event): void {
     event.stopPropagation();
     this.fieldDuplicated.emit(fieldId);
+  }
+
+  onRemoveField(fieldId: string, event: Event): void {
+    event.stopPropagation();
+    this.fieldRemoved.emit(fieldId);
   }
 
   getComponent(fieldType: FieldType): FieldComponentType | null {
