@@ -296,6 +296,11 @@
       transform: scale(0.95);
     }
 
+    &.delete-button:hover {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+    }
+
     mat-icon {
       font-size: var(--ff-icon-sm);
       width: var(--ff-icon-sm);

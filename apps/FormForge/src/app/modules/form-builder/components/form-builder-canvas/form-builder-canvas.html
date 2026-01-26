@@ -57,7 +57,16 @@
             >
               <mat-icon class="action-icon">content_copy</mat-icon>
             </button>
-            <mat-icon class="action-icon">settings</mat-icon>
+            <button
+              mat-icon-button
+              class="action-button delete-button"
+              (click)="onRemoveField(field.id, $event)"
+              matTooltip="Remove field (Delete)"
+              matTooltipPosition="left"
+              type="button"
+            >
+              <mat-icon class="action-icon">delete</mat-icon>
+            </button>
           </div>
         </div>
       }

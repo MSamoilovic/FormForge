@@ -1,0 +1,154 @@
+// =============================================================================
+// FormForge Design System - CSS Custom Properties
+// =============================================================================
+// This file defines all design tokens as CSS custom properties.
+// Import this file in your global styles to ensure consistency.
+// =============================================================================
+
+:root {
+  // ===========================================================================
+  // SPACING SCALE
+  // ===========================================================================
+  // Based on 4px grid system for consistent spacing
+  --ff-space-1: 4px;   // Extra tight
+  --ff-space-2: 8px;   // Tight / Default unit
+  --ff-space-3: 12px;  // Compact
+  --ff-space-4: 16px;  // Normal
+  --ff-space-5: 20px;  // Relaxed
+  --ff-space-6: 24px;  // Loose
+  --ff-space-8: 32px;  // Extra loose
+
+  // Legacy spacing aliases (for backward compatibility)
+  --ff-spacing-unit: var(--ff-space-2);
+  --ff-spacing-xs: var(--ff-space-1);
+  --ff-spacing-sm: var(--ff-space-2);
+  --ff-spacing-md: var(--ff-space-4);
+  --ff-spacing-lg: var(--ff-space-6);
+  --ff-spacing-xl: var(--ff-space-8);
+
+  // ===========================================================================
+  // BORDER RADIUS SCALE
+  // ===========================================================================
+  --ff-radius-xs: 2px;    // Subtle rounding
+  --ff-radius-sm: 4px;    // Small elements (chips, scrollbars, badges)
+  --ff-radius-md: 8px;    // Standard (cards, inputs, buttons)
+  --ff-radius-lg: 12px;   // Large containers (modals, panels)
+  --ff-radius-xl: 16px;   // Extra large
+  --ff-radius-2xl: 24px;  // Pills, large pills
+  --ff-radius-full: 9999px; // Circles, fully rounded
+
+  // Legacy alias
+  --ff-border-radius: var(--ff-radius-md);
+
+  // ===========================================================================
+  // SHADOWS
+  // ===========================================================================
+  --ff-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --ff-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --ff-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --ff-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --ff-shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.16);
+
+  // Focused/elevated state shadow
+  --ff-shadow-focus: 0 0 0 3px rgba(var(--ff-color-primary-rgb, 25, 118, 210), 0.2);
+
+  // Legacy alias
+  --ff-box-shadow: var(--ff-shadow-md);
+
+  // ===========================================================================
+  // TRANSITIONS
+  // ===========================================================================
+  --ff-duration-instant: 50ms;
+  --ff-duration-fast: 150ms;
+  --ff-duration-normal: 200ms;
+  --ff-duration-slow: 300ms;
+  --ff-duration-slower: 400ms;
+
+  // Easing functions
+  --ff-ease-default: ease;
+  --ff-ease-in: ease-in;
+  --ff-ease-out: ease-out;
+  --ff-ease-in-out: ease-in-out;
+  --ff-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  // Prebuilt transitions
+  --ff-transition-fast: var(--ff-duration-fast) var(--ff-ease-default);
+  --ff-transition-normal: var(--ff-duration-normal) var(--ff-ease-default);
+  --ff-transition-slow: var(--ff-duration-slow) var(--ff-ease-default);
+  --ff-transition-colors: color var(--ff-duration-fast), background-color var(--ff-duration-fast), border-color var(--ff-duration-fast);
+
+  // ===========================================================================
+  // Z-INDEX SCALE
+  // ===========================================================================
+  --ff-z-base: 0;
+  --ff-z-dropdown: 1000;
+  --ff-z-sticky: 1020;
+  --ff-z-fixed: 1030;
+  --ff-z-modal-backdrop: 1040;
+  --ff-z-modal: 1050;
+  --ff-z-popover: 1060;
+  --ff-z-tooltip: 1070;
+  --ff-z-toast: 1080;
+
+  // ===========================================================================
+  // TYPOGRAPHY
+  // ===========================================================================
+  --ff-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ff-font-family-mono: 'Roboto Mono', 'Consolas', 'Monaco', monospace;
+
+  // Font sizes
+  --ff-text-xs: 0.75rem;    // 12px
+  --ff-text-sm: 0.875rem;   // 14px
+  --ff-text-base: 1rem;     // 16px
+  --ff-text-lg: 1.125rem;   // 18px
+  --ff-text-xl: 1.25rem;    // 20px
+  --ff-text-2xl: 1.5rem;    // 24px
+  --ff-text-3xl: 1.875rem;  // 30px
+
+  // Line heights
+  --ff-leading-tight: 1.25;
+  --ff-leading-normal: 1.5;
+  --ff-leading-relaxed: 1.75;
+
+  // Font weights
+  --ff-font-light: 300;
+  --ff-font-normal: 400;
+  --ff-font-medium: 500;
+  --ff-font-bold: 700;
+
+  // ===========================================================================
+  // COMPONENT SIZES
+  // ===========================================================================
+  // Icon sizes
+  --ff-icon-xs: 14px;
+  --ff-icon-sm: 18px;
+  --ff-icon-md: 24px;
+  --ff-icon-lg: 32px;
+  --ff-icon-xl: 48px;
+
+  // Button heights
+  --ff-btn-height-sm: 32px;
+  --ff-btn-height-md: 40px;
+  --ff-btn-height-lg: 48px;
+
+  // Input heights
+  --ff-input-height-sm: 36px;
+  --ff-input-height-md: 44px;
+  --ff-input-height-lg: 52px;
+
+  // Scrollbar
+  --ff-scrollbar-width: 8px;
+  --ff-scrollbar-width-thin: 6px;
+}
+
+// =============================================================================
+// DARK THEME OVERRIDES
+// =============================================================================
+.dark-theme {
+  --ff-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --ff-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --ff-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --ff-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --ff-shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
