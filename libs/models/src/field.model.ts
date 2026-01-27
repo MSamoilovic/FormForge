@@ -19,6 +19,8 @@ export enum FieldType {
   RichText = 'richText',
   ColorPicker = 'colorPicker',
   LikertScale = 'likertScale',
+  Url = 'url',
+  Password = 'password',
 }
 
 export enum ColorFormat {

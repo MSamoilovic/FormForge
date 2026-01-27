@@ -18,6 +18,8 @@ export * from './components/fields/file-upload-field/file-upload-field';
 export * from './components/fields/rich-text-field/rich-text-field';
 export * from './components/fields/color-picker-field/color-picker-field';
 export * from './components/fields/likert-scale-field/likert-scale-field';
+export * from './components/fields/url-field/url-field';
+export * from './components/fields/password-field/password-field';
 
 // Shared Components
 export * from './components/field-error/field-error';

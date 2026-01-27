@@ -17,6 +17,8 @@ import {
   RichTextField,
   ColorPickerField,
   LikertScaleField,
+  UrlField,
+  PasswordField,
 } from '@form-forge/ui-kit';
 
 
@@ -39,4 +41,6 @@ export const FIELD_TYPE_MAP: Record<FieldType, FieldComponentType> = {
   [FieldType.RichText]: RichTextField,
   [FieldType.ColorPicker]: ColorPickerField,
   [FieldType.LikertScale]: LikertScaleField,
+  [FieldType.Url]: UrlField,
+  [FieldType.Password]: PasswordField,
 };
