@@ -1,36 +1,89 @@
 <app-form-field-shell [label]="label()" [required]="required()" [errorMessage]="computedErrorMessage()" [hint]="hint()">
   <div class="file-upload-container">
-    <input #fileInput type="file" [accept]="accept()" [multiple]="multiple()" (change)="onFileChange($event)"
-      class="file-input-hidden" id="file-input" />
+    <input 
+      #fileInput 
+      type="file" 
+      [accept]="accept()" 
+      [multiple]="multiple()" 
+      (change)="onFileChange($event)"
+      class="file-input-hidden" 
+    />
 
-    <div class="file-upload-dropzone" [class.drag-over]="isDragOver()" (dragover)="onDragOver($event)"
-      (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (click)="fileInput.click()">
+    <div 
+      class="file-upload-dropzone" 
+      [class.drag-over]="isDragOver()"
+      [class.has-files]="filesCount > 0"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)" 
+      (drop)="onDrop($event)" 
+      (click)="fileInput.click()"
+    >
       <div class="upload-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
           <polyline points="17 8 12 3 7 8"></polyline>
           <line x1="12" y1="3" x2="12" y2="15"></line>
         </svg>
       </div>
       <p class="upload-text">{{ placeholder() }}</p>
-      <p class="upload-hint">{{ multiple() ? 'Select multiple files' : 'Select a file' }}</p>
+      <div class="upload-meta">
+        @if (acceptedTypesDisplay()) {
+          <span class="meta-item">{{ acceptedTypesDisplay() }}</span>
+          <span class="meta-separator">•</span>
+        }
+        <span class="meta-item">Max {{ maxFileSizeDisplay() }}</span>
+        @if (multiple()) {
+          <span class="meta-separator">•</span>
+          <span class="meta-item">Up to {{ maxFiles() }} files</span>
+        }
+      </div>
     </div>
 
-    @if (selectedFiles().length > 0) {
-    <div class="selected-files">
-      @for (file of selectedFiles(); track file.name; let i = $index) {
-      <div class="file-item">
-        <span class="file-icon">{{ getFileIcon(file) }}</span>
-        <div class="file-info">
-          <span class="file-name">{{ file.name }}</span>
-          <span class="file-size">{{ formatFileSize(file.size) }}</span>
+    @if (uploadedFiles().length > 0) {
+      <div class="uploaded-files">
+        <div class="files-header">
+          <span class="files-count">{{ filesCount }} file{{ filesCount > 1 ? 's' : '' }} selected</span>
+          @if (hasErrors) {
+            <span class="files-error">Some files have errors</span>
+          }
         </div>
-        <button type="button" class="file-remove" (click)="removeFile(i)" aria-label="Remove file">
-          ✕
-        </button>
+        
+        <div class="files-grid">
+          @for (uploadedFile of uploadedFiles(); track uploadedFile.file.name; let i = $index) {
+            <div class="file-card" [class.has-error]="uploadedFile.error" [class.has-preview]="uploadedFile.preview">
+              @if (uploadedFile.preview) {
+                <div class="file-preview">
+                  <img [src]="uploadedFile.preview" [alt]="uploadedFile.file.name" />
+                </div>
+              } @else {
+                <div class="file-icon-large">
+                  {{ getFileIcon(uploadedFile.file) }}
+                </div>
+              }
+              
+              <div class="file-details">
+                <span class="file-name" [title]="uploadedFile.file.name">{{ uploadedFile.file.name }}</span>
+                <span class="file-size">{{ formatFileSize(uploadedFile.file.size) }}</span>
+                @if (uploadedFile.error) {
+                  <span class="file-error">{{ uploadedFile.error }}</span>
+                }
+              </div>
+
+              <button 
+                type="button" 
+                class="file-remove" 
+                (click)="removeFile(i); $event.stopPropagation()" 
+                aria-label="Remove file"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          }
+        </div>
       </div>
-      }
-    </div>
     }
   </div>
 </app-form-field-shell>
