@@ -1,0 +1,83 @@
+<app-auth-layout title="Welcome back" subtitle="Sign in to continue to FormForge">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+    @if (errorMessage()) {
+      <div class="error-alert">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage() }}</span>
+      </div>
+    }
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email or Username</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="login"
+        placeholder="you@example.com or username"
+        autocomplete="username"
+      />
+      <mat-icon matPrefix>person</mat-icon>
+      @if (loginForm.get('login')?.invalid && loginForm.get('login')?.touched) {
+        <mat-error>{{ getErrorMessage('login') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        [type]="hidePassword() ? 'password' : 'text'"
+        formControlName="password"
+        placeholder="Enter your password"
+        autocomplete="current-password"
+      />
+      <mat-icon matPrefix>lock</mat-icon>
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="togglePasswordVisibility()"
+        [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+      >
+        <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+        <mat-error>{{ getErrorMessage('password') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="form-options">
+      <mat-checkbox formControlName="rememberMe" color="primary">
+        Remember me
+      </mat-checkbox>
+      <a routerLink="/auth/forgot-password" class="forgot-link">
+        Forgot password?
+      </a>
+    </div>
+
+    <button
+      type="submit"
+      mat-flat-button
+      color="primary"
+      class="submit-btn"
+      [disabled]="isLoading()"
+    >
+      @if (isLoading()) {
+        <mat-spinner diameter="20"></mat-spinner>
+        <span>Signing in...</span>
+      } @else {
+        <span>Sign in</span>
+        <mat-icon>arrow_forward</mat-icon>
+      }
+    </button>
+
+    <div class="auth-divider">
+      <span>or</span>
+    </div>
+
+    <p class="auth-switch">
+      Don't have an account?
+      <a routerLink="/auth/register" class="switch-link">Create one</a>
+    </p>
+  </form>
+</app-auth-layout>

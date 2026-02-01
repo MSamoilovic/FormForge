@@ -1,0 +1,32 @@
+<div class="auth-container" [class.dark-theme]="isDarkMode()">
+  <div class="auth-background">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+    <div class="grid-pattern"></div>
+  </div>
+
+  <div class="auth-card">
+    <div class="auth-header">
+      <a routerLink="/dashboard" class="logo">
+        <mat-icon>dynamic_form</mat-icon>
+        <span>FormForge</span>
+      </a>
+    </div>
+
+    <div class="auth-content">
+      <h1 class="auth-title">{{ title() }}</h1>
+      @if (subtitle()) {
+        <p class="auth-subtitle">{{ subtitle() }}</p>
+      }
+
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+  <footer class="auth-footer">
+    <p>&copy; 2026 FormForge. All rights reserved.</p>
+  </footer>
+</div>
+
+

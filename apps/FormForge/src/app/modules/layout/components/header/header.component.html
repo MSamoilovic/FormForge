@@ -7,23 +7,81 @@
 
     <span class="spacer"></span>
 
-    <nav class="navigation-items">
-      <a mat-button routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
-        Dashboard
-      </a>
-      <a mat-button routerLink="/builder" routerLinkActive="active-link">
-        New Form
-      </a>
-    </nav>
+    @if (isAuthenticated()) {
+      <nav class="navigation-items">
+        <a mat-button routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+          Dashboard
+        </a>
+        <a mat-button routerLink="/builder" routerLinkActive="active-link">
+          New Form
+        </a>
+      </nav>
 
-    <button mat-icon-button (click)="toggleTheme()"
-      [matTooltip]="isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'" aria-label="Toggle theme"
-      class="theme-toggle-button">
-      @if (isDarkMode()) {
-      <mat-icon>light_mode</mat-icon>
-      } @else {
-      <mat-icon>dark_mode</mat-icon>
-      }
-    </button>
+      <button mat-icon-button (click)="toggleTheme()"
+        [matTooltip]="isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+        class="theme-toggle-button">
+        @if (isDarkMode()) {
+          <mat-icon>light_mode</mat-icon>
+        } @else {
+          <mat-icon>dark_mode</mat-icon>
+        }
+      </button>
+
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-trigger">
+        <div class="user-avatar">
+          {{ getInitials() }}
+        </div>
+      </button>
+
+      <mat-menu #userMenu="matMenu" class="user-dropdown">
+        <div class="user-menu-header">
+          <div class="user-menu-avatar">
+            {{ getInitials() }}
+          </div>
+          <div class="user-menu-info">
+            <span class="user-menu-name">{{ currentUser()?.full_name || currentUser()?.username }}</span>
+            <span class="user-menu-email">{{ currentUser()?.email }}</span>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <a mat-menu-item routerLink="/auth/profile">
+          <mat-icon>person</mat-icon>
+          <span>My Profile</span>
+        </a>
+
+        <a mat-menu-item routerLink="/dashboard">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </a>
+
+        <mat-divider></mat-divider>
+
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Sign out</span>
+        </button>
+      </mat-menu>
+    } @else {
+      <button mat-icon-button (click)="toggleTheme()"
+        [matTooltip]="isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+        class="theme-toggle-button">
+        @if (isDarkMode()) {
+          <mat-icon>light_mode</mat-icon>
+        } @else {
+          <mat-icon>dark_mode</mat-icon>
+        }
+      </button>
+
+      <nav class="auth-buttons">
+        <a mat-button routerLink="/auth/login" class="login-btn">
+          Sign in
+        </a>
+        <a mat-flat-button routerLink="/auth/register" class="register-btn">
+          Get Started
+        </a>
+      </nav>
+    }
   </div>
 </mat-toolbar>
