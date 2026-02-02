@@ -129,9 +129,55 @@
     }
   }
 
-  .mat-mdc-checkbox .mdc-checkbox {
-    padding: 0;
+  // Remember me checkbox styling
+  .mat-mdc-checkbox {
+    --mdc-checkbox-state-layer-size: 32px;
+
+    .mdc-checkbox {
+      padding: 0;
+      margin-right: 4px;
+
+      .mdc-checkbox__background {
+        width: 18px;
+        height: 18px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-width: 2px;
+        border-color: var(--ff-color-border);
+        border-radius: 4px;
+      }
+
+      .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
+      .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
+        border-color: var(--ff-color-primary);
+        background-color: var(--ff-color-primary);
+      }
+
+      .mdc-checkbox__checkmark {
+        color: #fff;
+      }
+
+      .mdc-checkbox__ripple {
+        display: none;
+      }
+    }
+
+    .mdc-form-field {
+      display: flex;
+      align-items: center;
+    }
+
+    .mdc-label {
+      font-size: var(--ff-text-sm);
+      color: var(--ff-text-secondary);
+      padding-left: 4px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    &:hover .mdc-checkbox__background {
+      border-color: var(--ff-color-primary);
+    }
   }
 }
-
-

@@ -1,7 +1,18 @@
+// =============================================================================
+// Angular Material Theme Setup (keeping during migration)
+// IMPORTANT: @use rules must be at the top of the file
+// =============================================================================
 @use '@angular/material' as mat;
 
 // =============================================================================
-// Angular Material Theme Setup
+// Tailwind CSS
+// =============================================================================
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// =============================================================================
+// Material Theme Configuration
 // =============================================================================
 @include mat.core();
 
@@ -40,15 +51,92 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((
 }
 
 // =============================================================================
-// Design System Variables
+// Tailwind/Spartan CSS Variables (Shadcn-style)
 // =============================================================================
-// Design tokens for consistent styling across the application
-// Note: Variables are defined inline here because Angular's Sass compilation
-// doesn't support @use for relative lib paths. The source of truth is in
-// libs/ui-kit/src/styles/_variables.scss
+@layer base {
+  :root {
+    // Core colors (HSL values without hsl() wrapper for Tailwind)
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
 
-// Spacing scale (4px grid)
+    // Additional semantic colors
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 355.7 100% 97.3%;
+    --warning: 32.1 94.6% 43.7%;
+    --warning-foreground: 26 83.3% 14.1%;
+    --info: 199.4 95.5% 53.8%;
+    --info-foreground: 213.1 100% 96.9%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+
+    // Additional semantic colors (dark mode)
+    --success: 142.1 70.6% 45.3%;
+    --success-foreground: 144.9 80.4% 10%;
+    --warning: 32.1 94.6% 53.7%;
+    --warning-foreground: 26 83.3% 14.1%;
+    --info: 199.4 95.5% 63.8%;
+    --info-foreground: 213.1 100% 6.9%;
+  }
+}
+
+// =============================================================================
+// Tailwind Base Layer Overrides
+// =============================================================================
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+// =============================================================================
+// Legacy FormForge Design System Variables
+// (keeping for ui-kit compatibility)
+// =============================================================================
 :root {
+  // Spacing scale (4px grid)
   --ff-space-1: 4px;
   --ff-space-2: 8px;
   --ff-space-3: 12px;
@@ -113,8 +201,8 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((
   --ff-z-toast: 1080;
 
   // Typography
-  --ff-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  --ff-font-family-mono: 'Roboto Mono', 'Consolas', 'Monaco', monospace;
+  --ff-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --ff-font-family-mono: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
   --ff-text-xs: 0.75rem;
   --ff-text-sm: 0.875rem;
   --ff-text-base: 1rem;
@@ -144,54 +232,46 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((
   --ff-input-height-lg: 52px;
   --ff-scrollbar-width: 8px;
   --ff-scrollbar-width-thin: 6px;
+
+  // Legacy colors (for ui-kit)
+  --ff-color-primary: hsl(var(--primary));
+  --ff-color-primary-rgb: 59, 130, 246;
+  --ff-color-accent: hsl(var(--accent));
+  --ff-color-warn: hsl(var(--destructive));
+  --ff-color-surface: hsl(var(--card));
+  --ff-color-background: hsl(var(--background));
+  --ff-color-border: hsl(var(--border));
+  --ff-text-primary: hsl(var(--foreground));
+  --ff-text-secondary: hsl(var(--muted-foreground));
+  --ff-color-success: hsl(var(--success));
+  --ff-color-error: hsl(var(--destructive));
+  --ff-color-info: hsl(var(--info));
+  --ff-color-warning: hsl(var(--warning));
+}
+
+.dark-theme,
+.dark {
+  // Legacy colors (for ui-kit) - dark mode
+  --ff-color-primary: hsl(var(--primary));
+  --ff-color-primary-rgb: 96, 165, 250;
+  --ff-color-accent: hsl(var(--accent));
+  --ff-color-warn: hsl(var(--destructive));
+  --ff-color-surface: hsl(var(--card));
+  --ff-color-background: hsl(var(--background));
+  --ff-color-border: hsl(var(--border));
+  --ff-text-primary: hsl(var(--foreground));
+  --ff-text-secondary: hsl(var(--muted-foreground));
 }
 
 // =============================================================================
-// Color Custom Properties
+// Fonts
 // =============================================================================
-// These are defined here because they depend on Material theme palettes
-:root {
-  // Theme colors from Material palette
-  --ff-color-primary: #{mat.m2-get-color-from-palette($form-forge-primary, 500)};
-  --ff-color-primary-rgb: 25, 118, 210; // For rgba() usage
-  --ff-color-accent: #{mat.m2-get-color-from-palette($form-forge-accent, A200)};
-  --ff-color-warn: #{mat.m2-get-color-from-palette($form-forge-warn, 500)};
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 
-  // Surface colors
-  --ff-color-surface: #ffffff;
-  --ff-color-background: #f4f7fa;
-  --ff-color-border: #e0e0e0;
-
-  // Text colors
-  --ff-text-primary: #212121;
-  --ff-text-secondary: #757575;
-
-  // State colors
-  --ff-color-success: #4caf50;
-  --ff-color-error: #f44336;
-  --ff-color-info: #2196f3;
-  --ff-color-warning: #ff9800;
-}
-
-.dark-theme {
-  // Theme colors from Material dark palette
-  --ff-color-primary: #{mat.m2-get-color-from-palette($form-forge-primary-dark, 500)};
-  --ff-color-primary-rgb: 96, 125, 139; // For rgba() usage
-  --ff-color-accent: #{mat.m2-get-color-from-palette($form-forge-accent-dark, A200)};
-  --ff-color-warn: #{mat.m2-get-color-from-palette($form-forge-warn-dark, 500)};
-
-  // Surface colors
-  --ff-color-surface: #303030;
-  --ff-color-background: #121212;
-  --ff-color-border: #424242;
-
-  // Text colors
-  --ff-text-primary: #ffffff;
-  --ff-text-secondary: #b0b0b0;
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-
+// =============================================================================
+// Global Styles
+// =============================================================================
 html,
 body {
   height: 100%;
@@ -199,25 +279,143 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: var(--ff-font-family), serif;
-  background-color: var(--ff-color-background);
-  color: var(--ff-text-primary);
+  font-family: var(--ff-font-family), sans-serif;
 }
 
+// =============================================================================
+// Material Snackbar Styles (keeping until migrated to toast)
+// =============================================================================
 .success-snackbar {
-  --mdc-snackbar-container-color: #4CAF50;
+  --mdc-snackbar-container-color: hsl(var(--success));
   --mat-mdc-snack-bar-button-color: #ffffff;
   --mdc-snackbar-supporting-text-color: #ffffff;
 }
 
 .error-snackbar {
-  --mdc-snackbar-container-color: #F44336;
+  --mdc-snackbar-container-color: hsl(var(--destructive));
   --mat-mdc-snack-bar-button-color: #ffffff;
   --mdc-snackbar-supporting-text-color: #ffffff;
 }
 
 .info-snackbar {
-  --mdc-snackbar-container-color: #2196F3; // Plava
+  --mdc-snackbar-container-color: hsl(var(--info));
   --mat-mdc-snack-bar-button-color: #ffffff;
   --mdc-snackbar-supporting-text-color: #ffffff;
+}
+
+.warning-snackbar {
+  --mdc-snackbar-container-color: hsl(var(--warning));
+  --mat-mdc-snack-bar-button-color: #ffffff;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+}
+
+// =============================================================================
+// Tailwind Component Layer (custom components)
+// =============================================================================
+@layer components {
+  // Form input base styles
+  .input-base {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm
+           ring-offset-background 
+           file:border-0 file:bg-transparent file:text-sm file:font-medium 
+           placeholder:text-muted-foreground 
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  // Button base styles
+  .btn-base {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium 
+           ring-offset-background transition-colors 
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 
+           disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn-base bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+
+  .btn-secondary {
+    @apply btn-base bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+
+  .btn-outline {
+    @apply btn-base border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .btn-ghost {
+    @apply btn-base hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .btn-destructive {
+    @apply btn-base bg-destructive text-destructive-foreground hover:bg-destructive/90;
+  }
+
+  // Card component
+  .card {
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm;
+  }
+
+  .card-header {
+    @apply flex flex-col space-y-1.5 p-6;
+  }
+
+  .card-title {
+    @apply text-2xl font-semibold leading-none tracking-tight;
+  }
+
+  .card-description {
+    @apply text-sm text-muted-foreground;
+  }
+
+  .card-content {
+    @apply p-6 pt-0;
+  }
+
+  .card-footer {
+    @apply flex items-center p-6 pt-0;
+  }
+}
+
+// =============================================================================
+// Tailwind Utilities Layer (custom utilities)
+// =============================================================================
+@layer utilities {
+  // Text balance for headings
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  // Hide scrollbar
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // Custom scrollbar
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: hsl(var(--border));
+      border-radius: 4px;
+
+      &:hover {
+        background-color: hsl(var(--muted-foreground));
+      }
+    }
+  }
 }
