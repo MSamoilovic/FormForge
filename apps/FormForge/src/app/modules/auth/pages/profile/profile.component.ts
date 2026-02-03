@@ -1,15 +1,24 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatChipsModule } from '@angular/material/chips';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import {
+  lucideUser,
+  lucideAtSign,
+  lucideMail,
+  lucideLock,
+  lucideEye,
+  lucideEyeOff,
+  lucideSave,
+  lucideShield,
+  lucideLoader2,
+  lucideCheckCircle,
+  lucideXCircle,
+  lucideClock,
+  lucideCalendar,
+  lucideAlertTriangle,
+  lucideTrash2,
+} from '@ng-icons/lucide';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { ThemeService } from '../../../core/services/theme.service';
@@ -17,21 +26,28 @@ import { UserRole } from '../../../core/models/auth.models';
 
 @Component({
   selector: 'app-profile',
-  imports: [
-    ReactiveFormsModule,
-    DatePipe,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatChipsModule,
+  standalone: true,
+  imports: [ReactiveFormsModule, DatePipe, NgIconComponent],
+  viewProviders: [
+    provideIcons({
+      lucideUser,
+      lucideAtSign,
+      lucideMail,
+      lucideLock,
+      lucideEye,
+      lucideEyeOff,
+      lucideSave,
+      lucideShield,
+      lucideLoader2,
+      lucideCheckCircle,
+      lucideXCircle,
+      lucideClock,
+      lucideCalendar,
+      lucideAlertTriangle,
+      lucideTrash2,
+    }),
   ],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -41,6 +57,14 @@ export class ProfileComponent implements OnInit {
 
   user = this.authService.currentUser;
   isDarkMode = computed(() => this.themeService.currentTheme() === 'dark');
+
+  tabs = [
+    { id: 'profile', label: 'Profile' },
+    { id: 'security', label: 'Security' },
+    { id: 'account', label: 'Account' },
+  ] as const;
+
+  activeTab = signal<'profile' | 'security' | 'account'>('profile');
 
   isUpdatingProfile = signal(false);
   isChangingPassword = signal(false);
@@ -155,12 +179,12 @@ export class ProfileComponent implements OnInit {
 
   getRoleBadgeColor(role: UserRole): string {
     const colors: Record<UserRole, string> = {
-      [UserRole.SUPER_ADMIN]: '#9c27b0',
-      [UserRole.ORG_ADMIN]: '#2196f3',
-      [UserRole.FORM_CREATOR]: '#4caf50',
-      [UserRole.VIEWER]: '#607d8b',
+      [UserRole.SUPER_ADMIN]: '#9333ea',
+      [UserRole.ORG_ADMIN]: '#3b82f6',
+      [UserRole.FORM_CREATOR]: '#22c55e',
+      [UserRole.VIEWER]: '#64748b',
     };
-    return colors[role] || '#607d8b';
+    return colors[role] || '#64748b';
   }
 
   getRoleLabel(role: UserRole): string {
@@ -188,4 +212,3 @@ export class ProfileComponent implements OnInit {
     return currentUser.username.slice(0, 2).toUpperCase();
   }
 }
-

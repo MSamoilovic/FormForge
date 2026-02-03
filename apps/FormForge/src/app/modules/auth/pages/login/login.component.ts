@@ -1,31 +1,36 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import {
+  lucideUser,
+  lucideLock,
+  lucideEye,
+  lucideEyeOff,
+  lucideArrowRight,
+  lucideAlertCircle,
+  lucideLoader2,
+} from '@ng-icons/lucide';
 import { AuthLayoutComponent } from '../../components/auth-layout/auth-layout.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-login',
-  imports: [
-    ReactiveFormsModule,
-    RouterLink,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatCheckboxModule,
-    AuthLayoutComponent,
+  standalone: true,
+  imports: [ReactiveFormsModule, RouterLink, NgIconComponent, AuthLayoutComponent],
+  viewProviders: [
+    provideIcons({
+      lucideUser,
+      lucideLock,
+      lucideEye,
+      lucideEyeOff,
+      lucideArrowRight,
+      lucideAlertCircle,
+      lucideLoader2,
+    }),
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);

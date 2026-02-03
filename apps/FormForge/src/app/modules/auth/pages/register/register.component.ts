@@ -7,31 +7,42 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import {
+  lucideUser,
+  lucideAtSign,
+  lucideMail,
+  lucideLock,
+  lucideEye,
+  lucideEyeOff,
+  lucideArrowRight,
+  lucideAlertCircle,
+  lucideLoader2,
+  lucideShield,
+} from '@ng-icons/lucide';
 import { AuthLayoutComponent } from '../../components/auth-layout/auth-layout.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-register',
-  imports: [
-    ReactiveFormsModule,
-    RouterLink,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatCheckboxModule,
-    AuthLayoutComponent,
+  standalone: true,
+  imports: [ReactiveFormsModule, RouterLink, NgIconComponent, AuthLayoutComponent],
+  viewProviders: [
+    provideIcons({
+      lucideUser,
+      lucideAtSign,
+      lucideMail,
+      lucideLock,
+      lucideEye,
+      lucideEyeOff,
+      lucideArrowRight,
+      lucideAlertCircle,
+      lucideLoader2,
+      lucideShield,
+    }),
   ],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
   private fb = inject(FormBuilder);
@@ -59,11 +70,7 @@ export class RegisterComponent {
       email: ['', [Validators.required, Validators.email]],
       password: [
         '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          this.passwordStrengthValidator,
-        ],
+        [Validators.required, Validators.minLength(8), this.passwordStrengthValidator],
       ],
       confirmPassword: ['', [Validators.required]],
       acceptTerms: [false, [Validators.requiredTrue]],
@@ -171,5 +178,3 @@ export class RegisterComponent {
     );
   }
 }
-
-

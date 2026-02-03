@@ -1,83 +1,93 @@
 <app-auth-layout title="Welcome back" subtitle="Sign in to continue to FormForge">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    
     @if (errorMessage()) {
-      <div class="error-alert">
-        <mat-icon>error_outline</mat-icon>
+      <div class="alert-error">
+        <ng-icon name="lucideAlertCircle" class="text-lg shrink-0" />
         <span>{{ errorMessage() }}</span>
       </div>
     }
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Email or Username</mat-label>
-      <input
-        matInput
-        type="text"
-        formControlName="login"
-        placeholder="you@example.com or username"
-        autocomplete="username"
-      />
-      <mat-icon matPrefix>person</mat-icon>
+    <!-- Email/Username -->
+    <div class="space-y-2">
+      <label for="login" class="form-label">Email or Username</label>
+      <div class="relative">
+        <ng-icon name="lucideUser" class="form-icon" />
+        <input
+          id="login"
+          type="text"
+          formControlName="login"
+          placeholder="you@example.com"
+          autocomplete="username"
+          class="form-input-icon"
+          [class.form-input-error]="loginForm.get('login')?.invalid && loginForm.get('login')?.touched"
+        />
+      </div>
       @if (loginForm.get('login')?.invalid && loginForm.get('login')?.touched) {
-        <mat-error>{{ getErrorMessage('login') }}</mat-error>
+        <p class="form-error">{{ getErrorMessage('login') }}</p>
       }
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Password</mat-label>
-      <input
-        matInput
-        [type]="hidePassword() ? 'password' : 'text'"
-        formControlName="password"
-        placeholder="Enter your password"
-        autocomplete="current-password"
-      />
-      <mat-icon matPrefix>lock</mat-icon>
-      <button
-        type="button"
-        mat-icon-button
-        matSuffix
-        (click)="togglePasswordVisibility()"
-        [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
-      >
-        <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-      </button>
-      @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-        <mat-error>{{ getErrorMessage('password') }}</mat-error>
-      }
-    </mat-form-field>
-
-    <div class="form-options">
-      <mat-checkbox formControlName="rememberMe" color="primary">
-        Remember me
-      </mat-checkbox>
-      <a routerLink="/auth/forgot-password" class="forgot-link">
-        Forgot password?
-      </a>
     </div>
 
-    <button
-      type="submit"
-      mat-flat-button
-      color="primary"
-      class="submit-btn"
-      [disabled]="isLoading()"
-    >
+    <!-- Password -->
+    <div class="space-y-2">
+      <label for="password" class="form-label">Password</label>
+      <div class="relative">
+        <ng-icon name="lucideLock" class="form-icon" />
+        <input
+          id="password"
+          [type]="hidePassword() ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          class="form-input-icon-both"
+          [class.form-input-error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+        />
+        <button
+          type="button"
+          (click)="togglePasswordVisibility()"
+          class="form-icon-btn"
+          [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+        >
+          <ng-icon [name]="hidePassword() ? 'lucideEyeOff' : 'lucideEye'" />
+        </button>
+      </div>
+      @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+        <p class="form-error">{{ getErrorMessage('password') }}</p>
+      }
+    </div>
+
+    <!-- Remember Me & Forgot Password -->
+    <div class="flex items-center justify-between">
+      <label class="flex items-center gap-2 cursor-pointer group">
+        <input type="checkbox" formControlName="rememberMe" class="form-checkbox" />
+        <span class="text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors">
+          Remember me
+        </span>
+      </label>
+      <a routerLink="/auth/forgot-password" class="btn-link text-sm">Forgot password?</a>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" [disabled]="isLoading()" class="btn btn-primary-gradient btn-lg btn-full">
       @if (isLoading()) {
-        <mat-spinner diameter="20"></mat-spinner>
+        <ng-icon name="lucideLoader2" class="animate-spin" />
         <span>Signing in...</span>
       } @else {
         <span>Sign in</span>
-        <mat-icon>arrow_forward</mat-icon>
+        <ng-icon name="lucideArrowRight" />
       }
     </button>
 
-    <div class="auth-divider">
-      <span>or</span>
+    <!-- Divider -->
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-text"><span>or</span></div>
     </div>
 
-    <p class="auth-switch">
+    <!-- Register Link -->
+    <p class="text-center text-sm text-slate-500 dark:text-slate-400">
       Don't have an account?
-      <a routerLink="/auth/register" class="switch-link">Create one</a>
+      <a routerLink="/auth/register" class="btn-link">Create one</a>
     </p>
   </form>
 </app-auth-layout>

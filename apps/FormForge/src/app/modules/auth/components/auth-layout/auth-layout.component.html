@@ -1,32 +1,44 @@
-<div class="auth-container" [class.dark-theme]="isDarkMode()">
-  <div class="auth-background">
-    <div class="gradient-orb orb-1"></div>
-    <div class="gradient-orb orb-2"></div>
-    <div class="gradient-orb orb-3"></div>
-    <div class="grid-pattern"></div>
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-600 via-indigo-500 to-cyan-400 dark:from-slate-900 dark:via-indigo-950 dark:to-slate-800 p-4 relative overflow-hidden">
+  <!-- Background Effects -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-[200px] -left-[100px] w-[600px] h-[600px] bg-gradient-to-br from-pink-400/40 to-rose-500/40 rounded-full blur-[80px] animate-float"></div>
+    <div class="absolute -bottom-[150px] -right-[100px] w-[500px] h-[500px] bg-gradient-to-br from-sky-400/40 to-cyan-400/40 rounded-full blur-[80px] animate-float-delayed"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-gradient-to-br from-emerald-400/30 to-teal-400/30 rounded-full blur-[80px] animate-float-slow"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[length:50px_50px]"></div>
   </div>
 
-  <div class="auth-card">
-    <div class="auth-header">
-      <a routerLink="/dashboard" class="logo">
-        <mat-icon>dynamic_form</mat-icon>
-        <span>FormForge</span>
-      </a>
+  <div class="w-full max-w-md relative z-10">
+    <!-- Card -->
+    <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 dark:border-slate-700/50 overflow-hidden animate-slide-up">
+      <!-- Header -->
+      <div class="p-6 pb-4 text-center border-b border-slate-100 dark:border-slate-800">
+        <!-- Logo -->
+        <a routerLink="/dashboard" class="inline-flex items-center gap-2 mb-4 transition-transform hover:scale-[1.02]">
+          <div class="w-9 h-9 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/25">
+            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H6v-2h6v2zm4-4H6v-2h10v2zm0-4H6V7h10v2z"/>
+            </svg>
+          </div>
+          <span class="text-xl font-bold text-slate-800 dark:text-white tracking-tight">FormForge</span>
+        </a>
+        
+        <!-- Title -->
+        <h1 class="text-2xl font-bold text-slate-800 dark:text-white">{{ title() }}</h1>
+        @if (subtitle()) {
+          <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">{{ subtitle() }}</p>
+        }
+      </div>
+      
+      <!-- Content -->
+      <div class="p-6 pt-4">
+        <ng-content />
+      </div>
     </div>
-
-    <div class="auth-content">
-      <h1 class="auth-title">{{ title() }}</h1>
-      @if (subtitle()) {
-        <p class="auth-subtitle">{{ subtitle() }}</p>
-      }
-
-      <ng-content></ng-content>
-    </div>
+    
+    <!-- Footer -->
+    <p class="text-center text-sm text-white/70 mt-6">
+      © 2026 FormForge. All rights reserved.
+    </p>
   </div>
-
-  <footer class="auth-footer">
-    <p>&copy; 2026 FormForge. All rights reserved.</p>
-  </footer>
 </div>
-
 
