@@ -1,28 +1,22 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatIconModule } from '@angular/material/icon';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { lucideSparkles, lucideLoader2, lucideX } from '@ng-icons/lucide';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { AIApiService } from '../../../core/services/ai-api.service';
 import { ErrorHandlerService } from '../../../core/services/error-handler.service';
 
 @Component({
-  selector: 'app-generate-form-dialog.component',
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    TextFieldModule,
+  selector: 'app-generate-form-dialog',
+  standalone: true,
+  imports: [ReactiveFormsModule, MatDialogModule, NgIconComponent, TextFieldModule],
+  viewProviders: [
+    provideIcons({
+      lucideSparkles,
+      lucideLoader2,
+      lucideX,
+    }),
   ],
   providers: [AIApiService],
   templateUrl: './generate-form-dialog.component.html',

@@ -1,45 +1,52 @@
-<h2 mat-dialog-title>
-  <mat-icon>auto_awesome</mat-icon>
-  Create Form with AI
-</h2>
+<!-- Dialog Header -->
+<div class="dialog-header">
+  <div class="dialog-title">
+    <ng-icon name="lucideSparkles" size="24" class="text-indigo-500" />
+    <h2>Create Form with AI</h2>
+  </div>
+  <button type="button" class="dialog-close" (click)="close()">
+    <ng-icon name="lucideX" size="20" />
+  </button>
+</div>
 
+<!-- Dialog Content -->
 <mat-dialog-content>
-  <p>
-    Describe the form you want to create. Be as specific as possible for the best
-    results.
+  <p class="dialog-description">
+    Describe the form you want to create. Be as specific as possible for the best results.
   </p>
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label
-    >e.g., "Create a contact form with fields for name, email, and
-      message."
-    </mat-label
-    >
+
+  <div class="space-y-2">
+    <label for="prompt" class="form-label">Your prompt</label>
     <textarea
-      matInput
+      id="prompt"
       [formControl]="promptControl"
       rows="5"
       cdkTextareaAutosize
       cdkAutosizeMinRows="5"
       cdkAutosizeMaxRows="10"
-      placeholder="Describe your form here..."
+      placeholder="e.g., Create a contact form with fields for name, email, phone number, and message. Include validation for required fields."
+      class="form-textarea"
     ></textarea>
-  </mat-form-field>
+  </div>
 </mat-dialog-content>
 
+<!-- Dialog Actions -->
 <mat-dialog-actions align="end">
-  <button mat-button (click)="close()">Cancel</button>
+  <button type="button" class="btn btn-ghost btn-md" (click)="close()">
+    Cancel
+  </button>
   <button
-    mat-flat-button
-    color="primary"
+    type="button"
+    class="btn btn-primary-gradient btn-md"
     [disabled]="promptControl.invalid || isLoading()"
     (click)="generate()"
   >
     @if (isLoading()) {
-      <mat-spinner diameter="20" color="accent"></mat-spinner>
+      <ng-icon name="lucideLoader2" size="18" class="animate-spin" />
+      <span>Generating...</span>
     } @else {
-      <span>Generate</span>
+      <ng-icon name="lucideSparkles" size="18" />
+      <span>Generate Form</span>
     }
   </button>
 </mat-dialog-actions>
-
-

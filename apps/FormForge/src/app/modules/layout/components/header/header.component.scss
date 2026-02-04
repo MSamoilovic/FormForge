@@ -1,156 +1,113 @@
-.main-toolbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+.header {
+  @apply fixed top-0 left-0 right-0 z-50;
+  @apply bg-gradient-to-r from-indigo-600 to-violet-600;
+  @apply shadow-lg shadow-indigo-500/20;
 }
 
-.toolbar-content {
-  display: flex;
-  align-items: center;
-  width: 100%;
+.header-content {
+  @apply flex items-center gap-4 h-16 px-6 max-w-[1400px] mx-auto;
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: var(--ff-spacing-sm);
-  color: white;
-  text-decoration: none;
-
-  h1 {
-    font-size: 1.25rem;
-    font-weight: 500;
-    margin: 0;
-  }
+// Logo
+.logo {
+  @apply flex items-center gap-2 text-white no-underline;
+  @apply transition-transform hover:scale-[1.02];
 }
 
-.spacer {
-  flex-grow: 1;
+.logo-icon {
+  @apply w-9 h-9 rounded-xl flex items-center justify-center;
+  @apply bg-white/20 backdrop-blur-sm;
 }
 
-.navigation-items a {
-  margin-left: var(--ff-spacing-sm);
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 500;
-  text-transform: uppercase;
-  padding: 0 16px;
-  line-height: 36px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+.logo-text {
+  @apply text-xl font-bold tracking-tight;
 }
 
-.navigation-items a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+// Navigation
+.nav-links {
+  @apply flex items-center gap-1 mr-4;
 }
 
-.navigation-items .active-link {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
+.nav-link {
+  @apply px-4 py-2 rounded-lg text-sm font-medium;
+  @apply text-white/80 hover:text-white hover:bg-white/10;
+  @apply transition-colors;
 }
 
-.theme-toggle-button {
-  margin-left: var(--ff-spacing-md);
-  color: white;
+.nav-link-active {
+  @apply bg-white/20 text-white;
 }
 
+// Icon Button
+.icon-btn {
+  @apply p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10;
+  @apply transition-colors;
+}
+
+// User Menu
 .user-menu-trigger {
-  margin-left: var(--ff-spacing-sm);
+  @apply flex items-center gap-2 p-1.5 pr-2 rounded-lg;
+  @apply hover:bg-white/10 transition-colors;
 }
 
-.user-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: white;
-  text-transform: uppercase;
+.user-avatar-sm {
+  @apply w-8 h-8 rounded-full flex items-center justify-center;
+  @apply bg-gradient-to-br from-pink-400 to-rose-500;
+  @apply text-xs font-semibold text-white;
 }
 
-.user-menu-header {
-  display: flex;
-  align-items: center;
-  gap: var(--ff-spacing-sm);
-  padding: var(--ff-spacing-md);
-  min-width: 220px;
+.user-avatar-md {
+  @apply w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0;
+  @apply bg-gradient-to-br from-indigo-500 to-violet-600;
+  @apply text-sm font-semibold text-white;
 }
 
-.user-menu-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-  text-transform: uppercase;
-  flex-shrink: 0;
+.chevron {
+  @apply text-white/70 transition-transform duration-200;
 }
 
-.user-menu-info {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+// Dropdown
+.user-dropdown {
+  @apply absolute right-0 top-full mt-2 w-64;
+  @apply bg-white dark:bg-slate-800 rounded-xl shadow-xl;
+  @apply border border-slate-200 dark:border-slate-700;
+  @apply overflow-hidden;
+  @apply animate-in fade-in slide-in-from-top-2 duration-200;
 }
 
-.user-menu-name {
-  font-size: var(--ff-text-sm);
-  font-weight: var(--ff-font-medium);
-  color: var(--ff-text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.user-dropdown-header {
+  @apply flex items-center gap-3 p-4;
 }
 
-.user-menu-email {
-  font-size: var(--ff-text-xs);
-  color: var(--ff-text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.user-dropdown-info {
+  @apply flex flex-col overflow-hidden;
 }
 
-.auth-buttons {
-  display: flex;
-  align-items: center;
-  gap: var(--ff-spacing-sm);
-  margin-left: var(--ff-spacing-md);
+.user-dropdown-name {
+  @apply text-sm font-medium text-slate-800 dark:text-white truncate;
 }
 
-.login-btn {
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
+.user-dropdown-email {
+  @apply text-xs text-slate-500 dark:text-slate-400 truncate;
+}
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+.dropdown-divider {
+  @apply h-px bg-slate-200 dark:bg-slate-700;
+}
+
+.dropdown-item {
+  @apply flex items-center gap-3 px-4 py-2.5 text-sm;
+  @apply text-slate-700 dark:text-slate-200;
+  @apply hover:bg-slate-100 dark:hover:bg-slate-700;
+  @apply transition-colors cursor-pointer;
+  @apply no-underline;
+
+  ng-icon {
+    @apply text-slate-400 dark:text-slate-500;
   }
 }
 
-.register-btn {
-  background-color: rgba(255, 255, 255, 0.95);
-  color: var(--ff-color-primary);
-  font-weight: 500;
-
-  &:hover {
-    background-color: white;
-  }
-}
-
-::ng-deep .user-dropdown {
-  .mat-mdc-menu-item {
-    mat-icon {
-      margin-right: var(--ff-spacing-sm);
-      color: var(--ff-text-secondary);
-    }
-  }
+// Auth Navigation
+.auth-nav {
+  @apply flex items-center gap-2 ml-4;
 }

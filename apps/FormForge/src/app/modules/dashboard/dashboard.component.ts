@@ -1,15 +1,20 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import {
+  lucidePlus,
+  lucideSparkles,
+  lucidePencil,
+  lucideTrash2,
+  lucideCode,
+  lucideFileText,
+  lucideLoader2,
+  lucideInbox,
+} from '@ng-icons/lucide';
 import { FormSchema } from '@form-forge/models';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
 import { DashboardDataService } from './services/dashboard-data.service';
-import { MatTooltip } from '@angular/material/tooltip';
 import { NotificationService } from '../core/services/notification.service';
 import { ErrorHandlerService } from '../core/services/error-handler.service';
 import { GenerateFormDialogComponent } from './components/generate-form/generate-form-dialog.component';
@@ -18,15 +23,19 @@ import { ThemeService } from '../core/services/theme.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [
-    MatIconModule,
-    MatListModule,
-    MatCardModule,
-    MatButtonModule,
-    MatProgressSpinner,
-    RouterLink,
-    MatTooltip,
-    MatDialogModule,
+  standalone: true,
+  imports: [RouterLink, NgIconComponent, MatDialogModule],
+  viewProviders: [
+    provideIcons({
+      lucidePlus,
+      lucideSparkles,
+      lucidePencil,
+      lucideTrash2,
+      lucideCode,
+      lucideFileText,
+      lucideLoader2,
+      lucideInbox,
+    }),
   ],
   providers: [DashboardDataService, NotificationService, AIApiService],
   templateUrl: './dashboard.component.html',
@@ -44,9 +53,7 @@ export class DashboardComponent implements OnInit {
   forms = signal<FormSchema[]>([]);
   isLoading = signal<boolean>(true);
 
-  public isDarkMode = computed(
-    () => this.themeService.currentTheme() === 'dark'
-  );
+  public isDarkMode = computed(() => this.themeService.currentTheme() === 'dark');
 
   ngOnInit() {
     this.loadForms();
@@ -86,13 +93,8 @@ export class DashboardComponent implements OnInit {
       if (result) {
         this.apiService.deleteForm(id).subscribe({
           next: () => {
-            this.forms.update((currentForms) =>
-              currentForms.filter((f) => f.id !== id)
-            );
-
-            this.notificationService.showSuccess(
-              `Form "${name}" was successfully deleted.`
-            );
+            this.forms.update((currentForms) => currentForms.filter((f) => f.id !== id));
+            this.notificationService.showSuccess(`Form "${name}" was successfully deleted.`);
           },
           error: (err) => {
             this.errorHandler.handle(err, 'Dashboard.deleteForm');
@@ -108,7 +110,6 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
       if (result) {
         this.router.navigate(['/builder'], {
           state: { generatedSchema: result },

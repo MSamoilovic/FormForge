@@ -1,25 +1,32 @@
-import { Component, computed, inject } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIconButton, MatButton } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDividerModule } from '@angular/material/divider';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import {
+  lucideSun,
+  lucideMoon,
+  lucideLayoutDashboard,
+  lucidePlus,
+  lucideUser,
+  lucideLogOut,
+  lucideChevronDown,
+} from '@ng-icons/lucide';
 import { ThemeService } from '../../../core/services/theme.service';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-header',
-  imports: [
-    MatIconModule,
-    MatToolbarModule,
-    RouterModule,
-    MatTooltip,
-    MatIconButton,
-    MatButton,
-    MatMenuModule,
-    MatDividerModule,
+  standalone: true,
+  imports: [RouterModule, NgIconComponent],
+  viewProviders: [
+    provideIcons({
+      lucideSun,
+      lucideMoon,
+      lucideLayoutDashboard,
+      lucidePlus,
+      lucideUser,
+      lucideLogOut,
+      lucideChevronDown,
+    }),
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -33,6 +40,8 @@ export class HeaderComponent {
   isDarkMode = computed(() => this.themeService.currentTheme() === 'dark');
   isAuthenticated = this.authService.isAuthenticated;
   currentUser = this.authService.currentUser;
+
+  isUserMenuOpen = signal(false);
 
   getInitials(): string {
     const user = this.currentUser();
@@ -53,7 +62,16 @@ export class HeaderComponent {
     this.themeService.toggleTheme();
   }
 
+  toggleUserMenu(): void {
+    this.isUserMenuOpen.update((v) => !v);
+  }
+
+  closeUserMenu(): void {
+    this.isUserMenuOpen.set(false);
+  }
+
   logout(): void {
+    this.closeUserMenu();
     this.authService.logout();
   }
 }

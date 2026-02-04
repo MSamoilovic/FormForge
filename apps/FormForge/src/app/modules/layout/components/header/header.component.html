@@ -1,87 +1,114 @@
-<mat-toolbar color="primary" class="main-toolbar" [class.dark-theme]="isDarkMode()">
-  <div class="toolbar-content">
-    <a routerLink="/dashboard" class="logo-container">
-      <mat-icon>dynamic_form</mat-icon>
-      <h1>{{ title }}</h1>
+<header class="header">
+  <div class="header-content">
+    <!-- Logo -->
+    <a routerLink="/dashboard" class="logo">
+      <div class="logo-icon">
+        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H6v-2h6v2zm4-4H6v-2h10v2zm0-4H6V7h10v2z"/>
+        </svg>
+      </div>
+      <span class="logo-text">{{ title }}</span>
     </a>
 
-    <span class="spacer"></span>
+    <div class="flex-1"></div>
 
     @if (isAuthenticated()) {
-      <nav class="navigation-items">
-        <a mat-button routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+      <!-- Navigation -->
+      <nav class="nav-links">
+        <a 
+          routerLink="/dashboard" 
+          routerLinkActive="nav-link-active" 
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link"
+        >
           Dashboard
         </a>
-        <a mat-button routerLink="/builder" routerLinkActive="active-link">
+        <a 
+          routerLink="/builder" 
+          routerLinkActive="nav-link-active"
+          class="nav-link"
+        >
           New Form
         </a>
       </nav>
 
-      <button mat-icon-button (click)="toggleTheme()"
-        [matTooltip]="isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
-        class="theme-toggle-button">
-        @if (isDarkMode()) {
-          <mat-icon>light_mode</mat-icon>
-        } @else {
-          <mat-icon>dark_mode</mat-icon>
-        }
+      <!-- Theme Toggle -->
+      <button 
+        type="button"
+        (click)="toggleTheme()" 
+        class="icon-btn"
+        [attr.aria-label]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
+      >
+        <ng-icon [name]="isDarkMode() ? 'lucideSun' : 'lucideMoon'" size="20" />
       </button>
 
-      <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-trigger">
-        <div class="user-avatar">
-          {{ getInitials() }}
-        </div>
-      </button>
-
-      <mat-menu #userMenu="matMenu" class="user-dropdown">
-        <div class="user-menu-header">
-          <div class="user-menu-avatar">
+      <!-- User Menu -->
+      <div class="relative" (clickOutside)="closeUserMenu()">
+        <button 
+          type="button"
+          (click)="toggleUserMenu()" 
+          class="user-menu-trigger"
+        >
+          <div class="user-avatar-sm">
             {{ getInitials() }}
           </div>
-          <div class="user-menu-info">
-            <span class="user-menu-name">{{ currentUser()?.full_name || currentUser()?.username }}</span>
-            <span class="user-menu-email">{{ currentUser()?.email }}</span>
-          </div>
-        </div>
-
-        <mat-divider></mat-divider>
-
-        <a mat-menu-item routerLink="/auth/profile">
-          <mat-icon>person</mat-icon>
-          <span>My Profile</span>
-        </a>
-
-        <a mat-menu-item routerLink="/dashboard">
-          <mat-icon>dashboard</mat-icon>
-          <span>Dashboard</span>
-        </a>
-
-        <mat-divider></mat-divider>
-
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          <span>Sign out</span>
+          <ng-icon name="lucideChevronDown" size="16" class="chevron" [class.rotate-180]="isUserMenuOpen()" />
         </button>
-      </mat-menu>
-    } @else {
-      <button mat-icon-button (click)="toggleTheme()"
-        [matTooltip]="isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
-        class="theme-toggle-button">
-        @if (isDarkMode()) {
-          <mat-icon>light_mode</mat-icon>
-        } @else {
-          <mat-icon>dark_mode</mat-icon>
+
+        @if (isUserMenuOpen()) {
+          <div class="user-dropdown">
+            <!-- User Info -->
+            <div class="user-dropdown-header">
+              <div class="user-avatar-md">
+                {{ getInitials() }}
+              </div>
+              <div class="user-dropdown-info">
+                <span class="user-dropdown-name">{{ currentUser()?.full_name || currentUser()?.username }}</span>
+                <span class="user-dropdown-email">{{ currentUser()?.email }}</span>
+              </div>
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+            <!-- Menu Items -->
+            <a routerLink="/auth/profile" class="dropdown-item" (click)="closeUserMenu()">
+              <ng-icon name="lucideUser" size="18" />
+              <span>My Profile</span>
+            </a>
+            <a routerLink="/dashboard" class="dropdown-item" (click)="closeUserMenu()">
+              <ng-icon name="lucideLayoutDashboard" size="18" />
+              <span>Dashboard</span>
+            </a>
+
+            <div class="dropdown-divider"></div>
+
+            <button type="button" class="dropdown-item text-red-600 dark:text-red-400" (click)="logout()">
+              <ng-icon name="lucideLogOut" size="18" />
+              <span>Sign out</span>
+            </button>
+          </div>
         }
+      </div>
+    } @else {
+      <!-- Theme Toggle (for non-authenticated) -->
+      <button 
+        type="button"
+        (click)="toggleTheme()" 
+        class="icon-btn"
+        [attr.aria-label]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
+      >
+        <ng-icon [name]="isDarkMode() ? 'lucideSun' : 'lucideMoon'" size="20" />
       </button>
 
-      <nav class="auth-buttons">
-        <a mat-button routerLink="/auth/login" class="login-btn">
+      <!-- Auth Buttons -->
+      <nav class="auth-nav">
+        <a routerLink="/auth/login" class="btn btn-ghost btn-md text-white/90 hover:text-white hover:bg-white/10">
           Sign in
         </a>
-        <a mat-flat-button routerLink="/auth/register" class="register-btn">
+        <a routerLink="/auth/register" class="btn btn-md bg-white/95 text-indigo-600 hover:bg-white font-medium">
           Get Started
         </a>
       </nav>
     }
   </div>
-</mat-toolbar>
+</header>
