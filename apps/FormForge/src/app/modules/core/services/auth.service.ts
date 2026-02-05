@@ -29,11 +29,11 @@ export class AuthService {
 
   private readonly endpoint = 'auth';
 
-  private currentUserSignal = signal<User | null>(this.loadUserFromStorage());
+  private currentUserSignal = signal<User | null>(null);
   private isLoadingSignal = signal<boolean>(false);
 
   readonly currentUser = this.currentUserSignal.asReadonly();
-  readonly isAuthenticated = computed(() => !!this.currentUserSignal());
+  readonly isAuthenticated = computed(() => !!this.currentUserSignal() && this.hasValidToken());
   readonly isLoading = this.isLoadingSignal.asReadonly();
   readonly userRole = computed(() => this.currentUserSignal()?.role ?? null);
 
@@ -44,9 +44,16 @@ export class AuthService {
   }
 
   private initializeAuthState(): void {
-    const token = this.getAccessToken();
-    if (token) {
-      this.authState$.next(true);
+    // Check if token is valid before loading user from storage
+    if (this.hasValidToken()) {
+      const user = this.loadUserFromStorage();
+      if (user) {
+        this.currentUserSignal.set(user);
+        this.authState$.next(true);
+      }
+    } else {
+      // Token is invalid or expired - clear all auth data
+      this.clearAuthData();
     }
   }
 

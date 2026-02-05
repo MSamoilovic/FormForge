@@ -17,63 +17,58 @@
         </ng-template>
         <div class="properties-form-container" [formGroup]="propertiesForm">
 
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Label</mat-label>
-            <input matInput formControlName="label" placeholder="Enter field label">
-          </mat-form-field>
+          <div class="form-field">
+            <label class="form-field-label">Label</label>
+            <input class="form-field-input" formControlName="label" placeholder="Enter field label">
+          </div>
 
           @if (field.type === 'text' || field.type === 'number' || field.type === 'email' || field.type === 'date' || field.type === 'phone') {
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Placeholder</mat-label>
-              <input matInput formControlName="placeholder" placeholder="Enter placeholder text">
-            </mat-form-field>
+            <div class="form-field">
+              <label class="form-field-label">Placeholder</label>
+              <input class="form-field-input" formControlName="placeholder" placeholder="Enter placeholder text">
+            </div>
           }
 
           @if (field.type === 'number') {
             <div class="number-field-properties">
-              <mat-form-field appearance="outline" class="third-width">
-                <mat-label>Min</mat-label>
-                <input matInput type="number" formControlName="min" placeholder="Min value">
-              </mat-form-field>
+              <div class="form-field">
+                <label class="form-field-label">Min</label>
+                <input class="form-field-input" type="number" formControlName="min" placeholder="Min">
+              </div>
 
-              <mat-form-field appearance="outline" class="third-width">
-                <mat-label>Max</mat-label>
-                <input matInput type="number" formControlName="max" placeholder="Max value">
-              </mat-form-field>
+              <div class="form-field">
+                <label class="form-field-label">Max</label>
+                <input class="form-field-input" type="number" formControlName="max" placeholder="Max">
+              </div>
 
-              <mat-form-field appearance="outline" class="third-width">
-                <mat-label>Step</mat-label>
-                <input matInput type="number" formControlName="step" placeholder="Step">
-              </mat-form-field>
+              <div class="form-field">
+                <label class="form-field-label">Step</label>
+                <input class="form-field-input" type="number" formControlName="step" placeholder="Step">
+              </div>
             </div>
           }
 
           @if (field.type === 'colorPicker') {
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Color Format</mat-label>
-              <mat-select formControlName="colorFormat">
+            <div class="form-field">
+              <label class="form-field-label">Color Format</label>
+              <select class="form-field-select" formControlName="colorFormat">
                 @for (format of colorFormats; track format.value) {
-                <mat-option [value]="format.value">{{ format.label }}</mat-option>
+                <option [value]="format.value">{{ format.label }}</option>
                 }
-              </mat-select>
-            </mat-form-field>
+              </select>
+            </div>
           }
 
           @if (field.type === 'phone') {
             <div class="phone-field-properties">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Default Country</mat-label>
-                <mat-select formControlName="defaultCountry">
+              <div class="form-field">
+                <label class="form-field-label">Default Country</label>
+                <select class="form-field-select" formControlName="defaultCountry">
                   @for (country of countries; track country.code) {
-                  <mat-option [value]="country.code">
-                    <span class="country-option-inline">
-                      <span>{{ country.flag }}</span>
-                      <span>{{ country.name }} ({{ country.dialCode }})</span>
-                    </span>
-                  </mat-option>
+                  <option [value]="country.code">{{ country.flag }} {{ country.name }} ({{ country.dialCode }})</option>
                   }
-                </mat-select>
-              </mat-form-field>
+                </select>
+              </div>
               <mat-checkbox formControlName="showCountrySelector" color="primary">
                 Show Country Selector
               </mat-checkbox>
@@ -88,15 +83,15 @@
               <h4>Options</h4>
               @for (optionGroup of optionsFormArray.controls; let i = $index; track i) {
               <div class="option-item-group" [formGroupName]="i">
-                <mat-form-field appearance="outline">
-                  <mat-label>Label</mat-label>
-                  <input matInput formControlName="label">
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                  <mat-label>Value</mat-label>
-                  <input matInput formControlName="value">
-                </mat-form-field>
-                <button mat-icon-button color="warn" (click)="removeOption(i)" title="Remove Option">
+                <div class="form-field flex-1">
+                  <label class="form-field-label">Label</label>
+                  <input class="form-field-input" formControlName="label">
+                </div>
+                <div class="form-field flex-1">
+                  <label class="form-field-label">Value</label>
+                  <input class="form-field-input" formControlName="value">
+                </div>
+                <button mat-icon-button color="warn" (click)="removeOption(i)" title="Remove Option" class="remove-btn">
                   <mat-icon>remove_circle_outline</mat-icon>
                 </button>
               </div>

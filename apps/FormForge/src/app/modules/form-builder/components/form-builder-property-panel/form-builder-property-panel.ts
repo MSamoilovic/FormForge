@@ -3,17 +3,14 @@ import { FieldOption, FormField, FormRule, FormTheme, RuleCondition, RuleConditi
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormBuilderFieldRulesComponent } from '../form-builder-form-rules/form-builder-field-rules.component';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
-import { MatSelectModule } from '@angular/material/select';
 import { FormBuilderThemeEditorComponent } from '../form-builder-theme-editor/form-builder-theme-editor.component';
 import { Countries, Country } from '@form-forge/ui-kit';
 import { COLOR_PICKER_DEFAULTS, PHONE_FIELD_DEFAULTS } from '@form-forge/config';
@@ -26,17 +23,14 @@ import { COLOR_PICKER_DEFAULTS, PHONE_FIELD_DEFAULTS } from '@form-forge/config'
     ReactiveFormsModule,
     FormBuilderFieldRulesComponent,
     MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatCheckboxModule,
     MatDividerModule,
     MatButtonModule,
     MatIconModule,
     MatTabGroup,
     MatTab,
-    MatSelectModule,
-    FormBuilderThemeEditorComponent,
     MatTabLabel,
+    FormBuilderThemeEditorComponent,
   ],
   templateUrl: './form-builder-property-panel.html',
   styleUrls: ['./form-builder-property-panel.scss'],

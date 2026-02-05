@@ -27,14 +27,14 @@
     <mat-icon>text_fields</mat-icon>
     <h4>Typography</h4>
   </div>
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Font Family</mat-label>
-    <mat-select formControlName="fontFamily">
+  <div class="form-field">
+    <label class="form-field-label">Font Family</label>
+    <select class="form-field-select" formControlName="fontFamily">
       @for (font of fontFamilies; track font.value) {
-        <mat-option [value]="font.value">{{ font.name }}</mat-option>
+        <option [value]="font.value">{{ font.name }}</option>
       }
-    </mat-select>
-  </mat-form-field>
+    </select>
+  </div>
 
   <mat-divider></mat-divider>
 
@@ -42,9 +42,9 @@
     <mat-icon>rounded_corner</mat-icon>
     <h4>Layout</h4>
   </div>
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Border Radius (px)</mat-label>
-    <input type="number" matInput formControlName="borderRadius" />
-  </mat-form-field>
+  <div class="form-field">
+    <label class="form-field-label">Border Radius (px)</label>
+    <input class="form-field-input" type="number" formControlName="borderRadius" />
+  </div>
 </div>
 
