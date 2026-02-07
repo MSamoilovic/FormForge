@@ -49,7 +49,7 @@ export class AuthService {
       const user = this.loadUserFromStorage();
       if (user) {
         this.currentUserSignal.set(user);
-        this.authState$.next(true);
+      this.authState$.next(true);
       }
     } else {
       // Token is invalid or expired - clear all auth data
