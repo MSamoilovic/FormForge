@@ -1,16 +1,16 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { cn } from '../../utils/cn';
+import { cn } from '../../../utils/cn';
 
 @Component({
-  selector: 'app-table',
+  selector: 'app-table-cell',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './table.component.html',
+  templateUrl: './table-cell.component.html',
 })
-export class TableComponent {
+export class TableCellComponent {
   class = input<string>('');
-  tableClass = input<string>('');
 
   protected cn = cn;
 }
+

@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SubmissionsDataService } from '../services/submissions-data.service';
 import { SubmissionResponse } from '../../core/models/SubmissionResponse';
 import { ThemeService } from '../../core/services/theme.service';
@@ -12,7 +12,7 @@ import {
   lucideCalendar,
   lucideHash,
 } from '@ng-icons/lucide';
-import { CardComponent, CardContentComponent, CardHeaderComponent, CardTitleComponent } from '../../../shared/ui/card/card.component';
+import { CardComponent, CardContentComponent, CardHeaderComponent, CardTitleComponent } from '../../../shared/ui/card';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { cn } from '../../../shared/utils/cn';
 
@@ -21,7 +21,6 @@ import { cn } from '../../../shared/utils/cn';
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     NgIconComponent,
     CardComponent,
     CardContentComponent,

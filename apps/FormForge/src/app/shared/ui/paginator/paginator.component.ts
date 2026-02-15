@@ -16,72 +16,7 @@ import { cn } from '../../utils/cn';
       lucideChevronsRight,
     }),
   ],
-  template: `
-    <div [class]="cn('flex items-center justify-between px-2', class())">
-      <div class="flex items-center gap-2">
-        <p class="text-sm text-muted-foreground">
-          Showing {{ startIndex() }} to {{ endIndex() }} of {{ length() }} entries
-        </p>
-      </div>
-      <div class="flex items-center gap-2">
-        <button
-          type="button"
-          [disabled]="!hasPreviousPage()"
-          (click)="firstPage()"
-          [class]="cn(
-            'inline-flex items-center justify-center rounded-md h-9 w-9',
-            'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-            'disabled:pointer-events-none disabled:opacity-50',
-            'transition-colors'
-          )"
-        >
-          <ng-icon name="lucideChevronsLeft" class="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          [disabled]="!hasPreviousPage()"
-          (click)="previousPage()"
-          [class]="cn(
-            'inline-flex items-center justify-center rounded-md h-9 w-9',
-            'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-            'disabled:pointer-events-none disabled:opacity-50',
-            'transition-colors'
-          )"
-        >
-          <ng-icon name="lucideChevronLeft" class="h-4 w-4" />
-        </button>
-        <span class="text-sm text-muted-foreground">
-          Page {{ pageIndex() + 1 }} of {{ totalPages() }}
-        </span>
-        <button
-          type="button"
-          [disabled]="!hasNextPage()"
-          (click)="nextPage()"
-          [class]="cn(
-            'inline-flex items-center justify-center rounded-md h-9 w-9',
-            'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-            'disabled:pointer-events-none disabled:opacity-50',
-            'transition-colors'
-          )"
-        >
-          <ng-icon name="lucideChevronRight" class="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          [disabled]="!hasNextPage()"
-          (click)="lastPage()"
-          [class]="cn(
-            'inline-flex items-center justify-center rounded-md h-9 w-9',
-            'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-            'disabled:pointer-events-none disabled:opacity-50',
-            'transition-colors'
-          )"
-        >
-          <ng-icon name="lucideChevronsRight" class="h-4 w-4" />
-        </button>
-      </div>
-    </div>
-  `,
+  templateUrl: './paginator.component.html',
 })
 export class PaginatorComponent {
   class = input<string>('');
@@ -124,4 +59,3 @@ export class PaginatorComponent {
     }
   }
 }
-

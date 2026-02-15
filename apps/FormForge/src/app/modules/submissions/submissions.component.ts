@@ -1,17 +1,20 @@
 import {
   Component,
   computed,
+  DestroyRef,
   effect,
   inject,
+  OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SubmissionsDataService } from './services/submissions-data.service';
 import { SubmissionResponse } from '../core/models/SubmissionResponse';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
 import { ThemeService } from '../core/services/theme.service';
 import { ErrorHandlerService } from '../core/services/error-handler.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
@@ -31,8 +34,8 @@ import {
   TableRowComponent,
   TableHeadComponent,
   TableCellComponent,
-} from '../../shared/ui/table/table.component';
-import { CardComponent, CardContentComponent } from '../../shared/ui/card/card.component';
+} from '../../shared/ui/table';
+import { CardComponent, CardContentComponent } from '../../shared/ui/card';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
 import { InputDirective } from '../../shared/ui/input/input.directive';
 import { PaginatorComponent } from '../../shared/ui/paginator/paginator.component';
@@ -84,11 +87,12 @@ interface SortState {
 })
 export class SubmissionsComponent implements OnInit {
   private route = inject(ActivatedRoute);
-  private router = inject(Router);
+  public router = inject(Router);
   private submissionDataService = inject(SubmissionsDataService);
   private fb = inject(FormBuilder);
   private themeService = inject(ThemeService);
   private errorHandler = inject(ErrorHandlerService);
+  private destroyRef = inject(DestroyRef);
 
   protected cn = cn;
 
@@ -109,10 +113,12 @@ export class SubmissionsComponent implements OnInit {
   });
 
   filterForm: FormGroup = this.fb.group({});
+  private filterFormSubscription?: Subscription;
+  filterValues = signal<Record<string, string>>({});
 
   // Pagination state
   pagination = signal<PaginationState>({ pageIndex: 0, pageSize: 10 });
-  
+
   // Sort state
   sortState = signal<SortState>({ column: null, direction: null });
 
@@ -121,7 +127,7 @@ export class SubmissionsComponent implements OnInit {
     let data = [...this.submissions()];
 
     // Apply filters
-    const filterValues = this.filterForm.value;
+    const filterValues = this.filterValues();
     data = data.filter((submission) => {
       for (const key in filterValues) {
         const filterValue = filterValues[key]?.trim().toLowerCase();
@@ -191,11 +197,17 @@ export class SubmissionsComponent implements OnInit {
   });
 
   constructor() {
+    // Effect se automatski čisti kada se komponenta uništi
+    // Resetuj paginaciju kada se submissions promene
     effect(() => {
-      this.submissions();
-      this.buildFilterForm();
-      // Reset to first page when data changes
-      this.pagination.set({ pageIndex: 0, pageSize: this.pagination().pageSize });
+      const submissions = this.submissions();
+      if (submissions.length > 0) {
+        // Reset to first page when data changes, ali samo ako već nije na prvoj stranici
+        const currentPagination = this.pagination();
+        if (currentPagination.pageIndex !== 0) {
+          this.pagination.set({ pageIndex: 0, pageSize: currentPagination.pageSize });
+        }
+      }
     });
   }
 
@@ -212,35 +224,57 @@ export class SubmissionsComponent implements OnInit {
 
   private loadSubmissions(formId: number) {
     this.isLoading.set(true);
-    this.submissionDataService.getAllSubmissions(formId).subscribe({
-      next: (data) => {
-        this.submissions.set(data);
-        this.isLoading.set(false);
-      },
-      error: (error) => {
-        this.isLoading.set(false);
-        this.errorHandler.handle(error, 'Submissions.load');
-      },
-    });
+    this.submissionDataService.getAllSubmissions(formId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (data) => {
+          this.submissions.set(data);
+          // Kreiraj filter form samo kada se submissions učitaju
+          if (data.length > 0) {
+            this.buildFilterForm();
+          }
+          this.isLoading.set(false);
+        },
+        error: (error) => {
+          this.isLoading.set(false);
+          this.errorHandler.handle(error, 'Submissions.load');
+        },
+      });
   }
 
   buildFilterForm(): void {
+    // Čisti staru subscription ako postoji
+    if (this.filterFormSubscription) {
+      this.filterFormSubscription.unsubscribe();
+      this.filterFormSubscription = undefined;
+    }
+
     const group: { [key: string]: any } = {};
     this.displayedColumns().forEach((col) => {
       group[col] = [''];
     });
     this.filterForm = this.fb.group(group);
 
-    this.filterForm.valueChanges.pipe(debounceTime(300)).subscribe(() => {
-      // Reset to first page when filters change
-      this.pagination.set({ pageIndex: 0, pageSize: this.pagination().pageSize });
-    });
+    // Kreiraj novu subscription sa automatskim cleanup-om
+    this.filterFormSubscription = this.filterForm.valueChanges
+      .pipe(
+        debounceTime(300),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((values) => {
+        // Update filter values signal
+        this.filterValues.set(values);
+        // Reset to first page when filters change
+        const currentPagination = this.pagination();
+        if (currentPagination.pageIndex !== 0) {
+          this.pagination.set({ pageIndex: 0, pageSize: currentPagination.pageSize });
+        }
+      });
   }
 
   onSort(column: string): void {
     const current = this.sortState();
     if (current.column === column) {
-      // Toggle direction
       if (current.direction === 'asc') {
         this.sortState.set({ column, direction: 'desc' });
       } else if (current.direction === 'desc') {
@@ -279,6 +313,14 @@ export class SubmissionsComponent implements OnInit {
       return submission.id;
     } else {
       return submission.data[column];
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Eksplicitno čisti subscription kada se komponenta uništi
+    if (this.filterFormSubscription) {
+      this.filterFormSubscription.unsubscribe();
+      this.filterFormSubscription = undefined;
     }
   }
 }

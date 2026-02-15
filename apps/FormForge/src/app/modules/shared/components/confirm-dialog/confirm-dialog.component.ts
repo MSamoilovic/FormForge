@@ -4,13 +4,13 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
+import { ButtonComponent } from '../../../../shared';
 
 @Component({
   selector: 'app-confirm-dialog.component',
-  imports: [MatDialogModule, MatButtonModule],
+  standalone: true,
+  imports: [MatDialogModule, ButtonComponent],
   templateUrl: './confirm-dialog.component.html',
-  styleUrl: './confirm-dialog.component.scss',
 })
 export class ConfirmDialogComponent {
   public dialogRef = inject(MatDialogRef<ConfirmDialogComponent>);
@@ -18,5 +18,9 @@ export class ConfirmDialogComponent {
 
   onNoClick(): void {
     this.dialogRef.close(false);
+  }
+
+  onConfirm(): void {
+    this.dialogRef.close(true);
   }
 }

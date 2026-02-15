@@ -1,8 +1,8 @@
 // Table components
-export * from './table/table.component';
+export * from './table';
 
 // Card components
-export * from './card/card.component';
+export * from './card';
 
 // Button component
 export * from './button/button.component';

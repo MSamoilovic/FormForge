@@ -12,11 +12,12 @@ import {
 } from '@ng-icons/lucide';
 import { ThemeService } from '../../../core/services/theme.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { ClickOutsideDirective } from '../../../../shared';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, NgIconComponent],
+  imports: [RouterModule, NgIconComponent, ClickOutsideDirective],
   viewProviders: [
     provideIcons({
       lucideSun,
@@ -29,7 +30,6 @@ import { AuthService } from '../../../core/services/auth.service';
     }),
   ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   title = 'FormForge';

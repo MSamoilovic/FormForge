@@ -1,4 +1,6 @@
 import { Component, input, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../utils/cn';
 
@@ -31,20 +33,25 @@ const buttonVariants = cva(
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 @Component({
-  selector: 'app-button, button[appButton]',
+  selector: 'app-button',
   standalone: true,
-  template: `<ng-content />`,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './button.component.html',
   host: {
     '[class]': 'computedClass()',
+    '[attr.routerLink]': 'routerLink()',
   },
 })
 export class ButtonComponent {
   variant = input<ButtonVariants['variant']>('default');
   size = input<ButtonVariants['size']>('default');
   class = input<string>('');
+  routerLink = input<string | any[] | null>(null);
+  queryParams = input<Record<string, any> | null>(null);
+  fragment = input<string | undefined>(undefined);
+  disabled = input<boolean>(false);
 
   computedClass = computed(() =>
     cn(buttonVariants({ variant: this.variant(), size: this.size() }), this.class())
   );
 }
-
