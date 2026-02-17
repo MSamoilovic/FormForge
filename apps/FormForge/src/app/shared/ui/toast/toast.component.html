@@ -1,0 +1,26 @@
+<div
+  [class]="computedClass()"
+  role="alert"
+  [attr.aria-live]="type() === 'error' ? 'assertive' : 'polite'"
+>
+  <div class="flex items-center gap-3">
+    <ng-icon [name]="iconName()" [class]="iconClass()" size="20" />
+    <div class="flex-1">
+      <p class="text-sm font-medium">{{ message() }}</p>
+    </div>
+    @if (dismissible()) {
+      <button
+        type="button"
+        (click)="onDismiss()"
+        class="rounded-md p-1 text-foreground/50 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+        [attr.aria-label]="'Close'"
+      >
+        <ng-icon name="lucideX" size="16" />
+      </button>
+    }
+  </div>
+</div>
+
+
+
+
