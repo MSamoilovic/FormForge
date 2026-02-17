@@ -32,10 +32,7 @@
   font-weight: var(--ff-font-bold) !important;
   color: var(--ff-text-primary);
 
-  mat-icon {
-    font-size: var(--ff-icon-md);
-    width: var(--ff-icon-md);
-    height: var(--ff-icon-md);
+  ng-icon {
     color: var(--ff-color-primary);
   }
 }
@@ -124,10 +121,7 @@
   border-radius: var(--ff-radius-full);
   animation: pulse 2s ease-in-out infinite;
 
-  mat-icon {
-    font-size: var(--ff-icon-xl);
-    width: var(--ff-icon-xl);
-    height: var(--ff-icon-xl);
+  ng-icon {
     color: white;
   }
 }
@@ -144,10 +138,7 @@
   font-size: var(--ff-text-sm);
   animation: slideLeft 1.5s ease-in-out infinite;
 
-  mat-icon {
-    font-size: var(--ff-icon-sm);
-    width: var(--ff-icon-sm);
-    height: var(--ff-icon-sm);
+  ng-icon {
   }
 }
 
@@ -248,10 +239,7 @@
     cursor: grabbing;
   }
 
-  mat-icon {
-    font-size: var(--ff-icon-sm);
-    width: var(--ff-icon-sm);
-    height: var(--ff-icon-sm);
+  ng-icon {
   }
 }
 
@@ -301,7 +289,7 @@
       color: #ef4444;
     }
 
-    mat-icon {
+    ng-icon {
       font-size: var(--ff-icon-sm);
       width: var(--ff-icon-sm);
       height: var(--ff-icon-sm);

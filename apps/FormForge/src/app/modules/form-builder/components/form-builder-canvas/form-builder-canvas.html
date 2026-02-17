@@ -1,16 +1,16 @@
 
-<mat-card class="canvas-card ff-card-full-height">
+<app-card class="canvas-card ff-card-full-height">
   @if (!canvasFields().length) {
-    <mat-card-header>
-      <mat-card-title class="canvas-title">
-        <mat-icon>dashboard_customize</mat-icon>
+    <app-card-header>
+      <app-card-title class="canvas-title">
+        <ng-icon name="lucideLayoutGrid" size="20" />
         <span>Canvas</span>
-      </mat-card-title>
-      <mat-card-subtitle>Build your form here</mat-card-subtitle>
-    </mat-card-header>
+      </app-card-title>
+      <app-card-description>Build your form here</app-card-description>
+    </app-card-header>
   }
 
-  <mat-card-content
+  <app-card-content
     id="canvasDropList"
     cdkDropList
     class="canvas-content"
@@ -20,12 +20,12 @@
     @if (!canvasFields().length) {
       <div class="empty-state">
         <div class="empty-state-icon">
-          <mat-icon>touch_app</mat-icon>
+          <ng-icon name="lucideHand" size="48" />
         </div>
         <h3>Start Building Your Form</h3>
         <p>Drag and drop fields from the toolbox to begin</p>
         <div class="empty-state-hint">
-          <mat-icon>arrow_back</mat-icon>
+          <ng-icon name="lucideArrowLeft" size="18" />
           <span>Choose a field type</span>
         </div>
       </div>
@@ -38,7 +38,7 @@
           [class.selected]="selectedField()?.id === field.id"
         >
           <div class="drag-handle" cdkDragHandle>
-            <mat-icon>drag_indicator</mat-icon>
+            <ng-icon name="lucideGripVertical" size="20" />
           </div>
           <div class="field-content ff-field-content">
             <ng-container
@@ -48,28 +48,24 @@
           </div>
           <div class="field-actions">
             <button
-              mat-icon-button
+              type="button"
               class="action-button"
               (click)="onDuplicateField(field.id, $event)"
-              matTooltip="Duplicate field (Ctrl/Cmd + D)"
-              matTooltipPosition="left"
-              type="button"
+              title="Duplicate field (Ctrl/Cmd + D)"
             >
-              <mat-icon class="action-icon">content_copy</mat-icon>
+              <ng-icon name="lucideCopy" class="action-icon" size="18" />
             </button>
             <button
-              mat-icon-button
+              type="button"
               class="action-button delete-button"
               (click)="onRemoveField(field.id, $event)"
-              matTooltip="Remove field (Delete)"
-              matTooltipPosition="left"
-              type="button"
+              title="Remove field (Delete)"
             >
-              <mat-icon class="action-icon">delete</mat-icon>
+              <ng-icon name="lucideTrash2" class="action-icon" size="18" />
             </button>
           </div>
         </div>
       }
     }
-  </mat-card-content>
-</mat-card>
+  </app-card-content>
+</app-card>

@@ -10,10 +10,21 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { FormBuilderThemeEditorComponent } from '../form-builder-theme-editor/form-builder-theme-editor.component';
 import { Countries, Country } from '@form-forge/ui-kit';
 import { COLOR_PICKER_DEFAULTS, PHONE_FIELD_DEFAULTS } from '@form-forge/config';
+import {
+  TabsGroupComponent,
+  TabsListComponent,
+  TabsTriggerComponent,
+  TabsContentComponent,
+} from '@form-forge/shared';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import {
+  lucideSettings,
+  lucidePalette,
+  lucideArrowRight,
+} from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-form-builder-property-panel',
@@ -27,10 +38,19 @@ import { COLOR_PICKER_DEFAULTS, PHONE_FIELD_DEFAULTS } from '@form-forge/config'
     MatDividerModule,
     MatButtonModule,
     MatIconModule,
-    MatTabGroup,
-    MatTab,
-    MatTabLabel,
+    TabsGroupComponent,
+    TabsListComponent,
+    TabsTriggerComponent,
+    TabsContentComponent,
+    NgIconComponent,
     FormBuilderThemeEditorComponent,
+  ],
+  viewProviders: [
+    provideIcons({
+      lucideSettings,
+      lucidePalette,
+      lucideArrowRight,
+    }),
   ],
   templateUrl: './form-builder-property-panel.html',
   styleUrls: ['./form-builder-property-panel.scss'],

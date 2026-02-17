@@ -1,7 +1,3 @@
-// =============================================================================
-// Angular Material Theme Setup (keeping during migration)
-// IMPORTANT: @use rules must be at the top of the file
-// =============================================================================
 @use '@angular/material' as mat;
 
 // =============================================================================
@@ -17,32 +13,51 @@
 @include mat.core();
 
 $form-forge-primary: mat.m2-define-palette(mat.$m2-blue-palette, 700, 500, 900);
-$form-forge-accent: mat.m2-define-palette(mat.$m2-teal-palette, A200, A100, A400);
+$form-forge-accent: mat.m2-define-palette(
+  mat.$m2-teal-palette,
+  A200,
+  A100,
+  A400
+);
 $form-forge-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$form-forge-theme: mat.m2-define-light-theme((
-  color: (
-    primary: $form-forge-primary,
-    accent: $form-forge-accent,
-    warn: $form-forge-warn,
-  ),
-  typography: mat.m2-define-typography-config(),
-  density: 0,
-));
+$form-forge-theme: mat.m2-define-light-theme(
+  (
+    color: (
+      primary: $form-forge-primary,
+      accent: $form-forge-accent,
+      warn: $form-forge-warn,
+    ),
+    typography: mat.m2-define-typography-config(),
+    density: 0,
+  )
+);
 
-$form-forge-primary-dark: mat.m2-define-palette(mat.$m2-blue-grey-palette, 700, 500, 900);
-$form-forge-accent-dark: mat.m2-define-palette(mat.$m2-amber-palette, A200, A100, A400);
+$form-forge-primary-dark: mat.m2-define-palette(
+  mat.$m2-blue-grey-palette,
+  700,
+  500,
+  900
+);
+$form-forge-accent-dark: mat.m2-define-palette(
+  mat.$m2-amber-palette,
+  A200,
+  A100,
+  A400
+);
 $form-forge-warn-dark: mat.m2-define-palette(mat.$m2-deep-orange-palette);
 
-$form-forge-dark-theme: mat.m2-define-dark-theme((
-  color: (
-    primary: $form-forge-primary-dark,
-    accent: $form-forge-accent-dark,
-    warn: $form-forge-warn-dark,
-  ),
-  typography: mat.m2-define-typography-config(),
-  density: 0,
-));
+$form-forge-dark-theme: mat.m2-define-dark-theme(
+  (
+    color: (
+      primary: $form-forge-primary-dark,
+      accent: $form-forge-accent-dark,
+      warn: $form-forge-warn-dark,
+    ),
+    typography: mat.m2-define-typography-config(),
+    density: 0,
+  )
+);
 
 @include mat.all-component-themes($form-forge-theme);
 
@@ -127,7 +142,7 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((
 
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 }
 
@@ -172,7 +187,8 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((
   --ff-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
   --ff-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
   --ff-shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.16);
-  --ff-shadow-focus: 0 0 0 3px rgba(var(--ff-color-primary-rgb, 25, 118, 210), 0.2);
+  --ff-shadow-focus: 0 0 0 3px
+    rgba(var(--ff-color-primary-rgb, 25, 118, 210), 0.2);
 
   // Transitions
   --ff-duration-instant: 50ms;
@@ -201,7 +217,8 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((
   --ff-z-toast: 1080;
 
   // Typography
-  --ff-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --ff-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Helvetica Neue', Arial, sans-serif;
   --ff-font-family-mono: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
   --ff-text-xs: 0.75rem;
   --ff-text-sm: 0.875rem;
@@ -318,13 +335,13 @@ body {
   // -------------------------------------------------------------------------
   .form-input {
     @apply flex h-11 w-full rounded-lg border border-slate-200 dark:border-slate-700
-           bg-white dark:bg-slate-800 px-3 py-2 text-sm
-           text-slate-900 dark:text-white
-           placeholder:text-slate-400 dark:placeholder:text-slate-500
-           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
-           dark:focus:ring-offset-slate-900
-           disabled:cursor-not-allowed disabled:opacity-50
-           transition-shadow duration-200;
+bg-white dark:bg-slate-800 px-3 py-2 text-sm
+text-slate-900 dark:text-white
+placeholder:text-slate-400 dark:placeholder:text-slate-500
+focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+dark:focus:ring-offset-slate-900
+disabled:cursor-not-allowed disabled:opacity-50
+transition-shadow duration-200;
   }
 
   .form-input-icon {
@@ -360,27 +377,27 @@ body {
   }
 
   .form-icon-btn {
-    @apply absolute right-3 top-1/2 -translate-y-1/2 
-           text-slate-400 hover:text-slate-600 
-           dark:text-slate-500 dark:hover:text-slate-300 
-           transition-colors;
+    @apply absolute right-3 top-1/2 -translate-y-1/2
+text-slate-400 hover:text-slate-600
+dark:text-slate-500 dark:hover:text-slate-300
+transition-colors;
   }
 
   .form-checkbox {
-    @apply h-4 w-4 rounded border-slate-300 dark:border-slate-600 
-           text-indigo-600 focus:ring-indigo-500 focus:ring-offset-0 
-           dark:bg-slate-800 cursor-pointer;
+    @apply h-4 w-4 rounded border-slate-300 dark:border-slate-600
+text-indigo-600 focus:ring-indigo-500 focus:ring-offset-0
+dark:bg-slate-800 cursor-pointer;
   }
 
   // -------------------------------------------------------------------------
   // Buttons
   // -------------------------------------------------------------------------
   .btn {
-    @apply inline-flex items-center justify-center gap-2 
-           whitespace-nowrap rounded-lg text-sm font-medium
-           focus:outline-none focus:ring-2 focus:ring-offset-2
-           disabled:pointer-events-none disabled:opacity-50
-           transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2
+whitespace-nowrap rounded-lg text-sm font-medium
+focus:outline-none focus:ring-2 focus:ring-offset-2
+disabled:pointer-events-none disabled:opacity-50
+transition-all duration-200;
   }
 
   .btn-md {
@@ -396,59 +413,59 @@ body {
   }
 
   .btn-primary {
-    @apply btn bg-indigo-600 text-white 
-           hover:bg-indigo-500 
-           focus:ring-indigo-500 dark:focus:ring-offset-slate-900;
+    @apply btn bg-indigo-600 text-white
+hover:bg-indigo-500
+focus:ring-indigo-500 dark:focus:ring-offset-slate-900;
   }
 
   .btn-primary-gradient {
-    @apply btn bg-gradient-to-r from-indigo-600 to-violet-600 
-           hover:from-indigo-500 hover:to-violet-500 
-           text-white
-           shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40
-           focus:ring-indigo-500 dark:focus:ring-offset-slate-900;
+    @apply btn bg-gradient-to-r from-indigo-600 to-violet-600
+hover:from-indigo-500 hover:to-violet-500
+text-white
+shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40
+focus:ring-indigo-500 dark:focus:ring-offset-slate-900;
   }
 
   .btn-secondary {
-    @apply btn bg-slate-100 dark:bg-slate-800 
-           text-slate-700 dark:text-slate-200
-           hover:bg-slate-200 dark:hover:bg-slate-700
-           focus:ring-slate-500 dark:focus:ring-offset-slate-900;
+    @apply btn bg-slate-100 dark:bg-slate-800
+text-slate-700 dark:text-slate-200
+hover:bg-slate-200 dark:hover:bg-slate-700
+focus:ring-slate-500 dark:focus:ring-offset-slate-900;
   }
 
   .btn-outline {
-    @apply btn border border-slate-200 dark:border-slate-700 
-           bg-white dark:bg-slate-800
-           text-slate-700 dark:text-slate-200
-           hover:bg-slate-50 dark:hover:bg-slate-700
-           focus:ring-indigo-500 dark:focus:ring-offset-slate-900;
+    @apply btn border border-slate-200 dark:border-slate-700
+bg-white dark:bg-slate-800
+text-slate-700 dark:text-slate-200
+hover:bg-slate-50 dark:hover:bg-slate-700
+focus:ring-indigo-500 dark:focus:ring-offset-slate-900;
   }
 
   .btn-ghost {
     @apply btn text-slate-600 dark:text-slate-300
-           hover:bg-slate-100 dark:hover:bg-slate-800
-           focus:ring-slate-500 dark:focus:ring-offset-slate-900;
+hover:bg-slate-100 dark:hover:bg-slate-800
+focus:ring-slate-500 dark:focus:ring-offset-slate-900;
   }
 
   .btn-destructive {
-    @apply btn border border-red-300 dark:border-red-700 
-           text-red-600 dark:text-red-400
-           hover:bg-red-50 dark:hover:bg-red-950/50
-           focus:ring-red-500 dark:focus:ring-offset-slate-900;
+    @apply btn border border-red-300 dark:border-red-700
+text-red-600 dark:text-red-400
+hover:bg-red-50 dark:hover:bg-red-950/50
+focus:ring-red-500 dark:focus:ring-offset-slate-900;
   }
 
   .btn-link {
-    @apply font-medium text-indigo-600 dark:text-indigo-400 
-           hover:text-indigo-500 dark:hover:text-indigo-300 
-           hover:underline transition-colors;
+    @apply font-medium text-indigo-600 dark:text-indigo-400
+hover:text-indigo-500 dark:hover:text-indigo-300
+hover:underline transition-colors;
   }
 
   // -------------------------------------------------------------------------
   // Cards
   // -------------------------------------------------------------------------
   .card {
-    @apply rounded-xl border border-slate-200 dark:border-slate-700 
-           bg-white dark:bg-slate-800 shadow-sm;
+    @apply rounded-xl border border-slate-200 dark:border-slate-700
+bg-white dark:bg-slate-800 shadow-sm;
   }
 
   .card-header {
@@ -479,27 +496,27 @@ body {
   }
 
   .alert-error {
-    @apply alert text-red-600 dark:text-red-400 
-           bg-red-50 dark:bg-red-950/50 
-           border border-red-200 dark:border-red-900;
+    @apply alert text-red-600 dark:text-red-400
+bg-red-50 dark:bg-red-950/50
+border border-red-200 dark:border-red-900;
   }
 
   .alert-success {
-    @apply alert text-emerald-600 dark:text-emerald-400 
-           bg-emerald-50 dark:bg-emerald-950/50 
-           border border-emerald-200 dark:border-emerald-900;
+    @apply alert text-emerald-600 dark:text-emerald-400
+bg-emerald-50 dark:bg-emerald-950/50
+border border-emerald-200 dark:border-emerald-900;
   }
 
   .alert-warning {
-    @apply alert text-amber-600 dark:text-amber-400 
-           bg-amber-50 dark:bg-amber-950/50 
-           border border-amber-200 dark:border-amber-900;
+    @apply alert text-amber-600 dark:text-amber-400
+bg-amber-50 dark:bg-amber-950/50
+border border-amber-200 dark:border-amber-900;
   }
 
   .alert-info {
-    @apply alert text-blue-600 dark:text-blue-400 
-           bg-blue-50 dark:bg-blue-950/50 
-           border border-blue-200 dark:border-blue-900;
+    @apply alert text-blue-600 dark:text-blue-400
+bg-blue-50 dark:bg-blue-950/50
+border border-blue-200 dark:border-blue-900;
   }
 
   // -------------------------------------------------------------------------
@@ -535,8 +552,8 @@ body {
 
   .tab-btn {
     @apply flex-1 px-4 py-3 text-sm font-medium transition-colors relative
-           text-slate-500 dark:text-slate-400 
-           hover:text-slate-700 dark:hover:text-slate-300;
+text-slate-500 dark:text-slate-400
+hover:text-slate-700 dark:hover:text-slate-300;
   }
 
   .tab-btn-active {
@@ -551,9 +568,9 @@ body {
   // Avatar
   // -------------------------------------------------------------------------
   .avatar {
-    @apply rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 
-           flex items-center justify-center flex-shrink-0 
-           shadow-lg shadow-indigo-500/25;
+    @apply rounded-full bg-gradient-to-br from-indigo-500 to-violet-600
+flex items-center justify-center flex-shrink-0
+shadow-lg shadow-indigo-500/25;
   }
 
   .avatar-sm {
@@ -576,16 +593,16 @@ body {
   // Badge
   // -------------------------------------------------------------------------
   .badge {
-    @apply inline-block px-3 py-1 rounded-full text-xs font-semibold 
-           text-white uppercase tracking-wide;
+    @apply inline-block px-3 py-1 rounded-full text-xs font-semibold
+text-white uppercase tracking-wide;
   }
 
   // -------------------------------------------------------------------------
   // Info Grid (for account details)
   // -------------------------------------------------------------------------
   .info-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 gap-6 p-4 
-           bg-slate-50 dark:bg-slate-900/50 rounded-xl;
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-6 p-4
+bg-slate-50 dark:bg-slate-900/50 rounded-xl;
   }
 
   .info-item {
@@ -604,8 +621,8 @@ body {
   // Danger Zone
   // -------------------------------------------------------------------------
   .danger-zone {
-    @apply p-4 border border-red-200 dark:border-red-900/50 rounded-xl 
-           bg-red-50/50 dark:bg-red-950/20;
+    @apply p-4 border border-red-200 dark:border-red-900/50 rounded-xl
+bg-red-50/50 dark:bg-red-950/20;
   }
 
   .danger-zone-title {

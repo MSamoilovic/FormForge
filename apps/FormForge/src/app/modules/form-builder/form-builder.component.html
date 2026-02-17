@@ -4,40 +4,40 @@
     
     <div class="history-controls">
       <button 
-        mat-icon-button 
+        type="button"
+        class="icon-btn"
         (click)="undo()" 
         [disabled]="!formBuilderService.canUndo()"
-        matTooltip="Undo (Ctrl+Z)"
-        matTooltipPosition="below"
+        title="Undo (Ctrl+Z)"
       >
-        <mat-icon>undo</mat-icon>
+        <ng-icon name="lucideUndo" size="20" />
       </button>
       <button 
-        mat-icon-button 
+        type="button"
+        class="icon-btn"
         (click)="redo()" 
         [disabled]="!formBuilderService.canRedo()"
-        matTooltip="Redo (Ctrl+Shift+Z)"
-        matTooltipPosition="below"
+        title="Redo (Ctrl+Shift+Z)"
       >
-        <mat-icon>redo</mat-icon>
+        <ng-icon name="lucideRedo" size="20" />
       </button>
     </div>
     
     <span class="spacer"></span>
-    <button mat-stroked-button color="primary">
-      <mat-icon>visibility</mat-icon>
+    <app-button variant="outline">
+      <ng-icon name="lucideEye" size="18" />
       Preview
-    </button>
-    <button mat-raised-button color="primary" (click)="saveForm()">
-      <mat-icon>save</mat-icon>
+    </app-button>
+    <app-button variant="default" (click)="saveForm()">
+      <ng-icon name="lucideSave" size="18" />
       Save Form
-    </button>
+    </app-button>
   </div>
 
 
   @if (formBuilderService.loading()) {
   <div class="loading-container">
-    <mat-spinner></mat-spinner>
+    <ng-icon name="lucideLoader2" size="40" class="animate-spin text-primary" />
     <p>Loading form data...</p>
   </div>
   } @else {

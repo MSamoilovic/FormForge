@@ -1,5 +1,5 @@
 import { Directive, input, computed } from '@angular/core';
-import { cn } from '../../utils/cn';
+import { cn } from '../../utils';
 
 @Directive({
   selector: 'input[appInput], textarea[appInput]',

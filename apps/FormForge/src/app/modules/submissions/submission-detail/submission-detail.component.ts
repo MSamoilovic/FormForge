@@ -39,7 +39,6 @@ import { cn } from '../../../shared/utils/cn';
     }),
   ],
   templateUrl: './submission-detail.component.html',
-  styleUrl: './submission-detail.component.scss',
 })
 export class SubmissionDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);

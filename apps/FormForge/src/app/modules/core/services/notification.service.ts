@@ -1,36 +1,46 @@
-import { inject, Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { inject, Injectable, ApplicationRef, ComponentRef, createComponent, EnvironmentInjector } from '@angular/core';
+import { ToastContainerComponent } from '../../../shared/ui/toast/toast-container.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
-  private snackBar = inject(MatSnackBar);
+  private appRef = inject(ApplicationRef);
+  private injector = inject(EnvironmentInjector);
+  private toastContainerRef: ComponentRef<ToastContainerComponent> | null = null;
 
-  private defaultConfig: MatSnackBarConfig = {
-    duration: 4000,
-    horizontalPosition: 'right',
-    verticalPosition: 'bottom',
-  };
+  private getToastContainer(): ToastContainerComponent {
+    if (!this.toastContainerRef) {
+      this.toastContainerRef = createComponent(ToastContainerComponent, {
+        environmentInjector: this.injector,
+      });
+      document.body.appendChild(this.toastContainerRef.location.nativeElement);
+      this.appRef.attachView(this.toastContainerRef.hostView);
+    }
+    return this.toastContainerRef.instance;
+  }
 
   showSuccess(message: string): void {
-    this.snackBar.open(message, 'OK', {
-      ...this.defaultConfig,
-      panelClass: ['success-snackbar'],
+    this.getToastContainer().addToast({
+      message,
+      type: 'success',
+      duration: 4000,
     });
   }
 
   showError(message: string): void {
-    this.snackBar.open(message, 'Error', {
-      ...this.defaultConfig,
-      panelClass: ['error-snackbar'],
+    this.getToastContainer().addToast({
+      message,
+      type: 'error',
+      duration: 5000,
     });
   }
 
   showInfo(message: string): void {
-    this.snackBar.open(message, 'Info', {
-      ...this.defaultConfig,
-      panelClass: ['info-snackbar'],
+    this.getToastContainer().addToast({
+      message,
+      type: 'info',
+      duration: 4000,
     });
   }
 }

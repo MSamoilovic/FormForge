@@ -83,7 +83,6 @@ interface SortState {
     }),
   ],
   templateUrl: './submissions.component.html',
-  styleUrl: './submissions.component.scss',
 })
 export class SubmissionsComponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -316,11 +315,5 @@ export class SubmissionsComponent implements OnInit {
     }
   }
 
-  ngOnDestroy(): void {
-    // Eksplicitno čisti subscription kada se komponenta uništi
-    if (this.filterFormSubscription) {
-      this.filterFormSubscription.unsubscribe();
-      this.filterFormSubscription = undefined;
-    }
-  }
+ 
 }

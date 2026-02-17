@@ -9,12 +9,18 @@
 
   <mat-card-content>
     @if (selectedField(); as field) {
-    <mat-tab-group class="properties-tabs ff-tabs-full-height">
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">settings</mat-icon>
+    <app-tabs-group defaultTab="field" class="properties-tabs ff-tabs-full-height">
+      <app-tabs-list class="properties-tabs-list">
+        <button appTabsTrigger value="field" class="tab-trigger">
+          <ng-icon name="lucideSettings" class="tab-icon"></ng-icon>
           <span>Field</span>
-        </ng-template>
+        </button>
+        <button appTabsTrigger value="design" class="tab-trigger">
+          <ng-icon name="lucidePalette" class="tab-icon"></ng-icon>
+          <span>Design</span>
+        </button>
+      </app-tabs-list>
+      <app-tabs-content value="field" class="properties-tabs-content">
         <div class="properties-form-container" [formGroup]="propertiesForm">
 
           <div class="form-field">
@@ -108,28 +114,23 @@
             [allFormFields]="getAllFields()"></app-field-rules>
 
         </div>
-      </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">palette</mat-icon>
-          <span>Design</span>
-        </ng-template>
+      </app-tabs-content>
+      <app-tabs-content value="design" class="properties-tabs-content">
         <div class="tab-content">
           <app-theme-editor [themeForm]="themeFormGroup"></app-theme-editor>
         </div>
-      </mat-tab>
-    </mat-tab-group>
+      </app-tabs-content>
+    </app-tabs-group>
 
     } @else {
     <div class="no-field-selected">
-      <div class="no-field-icon">
-        <mat-icon>settings_suggest</mat-icon>
+      <div class="empty-state-icon">
+        <ng-icon name="lucideSettings" size="20"></ng-icon>
       </div>
       <h3>No Field Selected</h3>
       <p>Select a field on the canvas to see its properties.</p>
       <div class="hint">
-        <mat-icon>arrow_forward</mat-icon>
+        <ng-icon name="lucideArrowRight"></ng-icon>
         <span>Click on any field</span>
       </div>
     </div>

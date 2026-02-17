@@ -8,10 +8,9 @@ import {
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgComponentOutlet } from '@angular/common';
 import { FormGroup } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { lucideLayoutGrid, lucideHand, lucideArrowLeft, lucideGripVertical, lucideCopy, lucideTrash2 } from '@ng-icons/lucide';
+import { CardComponent, CardHeaderComponent, CardTitleComponent, CardDescriptionComponent, CardContentComponent } from '../../../../shared/ui/card';
 import { FieldComponentType } from '@form-forge/ui-kit';
 
 @Component({
@@ -19,10 +18,22 @@ import { FieldComponentType } from '@form-forge/ui-kit';
   imports: [
     CdkDropList,
     NgComponentOutlet,
-    MatCardModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTooltipModule,
+    CardComponent,
+    CardHeaderComponent,
+    CardTitleComponent,
+    CardDescriptionComponent,
+    CardContentComponent,
+    NgIconComponent,
+  ],
+  viewProviders: [
+    provideIcons({
+      lucideLayoutGrid,
+      lucideHand,
+      lucideArrowLeft,
+      lucideGripVertical,
+      lucideCopy,
+      lucideTrash2,
+    }),
   ],
   templateUrl: './form-builder-canvas.html',
   styleUrl: './form-builder-canvas.scss',
