@@ -12,7 +12,7 @@ import {
   lucideInbox,
 } from '@ng-icons/lucide';
 import { FormSchema } from '@form-forge/models';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Dialog } from '@angular/cdk/dialog';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
 import { DashboardDataService } from './services/dashboard-data.service';
 import { NotificationService } from '../core/services/notification.service';
@@ -24,7 +24,7 @@ import { ThemeService } from '../core/services/theme.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterLink, NgIconComponent, MatDialogModule],
+  imports: [RouterLink, NgIconComponent],
   viewProviders: [
     provideIcons({
       lucidePlus,
@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
   private errorHandler = inject(ErrorHandlerService);
   private themeService = inject(ThemeService);
 
-  dialog = inject(MatDialog);
+  dialog = inject(Dialog);
 
   forms = signal<FormSchema[]>([]);
   isLoading = signal<boolean>(true);
@@ -87,9 +87,10 @@ export class DashboardComponent implements OnInit {
       data: {
         message: `Are you sure you want to delete the form "${name}"? This action cannot be undone.`,
       },
+      backdropClass: 'app-dialog-backdrop',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.closed.subscribe((result) => {
       if (result) {
         this.apiService.deleteForm(id).subscribe({
           next: () => {
@@ -107,9 +108,10 @@ export class DashboardComponent implements OnInit {
   generateFormFromText(): void {
     const dialogRef = this.dialog.open(GenerateFormDialogComponent, {
       width: '600px',
+      backdropClass: 'app-dialog-backdrop',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.closed.subscribe((result) => {
       if (result) {
         this.router.navigate(['/builder'], {
           state: { generatedSchema: result },

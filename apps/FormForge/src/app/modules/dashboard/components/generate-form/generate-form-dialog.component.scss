@@ -30,15 +30,3 @@
   @apply transition-shadow duration-200;
 }
 
-// Override Material Dialog padding
-::ng-deep .mat-mdc-dialog-container {
-  --mdc-dialog-container-shape: 16px;
-}
-
-::ng-deep mat-dialog-content {
-  @apply px-6 py-0 #{!important};
-}
-
-::ng-deep mat-dialog-actions {
-  @apply p-6 pt-4 gap-3 #{!important};
-}

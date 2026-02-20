@@ -1,16 +1,20 @@
 import { Component, inject, signal } from '@angular/core';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { lucideSparkles, lucideLoader2, lucideX } from '@ng-icons/lucide';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { AIApiService } from '../../../core/services/ai-api.service';
 import { ErrorHandlerService } from '../../../core/services/error-handler.service';
+import {
+  HlmDialogComponent,
+  HlmDialogFooterComponent,
+} from '../../../../shared';
 
 @Component({
   selector: 'app-generate-form-dialog',
   standalone: true,
-  imports: [ReactiveFormsModule, MatDialogModule, NgIconComponent, TextFieldModule],
+  imports: [ReactiveFormsModule, NgIconComponent, TextFieldModule, HlmDialogComponent, HlmDialogFooterComponent],
   viewProviders: [
     provideIcons({
       lucideSparkles,
@@ -23,7 +27,7 @@ import { ErrorHandlerService } from '../../../core/services/error-handler.servic
   styleUrl: './generate-form-dialog.component.scss',
 })
 export class GenerateFormDialogComponent {
-  public dialogRef = inject(MatDialogRef<GenerateFormDialogComponent>);
+  public dialogRef = inject(DialogRef);
 
   private aiApiService = inject(AIApiService);
   private errorHandler = inject(ErrorHandlerService);

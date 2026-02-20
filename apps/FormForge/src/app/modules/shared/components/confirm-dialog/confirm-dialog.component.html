@@ -1,18 +1,10 @@
-<h1 mat-dialog-title class="text-xl font-semibold leading-none tracking-tight mb-4">Confirm Action</h1>
-<div mat-dialog-content class="mb-6">
-  <p class="text-sm text-muted-foreground">{{ data.message }}</p>
-</div>
-<div mat-dialog-actions class="flex justify-end gap-2">
-  <app-button 
-    variant="outline" 
-    (click)="onNoClick()"
-  >
-    Cancel
-  </app-button>
-  <app-button 
-    variant="destructive"
-    (click)="onConfirm()"
-  >
-    Confirm
-  </app-button>
-</div>
+<app-dialog>
+  <app-dialog-header>
+    <h2 hlmDialogTitle>Confirm Action</h2>
+    <p hlmDialogDescription>{{ data.message }}</p>
+  </app-dialog-header>
+  <app-dialog-footer>
+    <app-button variant="outline" (click)="onNoClick()">Cancel</app-button>
+    <app-button variant="destructive" (click)="onConfirm()">Confirm</app-button>
+  </app-dialog-footer>
+</app-dialog>
