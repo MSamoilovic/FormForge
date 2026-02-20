@@ -18,17 +18,15 @@ import { FIELD_TYPE_MAP } from '@form-forge/ui-kit';
 import { FormBuilderSidebar } from './components/form-builder-sidebar/form-builder-sidebar';
 import { FormBuilderCanvas } from './components/form-builder-canvas/form-builder-canvas';
 import { FormBuilderPropertyPanel } from './components/form-builder-property-panel/form-builder-property-panel';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButton } from '@angular/material/button';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { lucideUndo, lucideRedo, lucideEye, lucideSave, lucideLoader2 } from '@ng-icons/lucide';
 import { ApiService } from '../core/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilderService } from './services/form-builder.service';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NotificationService } from '../core/services/notification.service';
 import { ThemeService } from '../core/services/theme.service';
 import { HistoryService } from './services/history.service';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { ButtonComponent } from '../../shared/ui/button/button.component';
 
 @Component({
   standalone: true,
@@ -42,11 +40,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormBuilderSidebar,
     FormBuilderCanvas,
     FormBuilderPropertyPanel,
-    MatIconModule,
-    MatButton,
-    MatSnackBarModule,
-    MatProgressSpinner,
-    MatTooltipModule,
+    NgIconComponent,
+    ButtonComponent,
+  ],
+  viewProviders: [
+    provideIcons({
+      lucideUndo,
+      lucideRedo,
+      lucideEye,
+      lucideSave,
+      lucideLoader2,
+    }),
   ],
   providers: [ApiService, HttpClient, FormBuilderService, NotificationService, HistoryService],
 })

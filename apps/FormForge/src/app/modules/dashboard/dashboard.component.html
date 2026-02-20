@@ -1,51 +1,88 @@
-<div class="dashboard-container" [class.dark-theme]="isDarkMode()">
+<div class="dashboard-container">
+  <!-- Header -->
   <div class="dashboard-header">
-    <h1>My Forms</h1>
-    <div class="dashboard-header-actions">
-      <button mat-stroked-button color="accent" (click)="generateFormFromText()">
-        <mat-icon>auto_awesome</mat-icon>
-        Create with AI
+    <h1 class="dashboard-title">My Forms</h1>
+    <div class="dashboard-actions">
+      <button type="button" class="btn btn-outline btn-md" (click)="generateFormFromText()">
+        <ng-icon name="lucideSparkles" size="18" />
+        <span>Create with AI</span>
       </button>
-      <button mat-raised-button color="primary" (click)="createNewForm()">
-        <mat-icon>add</mat-icon>
-        Create New Form
+      <button type="button" class="btn btn-primary-gradient btn-md" (click)="createNewForm()">
+        <ng-icon name="lucidePlus" size="18" />
+        <span>Create New Form</span>
       </button>
     </div>
-
   </div>
 
-  <mat-divider></mat-divider>
+  <div class="divider-line my-6"></div>
 
+  <!-- Loading State -->
   @if (isLoading()) {
-  <div class="loading-spinner">
-    <mat-spinner></mat-spinner>
-    <p>Loading forms...</p>
-  </div>
-  } @else {
-  <div class="form-card-grid">
-    @for (form of forms(); track form.id) {
-    <mat-card class="form-card">
-      <mat-card-header>
-        <mat-card-title>{{ form.name }}</mat-card-title>
-        <!-- <mat-card-subtitle>Created: {{ form.createdAt | date:'dd.MM.yyyy' }}</mat-card-subtitle> -->
-      </mat-card-header>
-      <mat-card-content>
-        <p>Total fields: <strong>{{ form.fields.length }}</strong></p>
-      </mat-card-content>
-      <mat-card-actions align="end">
-        <button mat-stroked-button color="primary" (click)="editForm(form.id)">EDIT</button>
-        <a mat-button [routerLink]="['/submissions', form.id]">SUBMISSIONS</a>
-        <button mat-icon-button matTooltip="Get embed code">
-          <mat-icon>code</mat-icon>
-        </button>
-        <button mat-stroked-button color="warning" (click)="deleteForm(form.id, form.name)">DELETE</button>
-      </mat-card-actions>
-    </mat-card>
-    } @empty {
-    <div class="empty-state-container">
-
+    <div class="loading-state">
+      <ng-icon name="lucideLoader2" size="40" class="animate-spin text-indigo-500" />
+      <p class="text-slate-500 dark:text-slate-400 mt-4">Loading forms...</p>
     </div>
-    }
-  </div>
+  } @else {
+    <!-- Form Cards Grid -->
+    <div class="form-grid">
+      @for (form of forms(); track form.id) {
+        <div class="form-card group">
+          <!-- Card Header -->
+          <div class="form-card-header">
+            <h3 class="form-card-title">{{ form.name }}</h3>
+            <button 
+              type="button" 
+              class="card-menu-btn"
+              title="Get embed code"
+            >
+              <ng-icon name="lucideCode" size="18" />
+            </button>
+          </div>
+
+          <!-- Card Content -->
+          <div class="form-card-content">
+            <div class="form-card-stat">
+              <ng-icon name="lucideFileText" size="16" />
+              <span>{{ form.fields.length }} fields</span>
+            </div>
+          </div>
+
+          <!-- Card Actions -->
+          <div class="form-card-actions">
+            <div class="action-buttons-left">
+              <button type="button" class="action-btn action-btn-primary" (click)="editForm(form.id)">
+                <ng-icon name="lucidePencil" size="16" />
+                <span>Edit</span>
+              </button>
+              <a [routerLink]="['/submissions', form.id]" class="action-btn action-btn-secondary">
+                <ng-icon name="lucideInbox" size="16" />
+                <span>Submissions</span>
+              </a>
+            </div>
+            <button 
+              type="button" 
+              class="action-btn-icon action-btn-danger" 
+              (click)="deleteForm(form.id, form.name)"
+              title="Delete form"
+            >
+              <ng-icon name="lucideTrash2" size="16" />
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <!-- Empty State -->
+        <div class="empty-state">
+          <div class="empty-state-icon">
+            <ng-icon name="lucideFileText" size="48" />
+          </div>
+          <h3 class="empty-state-title">No forms yet</h3>
+          <p class="empty-state-text">Create your first form to get started</p>
+          <button type="button" class="btn btn-primary-gradient btn-md mt-4" (click)="createNewForm()">
+            <ng-icon name="lucidePlus" size="18" />
+            <span>Create Your First Form</span>
+          </button>
+        </div>
+      }
+    </div>
   }
 </div>

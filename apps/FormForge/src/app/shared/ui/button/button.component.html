@@ -1,0 +1,9 @@
+@if (routerLink(); as link) {
+  <a [routerLink]="link" [queryParams]="queryParams()" [fragment]="fragment()" class="contents">
+    <ng-content />
+  </a>
+} @else {
+  <button type="button" [disabled]="disabled()" class="contents">
+    <ng-content />
+  </button>
+}

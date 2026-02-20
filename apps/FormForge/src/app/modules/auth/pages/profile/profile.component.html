@@ -1,0 +1,245 @@
+<div class="p-6 max-w-3xl mx-auto">
+  <!-- Profile Header -->
+  <div class="flex items-center gap-6 p-6 card mb-6">
+    <div class="avatar avatar-lg">
+      <span class="avatar-initials">{{ getInitials() }}</span>
+    </div>
+    <div class="flex-1 min-w-0">
+      <h1 class="text-2xl font-bold text-slate-800 dark:text-white truncate">
+        {{ user()?.full_name || user()?.username }}
+      </h1>
+      <p class="text-slate-500 dark:text-slate-400 truncate">{{ user()?.email }}</p>
+      @if (user()?.role) {
+        <span class="badge mt-2" [style.background-color]="getRoleBadgeColor(user()!.role)">
+          {{ getRoleLabel(user()!.role) }}
+        </span>
+      }
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="card overflow-hidden">
+    <!-- Tab Headers -->
+    <div class="tabs-header">
+      @for (tab of tabs; track tab.id) {
+        <button
+          type="button"
+          (click)="activeTab.set(tab.id)"
+          [class]="activeTab() === tab.id ? 'tab-btn tab-btn-active' : 'tab-btn'"
+        >
+          {{ tab.label }}
+          @if (activeTab() === tab.id) {
+            <div class="tab-indicator"></div>
+          }
+        </button>
+      }
+    </div>
+
+    <!-- Tab Content -->
+    <div class="p-6">
+      
+      <!-- Profile Tab -->
+      @if (activeTab() === 'profile') {
+        <div class="space-y-6">
+          <div>
+            <h2 class="card-title">Personal Information</h2>
+            <p class="card-description">Update your personal details</p>
+          </div>
+
+          <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="space-y-4">
+            <!-- Full Name -->
+            <div class="space-y-2">
+              <label for="fullName" class="form-label">Full Name</label>
+              <div class="relative">
+                <ng-icon name="lucideUser" class="form-icon" />
+                <input id="fullName" type="text" formControlName="fullName" placeholder="John Doe" class="form-input-icon" />
+              </div>
+            </div>
+
+            <!-- Username -->
+            <div class="space-y-2">
+              <label for="username" class="form-label">Username</label>
+              <div class="relative">
+                <ng-icon name="lucideAtSign" class="form-icon" />
+                <input id="username" type="text" formControlName="username" placeholder="johndoe" class="form-input-icon" />
+              </div>
+            </div>
+
+            <!-- Email (Disabled) -->
+            <div class="space-y-2">
+              <label for="email" class="form-label">Email</label>
+              <div class="relative">
+                <ng-icon name="lucideMail" class="form-icon" />
+                <input id="email" type="email" [value]="user()?.email" disabled class="form-input-icon form-input-disabled" />
+              </div>
+              <p class="form-hint">Email cannot be changed</p>
+            </div>
+
+            <!-- Submit -->
+            <div class="flex justify-end pt-2">
+              <button type="submit" [disabled]="isUpdatingProfile() || profileForm.invalid" class="btn btn-primary btn-md">
+                @if (isUpdatingProfile()) {
+                  <ng-icon name="lucideLoader2" class="animate-spin" />
+                  <span>Saving...</span>
+                } @else {
+                  <ng-icon name="lucideSave" />
+                  <span>Save Changes</span>
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+
+      <!-- Security Tab -->
+      @if (activeTab() === 'security') {
+        <div class="space-y-6">
+          <div>
+            <h2 class="card-title">Change Password</h2>
+            <p class="card-description">Ensure your account stays secure</p>
+          </div>
+
+          <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="space-y-4">
+            <!-- Current Password -->
+            <div class="space-y-2">
+              <label for="currentPassword" class="form-label">Current Password</label>
+              <div class="relative">
+                <ng-icon name="lucideLock" class="form-icon" />
+                <input
+                  id="currentPassword"
+                  [type]="hideCurrentPassword() ? 'password' : 'text'"
+                  formControlName="currentPassword"
+                  class="form-input-icon-both"
+                />
+                <button type="button" (click)="hideCurrentPassword.set(!hideCurrentPassword())" class="form-icon-btn">
+                  <ng-icon [name]="hideCurrentPassword() ? 'lucideEyeOff' : 'lucideEye'" />
+                </button>
+              </div>
+            </div>
+
+            <!-- New Password -->
+            <div class="space-y-2">
+              <label for="newPassword" class="form-label">New Password</label>
+              <div class="relative">
+                <ng-icon name="lucideShield" class="form-icon" />
+                <input
+                  id="newPassword"
+                  [type]="hideNewPassword() ? 'password' : 'text'"
+                  formControlName="newPassword"
+                  class="form-input-icon-both"
+                />
+                <button type="button" (click)="hideNewPassword.set(!hideNewPassword())" class="form-icon-btn">
+                  <ng-icon [name]="hideNewPassword() ? 'lucideEyeOff' : 'lucideEye'" />
+                </button>
+              </div>
+              <p class="form-hint">Min 8 characters, uppercase, lowercase, and number</p>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="space-y-2">
+              <label for="confirmPassword" class="form-label">Confirm New Password</label>
+              <div class="relative">
+                <ng-icon name="lucideShield" class="form-icon" />
+                <input
+                  id="confirmPassword"
+                  [type]="hideConfirmPassword() ? 'password' : 'text'"
+                  formControlName="confirmPassword"
+                  class="form-input-icon-both"
+                />
+                <button type="button" (click)="hideConfirmPassword.set(!hideConfirmPassword())" class="form-icon-btn">
+                  <ng-icon [name]="hideConfirmPassword() ? 'lucideEyeOff' : 'lucideEye'" />
+                </button>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="flex justify-end pt-2">
+              <button type="submit" [disabled]="isChangingPassword() || passwordForm.invalid" class="btn btn-primary btn-md">
+                @if (isChangingPassword()) {
+                  <ng-icon name="lucideLoader2" class="animate-spin" />
+                  <span>Updating...</span>
+                } @else {
+                  <ng-icon name="lucideShield" />
+                  <span>Update Password</span>
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+
+      <!-- Account Tab -->
+      @if (activeTab() === 'account') {
+        <div class="space-y-6">
+          <div>
+            <h2 class="card-title">Account Information</h2>
+            <p class="card-description">Your account details and status</p>
+          </div>
+
+          <div class="info-grid">
+            <!-- Account Status -->
+            <div class="info-item">
+              <p class="info-label">Account Status</p>
+              <div class="info-value">
+                @if (user()?.is_active) {
+                  <ng-icon name="lucideCheckCircle" class="text-emerald-500" />
+                  <span>Active</span>
+                } @else {
+                  <ng-icon name="lucideXCircle" class="text-red-500" />
+                  <span>Inactive</span>
+                }
+              </div>
+            </div>
+
+            <!-- Email Verified -->
+            <div class="info-item">
+              <p class="info-label">Email Verified</p>
+              <div class="info-value">
+                @if (user()?.is_verified) {
+                  <ng-icon name="lucideCheckCircle" class="text-emerald-500" />
+                  <span>Verified</span>
+                } @else {
+                  <ng-icon name="lucideClock" class="text-amber-500" />
+                  <span>Not Verified</span>
+                }
+              </div>
+            </div>
+
+            <!-- Member Since -->
+            <div class="info-item">
+              <p class="info-label">Member Since</p>
+              <div class="info-value">
+                <ng-icon name="lucideCalendar" class="text-slate-400 dark:text-slate-500" />
+                <span>{{ user()?.created_at | date:'mediumDate' }}</span>
+              </div>
+            </div>
+
+            <!-- Last Login -->
+            <div class="info-item">
+              <p class="info-label">Last Login</p>
+              <div class="info-value">
+                <ng-icon name="lucideClock" class="text-slate-400 dark:text-slate-500" />
+                <span>{{ user()?.last_login ? (user()?.last_login | date:'medium') : 'N/A' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Danger Zone -->
+          <div class="danger-zone mt-8">
+            <h3 class="danger-zone-title">
+              <ng-icon name="lucideAlertTriangle" />
+              Danger Zone
+            </h3>
+            <p class="danger-zone-text">
+              Once you delete your account, there is no going back. Please be certain.
+            </p>
+            <button type="button" class="btn btn-destructive btn-md">
+              <ng-icon name="lucideTrash2" />
+              Delete Account
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

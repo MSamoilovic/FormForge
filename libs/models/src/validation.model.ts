@@ -5,10 +5,12 @@ export enum ValidatorType {
   Pattern = 'pattern',
   Min = 'min',
   Max = 'max',
+  Email = 'email',
+  Url = 'url',
 }
 
 export interface ValidationRule {
   type: ValidatorType;
-  value?: any;
+  value?: string | number | RegExp;
   message: string;
 }

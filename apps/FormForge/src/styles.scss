@@ -1,37 +1,63 @@
 @use '@angular/material' as mat;
 
 // =============================================================================
-// Angular Material Theme Setup
+// Tailwind CSS
+// =============================================================================
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// =============================================================================
+// Material Theme Configuration
 // =============================================================================
 @include mat.core();
 
 $form-forge-primary: mat.m2-define-palette(mat.$m2-blue-palette, 700, 500, 900);
-$form-forge-accent: mat.m2-define-palette(mat.$m2-teal-palette, A200, A100, A400);
+$form-forge-accent: mat.m2-define-palette(
+  mat.$m2-teal-palette,
+  A200,
+  A100,
+  A400
+);
 $form-forge-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$form-forge-theme: mat.m2-define-light-theme((
-  color: (
-    primary: $form-forge-primary,
-    accent: $form-forge-accent,
-    warn: $form-forge-warn,
-  ),
-  typography: mat.m2-define-typography-config(),
-  density: 0,
-));
+$form-forge-theme: mat.m2-define-light-theme(
+  (
+    color: (
+      primary: $form-forge-primary,
+      accent: $form-forge-accent,
+      warn: $form-forge-warn,
+    ),
+    typography: mat.m2-define-typography-config(),
+    density: 0,
+  )
+);
 
-$form-forge-primary-dark: mat.m2-define-palette(mat.$m2-blue-grey-palette, 700, 500, 900);
-$form-forge-accent-dark: mat.m2-define-palette(mat.$m2-amber-palette, A200, A100, A400);
+$form-forge-primary-dark: mat.m2-define-palette(
+  mat.$m2-blue-grey-palette,
+  700,
+  500,
+  900
+);
+$form-forge-accent-dark: mat.m2-define-palette(
+  mat.$m2-amber-palette,
+  A200,
+  A100,
+  A400
+);
 $form-forge-warn-dark: mat.m2-define-palette(mat.$m2-deep-orange-palette);
 
-$form-forge-dark-theme: mat.m2-define-dark-theme((
-  color: (
-    primary: $form-forge-primary-dark,
-    accent: $form-forge-accent-dark,
-    warn: $form-forge-warn-dark,
-  ),
-  typography: mat.m2-define-typography-config(),
-  density: 0,
-));
+$form-forge-dark-theme: mat.m2-define-dark-theme(
+  (
+    color: (
+      primary: $form-forge-primary-dark,
+      accent: $form-forge-accent-dark,
+      warn: $form-forge-warn-dark,
+    ),
+    typography: mat.m2-define-typography-config(),
+    density: 0,
+  )
+);
 
 @include mat.all-component-themes($form-forge-theme);
 
@@ -40,15 +66,92 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((
 }
 
 // =============================================================================
-// Design System Variables
+// Tailwind/Spartan CSS Variables (Shadcn-style)
 // =============================================================================
-// Design tokens for consistent styling across the application
-// Note: Variables are defined inline here because Angular's Sass compilation
-// doesn't support @use for relative lib paths. The source of truth is in
-// libs/ui-kit/src/styles/_variables.scss
+@layer base {
+  :root {
+    // Core colors (HSL values without hsl() wrapper for Tailwind)
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
 
-// Spacing scale (4px grid)
+    // Additional semantic colors
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 355.7 100% 97.3%;
+    --warning: 32.1 94.6% 43.7%;
+    --warning-foreground: 26 83.3% 14.1%;
+    --info: 199.4 95.5% 53.8%;
+    --info-foreground: 213.1 100% 96.9%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+
+    // Additional semantic colors (dark mode)
+    --success: 142.1 70.6% 45.3%;
+    --success-foreground: 144.9 80.4% 10%;
+    --warning: 32.1 94.6% 53.7%;
+    --warning-foreground: 26 83.3% 14.1%;
+    --info: 199.4 95.5% 63.8%;
+    --info-foreground: 213.1 100% 6.9%;
+  }
+}
+
+// =============================================================================
+// Tailwind Base Layer Overrides
+// =============================================================================
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+}
+
+// =============================================================================
+// Legacy FormForge Design System Variables
+// (keeping for ui-kit compatibility)
+// =============================================================================
 :root {
+  // Spacing scale (4px grid)
   --ff-space-1: 4px;
   --ff-space-2: 8px;
   --ff-space-3: 12px;
@@ -84,7 +187,8 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((
   --ff-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
   --ff-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
   --ff-shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.16);
-  --ff-shadow-focus: 0 0 0 3px rgba(var(--ff-color-primary-rgb, 25, 118, 210), 0.2);
+  --ff-shadow-focus: 0 0 0 3px
+    rgba(var(--ff-color-primary-rgb, 25, 118, 210), 0.2);
 
   // Transitions
   --ff-duration-instant: 50ms;
@@ -113,8 +217,9 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((
   --ff-z-toast: 1080;
 
   // Typography
-  --ff-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  --ff-font-family-mono: 'Roboto Mono', 'Consolas', 'Monaco', monospace;
+  --ff-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Helvetica Neue', Arial, sans-serif;
+  --ff-font-family-mono: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
   --ff-text-xs: 0.75rem;
   --ff-text-sm: 0.875rem;
   --ff-text-base: 1rem;
@@ -144,54 +249,46 @@ $form-forge-dark-theme: mat.m2-define-dark-theme((
   --ff-input-height-lg: 52px;
   --ff-scrollbar-width: 8px;
   --ff-scrollbar-width-thin: 6px;
+
+  // Legacy colors (for ui-kit)
+  --ff-color-primary: hsl(var(--primary));
+  --ff-color-primary-rgb: 59, 130, 246;
+  --ff-color-accent: hsl(var(--accent));
+  --ff-color-warn: hsl(var(--destructive));
+  --ff-color-surface: hsl(var(--card));
+  --ff-color-background: hsl(var(--background));
+  --ff-color-border: hsl(var(--border));
+  --ff-text-primary: hsl(var(--foreground));
+  --ff-text-secondary: hsl(var(--muted-foreground));
+  --ff-color-success: hsl(var(--success));
+  --ff-color-error: hsl(var(--destructive));
+  --ff-color-info: hsl(var(--info));
+  --ff-color-warning: hsl(var(--warning));
+}
+
+.dark-theme,
+.dark {
+  // Legacy colors (for ui-kit) - dark mode
+  --ff-color-primary: hsl(var(--primary));
+  --ff-color-primary-rgb: 96, 165, 250;
+  --ff-color-accent: hsl(var(--accent));
+  --ff-color-warn: hsl(var(--destructive));
+  --ff-color-surface: hsl(var(--card));
+  --ff-color-background: hsl(var(--background));
+  --ff-color-border: hsl(var(--border));
+  --ff-text-primary: hsl(var(--foreground));
+  --ff-text-secondary: hsl(var(--muted-foreground));
 }
 
 // =============================================================================
-// Color Custom Properties
+// Fonts
 // =============================================================================
-// These are defined here because they depend on Material theme palettes
-:root {
-  // Theme colors from Material palette
-  --ff-color-primary: #{mat.m2-get-color-from-palette($form-forge-primary, 500)};
-  --ff-color-primary-rgb: 25, 118, 210; // For rgba() usage
-  --ff-color-accent: #{mat.m2-get-color-from-palette($form-forge-accent, A200)};
-  --ff-color-warn: #{mat.m2-get-color-from-palette($form-forge-warn, 500)};
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 
-  // Surface colors
-  --ff-color-surface: #ffffff;
-  --ff-color-background: #f4f7fa;
-  --ff-color-border: #e0e0e0;
-
-  // Text colors
-  --ff-text-primary: #212121;
-  --ff-text-secondary: #757575;
-
-  // State colors
-  --ff-color-success: #4caf50;
-  --ff-color-error: #f44336;
-  --ff-color-info: #2196f3;
-  --ff-color-warning: #ff9800;
-}
-
-.dark-theme {
-  // Theme colors from Material dark palette
-  --ff-color-primary: #{mat.m2-get-color-from-palette($form-forge-primary-dark, 500)};
-  --ff-color-primary-rgb: 96, 125, 139; // For rgba() usage
-  --ff-color-accent: #{mat.m2-get-color-from-palette($form-forge-accent-dark, A200)};
-  --ff-color-warn: #{mat.m2-get-color-from-palette($form-forge-warn-dark, 500)};
-
-  // Surface colors
-  --ff-color-surface: #303030;
-  --ff-color-background: #121212;
-  --ff-color-border: #424242;
-
-  // Text colors
-  --ff-text-primary: #ffffff;
-  --ff-text-secondary: #b0b0b0;
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-
+// =============================================================================
+// Global Styles
+// =============================================================================
 html,
 body {
   height: 100%;
@@ -199,25 +296,391 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: var(--ff-font-family), serif;
-  background-color: var(--ff-color-background);
-  color: var(--ff-text-primary);
+  font-family: var(--ff-font-family), sans-serif;
 }
 
+// =============================================================================
+// Material Snackbar Styles (keeping until migrated to toast)
+// =============================================================================
 .success-snackbar {
-  --mdc-snackbar-container-color: #4CAF50;
+  --mdc-snackbar-container-color: hsl(var(--success));
   --mat-mdc-snack-bar-button-color: #ffffff;
   --mdc-snackbar-supporting-text-color: #ffffff;
 }
 
 .error-snackbar {
-  --mdc-snackbar-container-color: #F44336;
+  --mdc-snackbar-container-color: hsl(var(--destructive));
   --mat-mdc-snack-bar-button-color: #ffffff;
   --mdc-snackbar-supporting-text-color: #ffffff;
 }
 
 .info-snackbar {
-  --mdc-snackbar-container-color: #2196F3; // Plava
+  --mdc-snackbar-container-color: hsl(var(--info));
   --mat-mdc-snack-bar-button-color: #ffffff;
   --mdc-snackbar-supporting-text-color: #ffffff;
+}
+
+.warning-snackbar {
+  --mdc-snackbar-container-color: hsl(var(--warning));
+  --mat-mdc-snack-bar-button-color: #ffffff;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+}
+
+// =============================================================================
+// Tailwind Component Layer (custom components)
+// =============================================================================
+@layer components {
+  // -------------------------------------------------------------------------
+  // Form Inputs
+  // -------------------------------------------------------------------------
+  .form-input {
+    @apply flex h-11 w-full rounded-lg border border-slate-200 dark:border-slate-700
+bg-white dark:bg-slate-800 px-3 py-2 text-sm
+text-slate-900 dark:text-white
+placeholder:text-slate-400 dark:placeholder:text-slate-500
+focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+dark:focus:ring-offset-slate-900
+disabled:cursor-not-allowed disabled:opacity-50
+transition-shadow duration-200;
+  }
+
+  .form-input-icon {
+    @apply form-input pl-10;
+  }
+
+  .form-input-icon-both {
+    @apply form-input pl-10 pr-10;
+  }
+
+  .form-input-error {
+    @apply border-red-300 dark:border-red-700 focus:ring-red-500;
+  }
+
+  .form-input-disabled {
+    @apply bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 cursor-not-allowed;
+  }
+
+  .form-label {
+    @apply text-sm font-medium text-slate-700 dark:text-slate-200;
+  }
+
+  .form-error {
+    @apply text-sm text-red-600 dark:text-red-400;
+  }
+
+  .form-hint {
+    @apply text-xs text-slate-400 dark:text-slate-500;
+  }
+
+  .form-icon {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500;
+  }
+
+  .form-icon-btn {
+    @apply absolute right-3 top-1/2 -translate-y-1/2
+text-slate-400 hover:text-slate-600
+dark:text-slate-500 dark:hover:text-slate-300
+transition-colors;
+  }
+
+  .form-checkbox {
+    @apply h-4 w-4 rounded border-slate-300 dark:border-slate-600
+text-indigo-600 focus:ring-indigo-500 focus:ring-offset-0
+dark:bg-slate-800 cursor-pointer;
+  }
+
+  // -------------------------------------------------------------------------
+  // Buttons
+  // -------------------------------------------------------------------------
+  .btn {
+    @apply inline-flex items-center justify-center gap-2
+whitespace-nowrap rounded-lg text-sm font-medium
+focus:outline-none focus:ring-2 focus:ring-offset-2
+disabled:pointer-events-none disabled:opacity-50
+transition-all duration-200;
+  }
+
+  .btn-md {
+    @apply h-10 px-4 py-2;
+  }
+
+  .btn-lg {
+    @apply h-11 px-6 py-2;
+  }
+
+  .btn-full {
+    @apply w-full;
+  }
+
+  .btn-primary {
+    @apply btn bg-indigo-600 text-white
+hover:bg-indigo-500
+focus:ring-indigo-500 dark:focus:ring-offset-slate-900;
+  }
+
+  .btn-primary-gradient {
+    @apply btn bg-gradient-to-r from-indigo-600 to-violet-600
+hover:from-indigo-500 hover:to-violet-500
+text-white
+shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40
+focus:ring-indigo-500 dark:focus:ring-offset-slate-900;
+  }
+
+  .btn-secondary {
+    @apply btn bg-slate-100 dark:bg-slate-800
+text-slate-700 dark:text-slate-200
+hover:bg-slate-200 dark:hover:bg-slate-700
+focus:ring-slate-500 dark:focus:ring-offset-slate-900;
+  }
+
+  .btn-outline {
+    @apply btn border border-slate-200 dark:border-slate-700
+bg-white dark:bg-slate-800
+text-slate-700 dark:text-slate-200
+hover:bg-slate-50 dark:hover:bg-slate-700
+focus:ring-indigo-500 dark:focus:ring-offset-slate-900;
+  }
+
+  .btn-ghost {
+    @apply btn text-slate-600 dark:text-slate-300
+hover:bg-slate-100 dark:hover:bg-slate-800
+focus:ring-slate-500 dark:focus:ring-offset-slate-900;
+  }
+
+  .btn-destructive {
+    @apply btn border border-red-300 dark:border-red-700
+text-red-600 dark:text-red-400
+hover:bg-red-50 dark:hover:bg-red-950/50
+focus:ring-red-500 dark:focus:ring-offset-slate-900;
+  }
+
+  .btn-link {
+    @apply font-medium text-indigo-600 dark:text-indigo-400
+hover:text-indigo-500 dark:hover:text-indigo-300
+hover:underline transition-colors;
+  }
+
+  // -------------------------------------------------------------------------
+  // Cards
+  // -------------------------------------------------------------------------
+  .card {
+    @apply rounded-xl border border-slate-200 dark:border-slate-700
+bg-white dark:bg-slate-800 shadow-sm;
+  }
+
+  .card-header {
+    @apply flex flex-col space-y-1.5 p-6;
+  }
+
+  .card-title {
+    @apply text-lg font-semibold text-slate-800 dark:text-white;
+  }
+
+  .card-description {
+    @apply text-sm text-slate-500 dark:text-slate-400;
+  }
+
+  .card-content {
+    @apply p-6 pt-0;
+  }
+
+  .card-footer {
+    @apply flex items-center p-6 pt-0;
+  }
+
+  // -------------------------------------------------------------------------
+  // Alerts
+  // -------------------------------------------------------------------------
+  .alert {
+    @apply flex items-center gap-2 p-3 text-sm rounded-lg;
+  }
+
+  .alert-error {
+    @apply alert text-red-600 dark:text-red-400
+bg-red-50 dark:bg-red-950/50
+border border-red-200 dark:border-red-900;
+  }
+
+  .alert-success {
+    @apply alert text-emerald-600 dark:text-emerald-400
+bg-emerald-50 dark:bg-emerald-950/50
+border border-emerald-200 dark:border-emerald-900;
+  }
+
+  .alert-warning {
+    @apply alert text-amber-600 dark:text-amber-400
+bg-amber-50 dark:bg-amber-950/50
+border border-amber-200 dark:border-amber-900;
+  }
+
+  .alert-info {
+    @apply alert text-blue-600 dark:text-blue-400
+bg-blue-50 dark:bg-blue-950/50
+border border-blue-200 dark:border-blue-900;
+  }
+
+  // -------------------------------------------------------------------------
+  // Dividers
+  // -------------------------------------------------------------------------
+  .divider {
+    @apply relative my-6;
+
+    &::before {
+      content: '';
+      @apply absolute inset-0 flex items-center;
+    }
+
+    &-line {
+      @apply w-full border-t border-slate-200 dark:border-slate-700;
+    }
+  }
+
+  .divider-text {
+    @apply relative flex justify-center text-xs uppercase;
+
+    span {
+      @apply bg-white dark:bg-slate-900 px-2 text-slate-400 dark:text-slate-500;
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Tabs
+  // -------------------------------------------------------------------------
+  .tabs-header {
+    @apply flex border-b border-slate-200 dark:border-slate-700;
+  }
+
+  .tab-btn {
+    @apply flex-1 px-4 py-3 text-sm font-medium transition-colors relative
+text-slate-500 dark:text-slate-400
+hover:text-slate-700 dark:hover:text-slate-300;
+  }
+
+  .tab-btn-active {
+    @apply text-indigo-600 dark:text-indigo-400;
+  }
+
+  .tab-indicator {
+    @apply absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 dark:bg-indigo-400;
+  }
+
+  // -------------------------------------------------------------------------
+  // Avatar
+  // -------------------------------------------------------------------------
+  .avatar {
+    @apply rounded-full bg-gradient-to-br from-indigo-500 to-violet-600
+flex items-center justify-center flex-shrink-0
+shadow-lg shadow-indigo-500/25;
+  }
+
+  .avatar-sm {
+    @apply w-10 h-10 text-sm;
+  }
+
+  .avatar-md {
+    @apply w-16 h-16 text-xl;
+  }
+
+  .avatar-lg {
+    @apply w-24 h-24 text-3xl;
+  }
+
+  .avatar-initials {
+    @apply font-bold text-white;
+  }
+
+  // -------------------------------------------------------------------------
+  // Badge
+  // -------------------------------------------------------------------------
+  .badge {
+    @apply inline-block px-3 py-1 rounded-full text-xs font-semibold
+text-white uppercase tracking-wide;
+  }
+
+  // -------------------------------------------------------------------------
+  // Info Grid (for account details)
+  // -------------------------------------------------------------------------
+  .info-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-6 p-4
+bg-slate-50 dark:bg-slate-900/50 rounded-xl;
+  }
+
+  .info-item {
+    @apply space-y-1;
+  }
+
+  .info-label {
+    @apply text-xs text-slate-400 dark:text-slate-500 uppercase tracking-wide font-medium;
+  }
+
+  .info-value {
+    @apply flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200;
+  }
+
+  // -------------------------------------------------------------------------
+  // Danger Zone
+  // -------------------------------------------------------------------------
+  .danger-zone {
+    @apply p-4 border border-red-200 dark:border-red-900/50 rounded-xl
+bg-red-50/50 dark:bg-red-950/20;
+  }
+
+  .danger-zone-title {
+    @apply text-lg font-semibold text-red-600 dark:text-red-400 flex items-center gap-2;
+  }
+
+  .danger-zone-text {
+    @apply text-sm text-slate-500 dark:text-slate-400 mt-1 mb-4;
+  }
+}
+
+// =============================================================================
+// CDK Dialog Styles (Angular CDK Dialog - replaces MatDialog)
+// =============================================================================
+.app-dialog-backdrop {
+  background-color: rgb(0 0 0 / 0.5);
+  backdrop-filter: blur(4px);
+}
+
+// =============================================================================
+// Tailwind Utilities Layer (custom utilities)
+// =============================================================================
+@layer utilities {
+  // Text balance for headings
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  // Hide scrollbar
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // Custom scrollbar
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: hsl(var(--border));
+      border-radius: 4px;
+
+      &:hover {
+        background-color: hsl(var(--muted-foreground));
+      }
+    }
+  }
 }

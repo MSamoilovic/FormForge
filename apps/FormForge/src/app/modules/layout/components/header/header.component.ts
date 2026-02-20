@@ -1,33 +1,77 @@
-import { Component, computed, inject } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import {
+  lucideSun,
+  lucideMoon,
+  lucideLayoutDashboard,
+  lucidePlus,
+  lucideUser,
+  lucideLogOut,
+  lucideChevronDown,
+} from '@ng-icons/lucide';
 import { ThemeService } from '../../../core/services/theme.service';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIconButton } from '@angular/material/button';
+import { AuthService } from '../../../core/services/auth.service';
+import { ClickOutsideDirective } from '../../../../shared';
 
 @Component({
   selector: 'app-header',
-  imports: [
-    MatIconModule,
-    MatToolbarModule,
-    RouterModule,
-    MatTooltip,
-    MatIconButton,
+  standalone: true,
+  imports: [RouterModule, NgIconComponent, ClickOutsideDirective],
+  viewProviders: [
+    provideIcons({
+      lucideSun,
+      lucideMoon,
+      lucideLayoutDashboard,
+      lucidePlus,
+      lucideUser,
+      lucideLogOut,
+      lucideChevronDown,
+    }),
   ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   title = 'FormForge';
 
   private themeService = inject(ThemeService);
+  private authService = inject(AuthService);
 
-  public isDarkMode = computed(
-    () => this.themeService.currentTheme() === 'dark'
-  );
+  isDarkMode = computed(() => this.themeService.currentTheme() === 'dark');
+  isAuthenticated = this.authService.isAuthenticated;
+  currentUser = this.authService.currentUser;
+
+  isUserMenuOpen = signal(false);
+
+  getInitials(): string {
+    const user = this.currentUser();
+    if (!user) return '?';
+
+    if (user.full_name) {
+      return user.full_name
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+    }
+    return user.username.slice(0, 2).toUpperCase();
+  }
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
+  }
+
+  toggleUserMenu(): void {
+    this.isUserMenuOpen.update((v) => !v);
+  }
+
+  closeUserMenu(): void {
+    this.isUserMenuOpen.set(false);
+  }
+
+  logout(): void {
+    this.closeUserMenu();
+    this.authService.logout();
   }
 }

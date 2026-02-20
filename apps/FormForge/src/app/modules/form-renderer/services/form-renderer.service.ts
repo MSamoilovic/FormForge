@@ -1,8 +1,8 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FormRendererDataService } from './form-renderer-data.service';
 import { RuleEngineService } from '@form-forge/rule-engine';
-import { FieldType, FormField, FormSchema, ValidatorType } from '@form-forge/models';
+import { FieldType, FormField, FormSchema, ValidationRule, ValidatorType } from '@form-forge/models';
 import { Subject } from 'rxjs';
 import { SubmissionPayload } from '../../core/models/SubmissionPayload';
 import { NotificationService } from '../../core/services/notification.service';
@@ -84,19 +84,107 @@ export class FormRendererService implements OnDestroy {
   }
 
   private createControl(field: FormField): FormControl {
-    const validators = [];
+    const validators: ValidatorFn[] = [];
+
+    if (field.required) {
+      validators.push(Validators.required);
+    }
+
     if (field.validations) {
       for (const rule of field.validations) {
-        switch (rule.type) {
-          case ValidatorType.Required:
-            validators.push(Validators.required);
-            break;
-          //TODO: implementacija ostalih validatora
+        const validator = this.getValidator(rule);
+        if (validator) {
+          validators.push(validator);
         }
       }
     }
-    // MultiSelect field should be initialized with an empty array
-    const initialValue = field.type === FieldType.MultiSelect ? [] : '';
+
+    if (field.type === FieldType.Email && !this.hasValidatorType(field.validations, ValidatorType.Email)) {
+      validators.push(Validators.email);
+    }
+
+    if (field.type === FieldType.Url && !this.hasValidatorType(field.validations, ValidatorType.Url)) {
+      validators.push(this.urlValidator());
+    }
+
+    const initialValue = this.getInitialValue(field);
     return this.fb.control(initialValue, validators);
+  }
+
+  private getValidator(rule: ValidationRule): ValidatorFn | null {
+    switch (rule.type) {
+      case ValidatorType.Required:
+        return Validators.required;
+
+      case ValidatorType.MinLength:
+        if (typeof rule.value === 'number') {
+          return Validators.minLength(rule.value);
+        }
+        return null;
+
+      case ValidatorType.MaxLength:
+        if (typeof rule.value === 'number') {
+          return Validators.maxLength(rule.value);
+        }
+        return null;
+
+      case ValidatorType.Pattern:
+        if (typeof rule.value === 'string' || rule.value instanceof RegExp) {
+          return Validators.pattern(rule.value);
+        }
+        return null;
+
+      case ValidatorType.Min:
+        if (typeof rule.value === 'number') {
+          return Validators.min(rule.value);
+        }
+        return null;
+
+      case ValidatorType.Max:
+        if (typeof rule.value === 'number') {
+          return Validators.max(rule.value);
+        }
+        return null;
+
+      case ValidatorType.Email:
+        return Validators.email;
+
+      case ValidatorType.Url:
+        return this.urlValidator();
+
+      default:
+        return null;
+    }
+  }
+
+  private urlValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+
+      const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/i;
+      const isValid = urlPattern.test(control.value);
+
+      return isValid ? null : { url: true };
+    };
+  }
+
+  private hasValidatorType(validations: ValidationRule[] | undefined, type: ValidatorType): boolean {
+    return validations?.some(v => v.type === type) ?? false;
+  }
+
+  private getInitialValue(field: FormField): unknown {
+    switch (field.type) {
+      case FieldType.MultiSelect:
+        return [];
+      case FieldType.Checkbox:
+      case FieldType.ToggleSwitch:
+        return false;
+      case FieldType.Number:
+        return null;
+      default:
+        return '';
+    }
   }
 }

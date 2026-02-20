@@ -1,0 +1,151 @@
+<app-auth-layout title="Create account" subtitle="Start building amazing forms today">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-3">
+    
+    @if (errorMessage()) {
+      <div class="alert-error">
+        <ng-icon name="lucideAlertCircle" class="text-lg shrink-0" />
+        <span>{{ errorMessage() }}</span>
+      </div>
+    }
+
+    <!-- Full Name -->
+    <div class="space-y-1.5">
+      <label for="fullName" class="form-label">Full Name</label>
+      <div class="relative">
+        <ng-icon name="lucideUser" class="form-icon" />
+        <input
+          id="fullName"
+          type="text"
+          formControlName="fullName"
+          placeholder="John Doe"
+          autocomplete="name"
+          class="form-input-icon h-10"
+          [class.form-input-error]="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
+        />
+      </div>
+      @if (registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched) {
+        <p class="form-error text-xs">{{ getErrorMessage('fullName') }}</p>
+      }
+    </div>
+
+    <!-- Username -->
+    <div class="space-y-1.5">
+      <label for="username" class="form-label">Username</label>
+      <div class="relative">
+        <ng-icon name="lucideAtSign" class="form-icon" />
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="johndoe"
+          autocomplete="username"
+          class="form-input-icon h-10"
+          [class.form-input-error]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+        />
+      </div>
+      @if (registerForm.get('username')?.invalid && registerForm.get('username')?.touched) {
+        <p class="form-error text-xs">{{ getErrorMessage('username') }}</p>
+      }
+    </div>
+
+    <!-- Email -->
+    <div class="space-y-1.5">
+      <label for="email" class="form-label">Email</label>
+      <div class="relative">
+        <ng-icon name="lucideMail" class="form-icon" />
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          class="form-input-icon h-10"
+          [class.form-input-error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        />
+      </div>
+      @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+        <p class="form-error text-xs">{{ getErrorMessage('email') }}</p>
+      }
+    </div>
+
+    <!-- Password -->
+    <div class="space-y-1.5">
+      <label for="password" class="form-label">Password</label>
+      <div class="relative">
+        <ng-icon name="lucideLock" class="form-icon" />
+        <input
+          id="password"
+          [type]="hidePassword() ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="Create a strong password"
+          autocomplete="new-password"
+          class="form-input-icon-both h-10"
+          [class.form-input-error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+        />
+        <button type="button" (click)="togglePasswordVisibility()" class="form-icon-btn">
+          <ng-icon [name]="hidePassword() ? 'lucideEyeOff' : 'lucideEye'" />
+        </button>
+      </div>
+      @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+        <p class="form-error text-xs">{{ getErrorMessage('password') }}</p>
+      }
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="space-y-1.5">
+      <label for="confirmPassword" class="form-label">Confirm Password</label>
+      <div class="relative">
+        <ng-icon name="lucideShield" class="form-icon" />
+        <input
+          id="confirmPassword"
+          [type]="hideConfirmPassword() ? 'password' : 'text'"
+          formControlName="confirmPassword"
+          placeholder="Confirm your password"
+          autocomplete="new-password"
+          class="form-input-icon-both h-10"
+          [class.form-input-error]="passwordMismatch"
+        />
+        <button type="button" (click)="toggleConfirmPasswordVisibility()" class="form-icon-btn">
+          <ng-icon [name]="hideConfirmPassword() ? 'lucideEyeOff' : 'lucideEye'" />
+        </button>
+      </div>
+      @if (passwordMismatch) {
+        <p class="form-error text-xs">Passwords do not match</p>
+      }
+    </div>
+
+    <!-- Terms -->
+    <div class="flex items-start gap-2 pt-1">
+      <input type="checkbox" id="acceptTerms" formControlName="acceptTerms" class="form-checkbox mt-0.5" />
+      <label for="acceptTerms" class="text-sm text-slate-500 dark:text-slate-400 cursor-pointer">
+        I agree to the
+        <a href="#" class="btn-link" (click)="$event.preventDefault()">Terms of Service</a>
+        and
+        <a href="#" class="btn-link" (click)="$event.preventDefault()">Privacy Policy</a>
+      </label>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" [disabled]="isLoading()" class="btn btn-primary-gradient btn-lg btn-full mt-2">
+      @if (isLoading()) {
+        <ng-icon name="lucideLoader2" class="animate-spin" />
+        <span>Creating account...</span>
+      } @else {
+        <span>Create account</span>
+        <ng-icon name="lucideArrowRight" />
+      }
+    </button>
+
+    <!-- Divider -->
+    <div class="divider my-4">
+      <div class="divider-line"></div>
+      <div class="divider-text"><span>or</span></div>
+    </div>
+
+    <!-- Login Link -->
+    <p class="text-center text-sm text-slate-500 dark:text-slate-400">
+      Already have an account?
+      <a routerLink="/auth/login" class="btn-link">Sign in</a>
+    </p>
+  </form>
+</app-auth-layout>

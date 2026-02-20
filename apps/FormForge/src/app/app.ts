@@ -28,8 +28,10 @@ export class App {
     const body = document.body;
     if (theme === 'dark') {
       this.renderer.addClass(body, 'dark-theme');
+      this.renderer.addClass(body, 'dark');
     } else {
       this.renderer.removeClass(body, 'dark-theme');
+      this.renderer.removeClass(body, 'dark');
     }
   }
 }

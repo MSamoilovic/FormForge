@@ -1,0 +1,65 @@
+<div class="container mx-auto p-6 max-w-4xl">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-3xl font-bold text-foreground">Submission Details</h1>
+    <app-button variant="outline" (click)="goBack()">
+      <ng-icon name="lucideArrowLeft" class="h-4 w-4" />
+      Back to Submissions
+    </app-button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="flex flex-col items-center justify-center py-20">
+      <ng-icon name="lucideLoader2" class="h-10 w-10 animate-spin text-primary" />
+      <p class="mt-4 text-muted-foreground">Loading submission...</p>
+    </div>
+  } @else if (submission()) {
+    <app-card>
+      <app-card-header>
+        <app-card-title>Submission #{{ submission()!.id }}</app-card-title>
+        <div class="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+          <div class="flex items-center gap-2">
+            <ng-icon name="lucideCalendar" class="h-4 w-4" />
+            <span>{{ submission()!.submitted_at | date:'dd.MM.yyyy HH:mm' }}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <ng-icon name="lucideHash" class="h-4 w-4" />
+            <span>Form ID: {{ submission()!.form_id }}</span>
+          </div>
+        </div>
+      </app-card-header>
+      <app-card-content>
+        <div class="space-y-4">
+          @for (item of submissionData(); track item.key) {
+            <div class="border-b pb-4 last:border-b-0">
+              <label class="text-sm font-medium text-muted-foreground mb-1 block">
+                {{ item.key | titlecase }}
+              </label>
+              <p class="text-foreground">
+                @if (item.value === null || item.value === undefined) {
+                  <span class="text-muted-foreground italic">No value</span>
+                } @else if (typeof item.value === 'object') {
+                  <pre class="bg-muted p-3 rounded-lg text-sm overflow-x-auto">{{ item.value | json }}</pre>
+                } @else {
+                  {{ item.value }}
+                }
+              </p>
+            </div>
+          }
+        </div>
+      </app-card-content>
+    </app-card>
+  } @else {
+    <app-card>
+      <app-card-content class="flex flex-col items-center justify-center py-20">
+        <h2 class="text-xl font-semibold text-foreground mb-2">Submission not found</h2>
+        <p class="text-muted-foreground mb-4">The submission you're looking for doesn't exist.</p>
+        <app-button variant="outline" (click)="goBack()">
+          <ng-icon name="lucideArrowLeft" class="h-4 w-4" />
+          Back to Submissions
+        </app-button>
+      </app-card-content>
+    </app-card>
+  }
+</div>
+

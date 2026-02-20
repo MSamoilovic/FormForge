@@ -4,11 +4,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { FIELD_TYPE_MAP, FieldComponentType } from '@form-forge/ui-kit';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatError } from '@angular/material/form-field';
-import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { lucideLoader2 } from '@ng-icons/lucide';
+import { CardComponent, CardHeaderComponent, CardTitleComponent, CardDescriptionComponent, CardContentComponent } from '../../shared/ui/card';
+import { ButtonComponent } from '../../shared/ui/button/button.component';
 import { FormRendererService } from './services/form-renderer.service';
 import { FormRendererDataService } from './services/form-renderer-data.service';
 import { ThemeService } from '../core/services/theme.service';
@@ -19,11 +19,19 @@ import { PHONE_FIELD_DEFAULTS } from '@form-forge/config';
   imports: [
     ReactiveFormsModule,
     CommonModule,
-    MatCardModule,
-    MatError,
-    MatButton,
-    MatProgressSpinnerModule,
+    CardComponent,
+    CardHeaderComponent,
+    CardTitleComponent,
+    CardDescriptionComponent,
+    CardContentComponent,
+    ButtonComponent,
+    NgIconComponent,
     RouterLink,
+  ],
+  viewProviders: [
+    provideIcons({
+      lucideLoader2,
+    }),
   ],
   providers: [FormRendererService, FormRendererDataService],
   selector: 'app-form-renderer',

@@ -1,15 +1,10 @@
-<h1 mat-dialog-title>Confirm Action</h1>
-<div mat-dialog-content>
-  <p>{{ data.message }}</p>
-</div>
-<div mat-dialog-actions align="end">
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button
-    mat-flat-button
-    color="warn"
-    [mat-dialog-close]="true"
-    cdkFocusInitial
-  >
-    Confirm
-  </button>
-</div>
+<app-dialog>
+  <app-dialog-header>
+    <h2 hlmDialogTitle>Confirm Action</h2>
+    <p hlmDialogDescription>{{ data.message }}</p>
+  </app-dialog-header>
+  <app-dialog-footer>
+    <app-button variant="outline" (click)="onNoClick()">Cancel</app-button>
+    <app-button variant="destructive" (click)="onConfirm()">Confirm</app-button>
+  </app-dialog-footer>
+</app-dialog>

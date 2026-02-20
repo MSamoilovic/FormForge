@@ -1,22 +1,36 @@
 import { Component, inject } from '@angular/core';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
+  ButtonComponent,
+  HlmDialogComponent,
+  HlmDialogDescriptionComponent,
+  HlmDialogFooterComponent,
+  HlmDialogHeaderComponent,
+  HlmDialogTitleComponent,
+} from '../../../../shared';
 
 @Component({
-  selector: 'app-confirm-dialog.component',
-  imports: [MatDialogModule, MatButtonModule],
+  selector: 'app-confirm-dialog',
+  standalone: true,
+  imports: [
+    ButtonComponent,
+    HlmDialogComponent,
+    HlmDialogHeaderComponent,
+    HlmDialogTitleComponent,
+    HlmDialogDescriptionComponent,
+    HlmDialogFooterComponent,
+  ],
   templateUrl: './confirm-dialog.component.html',
-  styleUrl: './confirm-dialog.component.scss',
 })
 export class ConfirmDialogComponent {
-  public dialogRef = inject(MatDialogRef<ConfirmDialogComponent>);
-  public data: { message: string } = inject(MAT_DIALOG_DATA);
+  public dialogRef = inject(DialogRef<boolean>);
+  public data: { message: string } = inject(DIALOG_DATA);
 
   onNoClick(): void {
     this.dialogRef.close(false);
+  }
+
+  onConfirm(): void {
+    this.dialogRef.close(true);
   }
 }
