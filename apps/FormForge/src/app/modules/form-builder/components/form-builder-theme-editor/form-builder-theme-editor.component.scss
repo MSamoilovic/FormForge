@@ -51,6 +51,11 @@
   }
 }
 
+.divider {
+  border-top: 1px solid var(--ff-color-border);
+  margin: var(--ff-spacing-xs) 0;
+}
+
 // Custom Form Fields
 .form-field {
   display: flex;

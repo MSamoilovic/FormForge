@@ -1,16 +1,22 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { lucidePalette, lucideType, lucideSquare } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-theme-editor',
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatDividerModule,
-    MatIconModule,
+    NgIconComponent,
+  ],
+  viewProviders: [
+    provideIcons({
+      lucidePalette,
+      lucideType,
+      lucideSquare,
+    }),
   ],
   templateUrl: './form-builder-theme-editor.component.html',
   styleUrl: './form-builder-theme-editor.component.scss',

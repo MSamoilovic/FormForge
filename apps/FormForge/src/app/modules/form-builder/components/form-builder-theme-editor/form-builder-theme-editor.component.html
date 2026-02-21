@@ -1,6 +1,6 @@
 <div class="theme-editor-container" [formGroup]="themeForm()">
   <div class="section-title">
-    <mat-icon>palette</mat-icon>
+    <ng-icon name="lucidePalette"></ng-icon>
     <h4>Colors</h4>
   </div>
   <div class="theme-grid">
@@ -21,10 +21,10 @@
     </div>
   </div>
 
-  <mat-divider></mat-divider>
+  <div class="divider"></div>
 
   <div class="section-title">
-    <mat-icon>text_fields</mat-icon>
+    <ng-icon name="lucideType"></ng-icon>
     <h4>Typography</h4>
   </div>
   <div class="form-field">
@@ -36,10 +36,10 @@
     </select>
   </div>
 
-  <mat-divider></mat-divider>
+  <div class="divider"></div>
 
   <div class="section-title">
-    <mat-icon>rounded_corner</mat-icon>
+    <ng-icon name="lucideSquare"></ng-icon>
     <h4>Layout</h4>
   </div>
   <div class="form-field">
@@ -47,4 +47,3 @@
     <input class="form-field-input" type="number" formControlName="borderRadius" />
   </div>
 </div>
-

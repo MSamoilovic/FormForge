@@ -2,14 +2,16 @@ import { Component, effect, inject, input, output } from '@angular/core';
 import { FieldOption, FormField, FormRule, FormTheme, RuleCondition, RuleConditionGroup } from '@form-forge/models';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormBuilderFieldRulesComponent } from '../form-builder-form-rules/form-builder-field-rules.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import {
+  CardComponent,
+  CardHeaderComponent,
+  CardTitleComponent,
+  CardDescriptionComponent,
+  CardContentComponent,
+} from '../../../../shared/ui/card';
 import { FormBuilderThemeEditorComponent } from '../form-builder-theme-editor/form-builder-theme-editor.component';
 import { Countries, Country } from '@form-forge/ui-kit';
 import { COLOR_PICKER_DEFAULTS, PHONE_FIELD_DEFAULTS } from '@form-forge/config';
@@ -24,6 +26,7 @@ import {
   lucideSettings,
   lucidePalette,
   lucideArrowRight,
+  lucideMinusCircle,
 } from '@ng-icons/lucide';
 
 @Component({
@@ -33,11 +36,11 @@ import {
     CommonModule,
     ReactiveFormsModule,
     FormBuilderFieldRulesComponent,
-    MatCardModule,
-    MatCheckboxModule,
-    MatDividerModule,
-    MatButtonModule,
-    MatIconModule,
+    CardComponent,
+    CardHeaderComponent,
+    CardTitleComponent,
+    CardDescriptionComponent,
+    CardContentComponent,
     TabsGroupComponent,
     TabsListComponent,
     TabsTriggerComponent,
@@ -50,6 +53,7 @@ import {
       lucideSettings,
       lucidePalette,
       lucideArrowRight,
+      lucideMinusCircle,
     }),
   ],
   templateUrl: './form-builder-property-panel.html',
