@@ -6,25 +6,19 @@
 >
   <div class="phone-field-container">
     @if (showCountrySelector()) {
-      <mat-form-field appearance="outline" class="country-selector ff-hide-subscript">
-        <mat-select
-          [value]="selectedCountry()"
-          (selectionChange)="onCountryChange($event.value)"
-          class="country-select "
-        >
-          @for (country of countries; track country.code) {
-            <mat-option [value]="country.code">
-              <span class="country-option">
-                <span class="country-flag">{{ country.flag }}</span>
-                <span class="country-name">{{ country.name }}</span>
-                <span class="country-dial-code">{{ country.dialCode }}</span>
-              </span>
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+      <select
+        class="country-select"
+        [value]="selectedCountry()"
+        (change)="onCountryChange($any($event.target).value)"
+      >
+        @for (country of countries; track country.code) {
+          <option [value]="country.code">
+            {{ country.flag }} {{ country.name }} {{ country.dialCode }}
+          </option>
+        }
+      </select>
     }
-    
+
     <div class="phone-input-wrapper">
       @if (!showCountrySelector()) {
         <span class="country-prefix">{{ countryFlag() }} {{ getCountryByCode(selectedCountry())?.dialCode || '+381' }}</span>
@@ -39,4 +33,3 @@
     </div>
   </div>
 </app-form-field-shell>
-

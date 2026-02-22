@@ -1,69 +1,9 @@
-@use '@angular/material' as mat;
-
 // =============================================================================
 // Tailwind CSS
 // =============================================================================
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-// =============================================================================
-// Material Theme Configuration
-// =============================================================================
-@include mat.core();
-
-$form-forge-primary: mat.m2-define-palette(mat.$m2-blue-palette, 700, 500, 900);
-$form-forge-accent: mat.m2-define-palette(
-  mat.$m2-teal-palette,
-  A200,
-  A100,
-  A400
-);
-$form-forge-warn: mat.m2-define-palette(mat.$m2-red-palette);
-
-$form-forge-theme: mat.m2-define-light-theme(
-  (
-    color: (
-      primary: $form-forge-primary,
-      accent: $form-forge-accent,
-      warn: $form-forge-warn,
-    ),
-    typography: mat.m2-define-typography-config(),
-    density: 0,
-  )
-);
-
-$form-forge-primary-dark: mat.m2-define-palette(
-  mat.$m2-blue-grey-palette,
-  700,
-  500,
-  900
-);
-$form-forge-accent-dark: mat.m2-define-palette(
-  mat.$m2-amber-palette,
-  A200,
-  A100,
-  A400
-);
-$form-forge-warn-dark: mat.m2-define-palette(mat.$m2-deep-orange-palette);
-
-$form-forge-dark-theme: mat.m2-define-dark-theme(
-  (
-    color: (
-      primary: $form-forge-primary-dark,
-      accent: $form-forge-accent-dark,
-      warn: $form-forge-warn-dark,
-    ),
-    typography: mat.m2-define-typography-config(),
-    density: 0,
-  )
-);
-
-@include mat.all-component-themes($form-forge-theme);
-
-.dark-theme {
-  @include mat.all-component-colors($form-forge-dark-theme);
-}
 
 // =============================================================================
 // Tailwind/Spartan CSS Variables (Shadcn-style)
@@ -297,33 +237,6 @@ body {
   padding: 0;
   overflow: hidden;
   font-family: var(--ff-font-family), sans-serif;
-}
-
-// =============================================================================
-// Material Snackbar Styles (keeping until migrated to toast)
-// =============================================================================
-.success-snackbar {
-  --mdc-snackbar-container-color: hsl(var(--success));
-  --mat-mdc-snack-bar-button-color: #ffffff;
-  --mdc-snackbar-supporting-text-color: #ffffff;
-}
-
-.error-snackbar {
-  --mdc-snackbar-container-color: hsl(var(--destructive));
-  --mat-mdc-snack-bar-button-color: #ffffff;
-  --mdc-snackbar-supporting-text-color: #ffffff;
-}
-
-.info-snackbar {
-  --mdc-snackbar-container-color: hsl(var(--info));
-  --mat-mdc-snack-bar-button-color: #ffffff;
-  --mdc-snackbar-supporting-text-color: #ffffff;
-}
-
-.warning-snackbar {
-  --mdc-snackbar-container-color: hsl(var(--warning));
-  --mat-mdc-snack-bar-button-color: #ffffff;
-  --mdc-snackbar-supporting-text-color: #ffffff;
 }
 
 // =============================================================================

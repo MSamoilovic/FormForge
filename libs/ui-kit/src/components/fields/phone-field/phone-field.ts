@@ -3,11 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { FieldType } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { Countries } from './countries';
 import { PHONE_FIELD_DEFAULTS } from '@form-forge/config';
 import { BaseFieldComponent } from '../../../base';
@@ -18,11 +13,6 @@ import { BaseFieldComponent } from '../../../base';
     CommonModule,
     ReactiveFormsModule,
     FormFieldShell,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
   ],
   templateUrl: './phone-field.html',
   styleUrl: './phone-field.scss',
