@@ -1,13 +1,13 @@
-<mat-card class="property-panel-card ff-card-full-height">
-  <mat-card-header>
-    <mat-card-title class="panel-title">
-      <mat-icon>tune</mat-icon>
+<app-card class="property-panel-card ff-card-full-height">
+  <app-card-header>
+    <app-card-title class="panel-title">
+      <ng-icon name="lucideSettings"></ng-icon>
       <span>Properties</span>
-    </mat-card-title>
-    <mat-card-subtitle>Configure field settings</mat-card-subtitle>
-  </mat-card-header>
+    </app-card-title>
+    <app-card-description>Configure field settings</app-card-description>
+  </app-card-header>
 
-  <mat-card-content>
+  <app-card-content class="card-content">
     @if (selectedField(); as field) {
     <app-tabs-group defaultTab="field" class="properties-tabs ff-tabs-full-height">
       <app-tabs-list class="properties-tabs-list">
@@ -75,16 +75,20 @@
                   }
                 </select>
               </div>
-              <mat-checkbox formControlName="showCountrySelector" color="primary">
-                Show Country Selector
-              </mat-checkbox>
+              <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input" formControlName="showCountrySelector">
+                <span>Show Country Selector</span>
+              </label>
             </div>
           }
 
-          <mat-checkbox formControlName="required" color="primary">Required</mat-checkbox>
+          <label class="checkbox-label">
+            <input type="checkbox" class="checkbox-input" formControlName="required">
+            <span>Required</span>
+          </label>
 
           @if (field.type === 'select' || field.type === 'radio' || field.type === 'multiSelect' || field.type === 'likertScale') {
-            <mat-divider></mat-divider>
+            <div class="divider"></div>
             <div class="options-container" formArrayName="options">
               <h4>Options</h4>
               @for (optionGroup of optionsFormArray.controls; let i = $index; track i) {
@@ -97,18 +101,18 @@
                   <label class="form-field-label">Value</label>
                   <input class="form-field-input" formControlName="value">
                 </div>
-                <button mat-icon-button color="warn" (click)="removeOption(i)" title="Remove Option" class="remove-btn">
-                  <mat-icon>remove_circle_outline</mat-icon>
+                <button type="button" class="icon-btn icon-btn--danger remove-btn" (click)="removeOption(i)" title="Remove Option">
+                  <ng-icon name="lucideMinusCircle"></ng-icon>
                 </button>
               </div>
               }
               <div class="add-option-button">
-                <button type="button" mat-stroked-button (click)="addOption()">+ Add Option</button>
+                <button type="button" class="btn-stroked" (click)="addOption()">+ Add Option</button>
               </div>
             </div>
           }
 
-          <mat-divider></mat-divider>
+          <div class="divider"></div>
 
           <app-field-rules [parentForm]="propertiesForm" [rulesFormArray]="rulesFormArray"
             [allFormFields]="getAllFields()"></app-field-rules>
@@ -135,5 +139,5 @@
       </div>
     </div>
     }
-  </mat-card-content>
-</mat-card>
+  </app-card-content>
+</app-card>

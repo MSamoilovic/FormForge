@@ -19,7 +19,13 @@ import { FormBuilderSidebar } from './components/form-builder-sidebar/form-build
 import { FormBuilderCanvas } from './components/form-builder-canvas/form-builder-canvas';
 import { FormBuilderPropertyPanel } from './components/form-builder-property-panel/form-builder-property-panel';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { lucideUndo, lucideRedo, lucideEye, lucideSave, lucideLoader2 } from '@ng-icons/lucide';
+import {
+  lucideUndo, lucideRedo, lucideEye, lucideSave, lucideLoader2,
+  lucideType, lucideHash, lucideChevronDown, lucideListChecks,
+  lucideMail, lucideLink, lucideLock, lucidePhone, lucideAlignLeft,
+  lucideCloudUpload, lucideSquareCheck, lucideToggleRight, lucideCircleDot,
+  lucideCalendar, lucidePalette, lucideSliders, lucideLayoutGrid, lucideGripVertical,
+} from '@ng-icons/lucide';
 import { ApiService } from '../core/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilderService } from './services/form-builder.service';
@@ -50,6 +56,24 @@ import { ButtonComponent } from '../../shared/ui/button/button.component';
       lucideEye,
       lucideSave,
       lucideLoader2,
+      lucideType,
+      lucideHash,
+      lucideChevronDown,
+      lucideListChecks,
+      lucideMail,
+      lucideLink,
+      lucideLock,
+      lucidePhone,
+      lucideAlignLeft,
+      lucideCloudUpload,
+      lucideSquareCheck,
+      lucideToggleRight,
+      lucideCircleDot,
+      lucideCalendar,
+      lucidePalette,
+      lucideSliders,
+      lucideLayoutGrid,
+      lucideGripVertical,
     }),
   ],
   providers: [ApiService, HttpClient, FormBuilderService, NotificationService, HistoryService],
@@ -76,35 +100,23 @@ export class FormBuilderComponent {
   ];
 
   availableFields: AvailableField[] = [
-    { type: FieldType.Text, label: 'Text Input', icon: 'text_fields' },
-    { type: FieldType.Number, label: 'Number Input', icon: 'pin' },
-    {
-      type: FieldType.Select,
-      label: 'Dropdown',
-      icon: 'arrow_drop_down_circle',
-    },
-    {
-      type: FieldType.MultiSelect,
-      label: 'Multi Select',
-      icon: 'checklist',
-    },
-    { type: FieldType.Email, label: 'Email', icon: 'alternate_email' },
-    { type: FieldType.Url, label: 'URL', icon: 'link' },
-    { type: FieldType.Password, label: 'Password', icon: 'lock' },
-    { type: FieldType.Phone, label: 'Phone', icon: 'phone' },
-    { type: FieldType.TextArea, label: 'Text Area', icon: 'notes' },
-    { type: FieldType.FileUpload, label: 'File Upload', icon: 'cloud_upload' },
-    { type: FieldType.Checkbox, label: 'Checkbox', icon: 'check_box' },
-    { type: FieldType.ToggleSwitch, label: 'Toggle Switch', icon: 'toggle_on' },
-    { type: FieldType.Radio, label: 'Radio', icon: 'radio_button_checked' },
-    { type: FieldType.Date, label: 'Date', icon: 'calendar_today' },
-    { type: FieldType.RichText, label: 'Rich Text', icon: 'format_align_left' },
-    { type: FieldType.ColorPicker, label: 'Color Picker', icon: 'palette' },
-    {
-      type: FieldType.LikertScale,
-      label: 'Likert Scale',
-      icon: 'linear_scale',
-    },
+    { type: FieldType.Text, label: 'Text Input', icon: 'lucideType' },
+    { type: FieldType.Number, label: 'Number Input', icon: 'lucideHash' },
+    { type: FieldType.Select, label: 'Dropdown', icon: 'lucideChevronDown' },
+    { type: FieldType.MultiSelect, label: 'Multi Select', icon: 'lucideListChecks' },
+    { type: FieldType.Email, label: 'Email', icon: 'lucideMail' },
+    { type: FieldType.Url, label: 'URL', icon: 'lucideLink' },
+    { type: FieldType.Password, label: 'Password', icon: 'lucideLock' },
+    { type: FieldType.Phone, label: 'Phone', icon: 'lucidePhone' },
+    { type: FieldType.TextArea, label: 'Text Area', icon: 'lucideAlignLeft' },
+    { type: FieldType.FileUpload, label: 'File Upload', icon: 'lucideCloudUpload' },
+    { type: FieldType.Checkbox, label: 'Checkbox', icon: 'lucideSquareCheck' },
+    { type: FieldType.ToggleSwitch, label: 'Toggle Switch', icon: 'lucideToggleRight' },
+    { type: FieldType.Radio, label: 'Radio', icon: 'lucideCircleDot' },
+    { type: FieldType.Date, label: 'Date', icon: 'lucideCalendar' },
+    { type: FieldType.RichText, label: 'Rich Text', icon: 'lucideAlignLeft' },
+    { type: FieldType.ColorPicker, label: 'Color Picker', icon: 'lucidePalette' },
+    { type: FieldType.LikertScale, label: 'Likert Scale', icon: 'lucideSliders' },
   ];
 
   formBuilderService = inject(FormBuilderService);

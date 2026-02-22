@@ -12,28 +12,26 @@ import {
   RuleActionType,
   RuleConditionOperator,
 } from '@form-forge/models';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import {
+  lucideTrash2,
+  lucidePlus,
+  lucideMinusCircle,
+} from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-field-rules',
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDividerModule,
-    MatTooltipModule,
+    NgIconComponent,
+  ],
+  viewProviders: [
+    provideIcons({
+      lucideTrash2,
+      lucidePlus,
+      lucideMinusCircle,
+    }),
   ],
   templateUrl: './form-builder-field-rules.component.html',
   styleUrl: './form-builder-field-rules.component.scss',

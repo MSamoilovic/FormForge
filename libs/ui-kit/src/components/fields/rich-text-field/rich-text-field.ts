@@ -4,15 +4,25 @@ import { CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { FieldType } from '@form-forge/models';
 import { FormFieldShell } from '../../form-field-shell/form-field-shell';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import {
+  lucideBold, lucideItalic, lucideUnderline,
+  lucideAlignLeft, lucideAlignCenter, lucideAlignRight,
+  lucideList, lucideListOrdered, lucideEraser,
+} from '@ng-icons/lucide';
 import { fromEvent } from 'rxjs';
 import { BaseFieldComponent } from '../../../base';
 
 @Component({
   selector: 'app-rich-text-field',
-  imports: [CommonModule, ReactiveFormsModule, FormFieldShell, MatIconModule, MatButtonModule, MatTooltipModule],
+  imports: [CommonModule, ReactiveFormsModule, FormFieldShell, NgIconComponent],
+  viewProviders: [
+    provideIcons({
+      lucideBold, lucideItalic, lucideUnderline,
+      lucideAlignLeft, lucideAlignCenter, lucideAlignRight,
+      lucideList, lucideListOrdered, lucideEraser,
+    }),
+  ],
   templateUrl: './rich-text-field.html',
   styleUrl: './rich-text-field.scss',
   standalone: true,
