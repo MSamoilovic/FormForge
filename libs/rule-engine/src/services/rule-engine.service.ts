@@ -13,7 +13,14 @@ import {
   RuleConditionGroup,
   RuleConditionOperator,
 } from '@form-forge/models';
-import { asyncScheduler, observeOn, startWith, Subject, takeUntil } from 'rxjs';
+import {
+  asyncScheduler,
+  debounceTime,
+  observeOn,
+  startWith,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class RuleEngineService {
@@ -29,6 +36,7 @@ export class RuleEngineService {
     form.valueChanges
       .pipe(
         startWith(form.value),
+        debounceTime(50),
         observeOn(asyncScheduler),
         takeUntil(destroy$)
       )
@@ -38,7 +46,11 @@ export class RuleEngineService {
             this.evaluateCondition(condition, formValue)
           );
 
-          const conditionsMet = conditionResults.every((result) => result);
+          const logic = rule.conditionLogic ?? 'and';
+          const conditionsMet =
+            logic === 'and'
+              ? conditionResults.every((r) => r)
+              : conditionResults.some((r) => r);
 
           rule.actions.forEach((action) =>
             this.executeAction(action, form, conditionsMet)
@@ -49,7 +61,7 @@ export class RuleEngineService {
 
   private evaluateCondition(
     condition: RuleCondition | RuleConditionGroup,
-    formValue: any
+    formValue: Record<string, unknown>
   ): boolean {
     if ('operator' in condition && 'conditions' in condition) {
       const group = condition as RuleConditionGroup;
@@ -59,36 +71,84 @@ export class RuleEngineService {
       return group.operator === 'and'
         ? results.every((r) => r)
         : results.some((r) => r);
-    } else {
-      const singleCondition = condition as RuleCondition;
-      const fieldValue = formValue[singleCondition.fieldId];
-      switch (singleCondition.operator) {
-        case RuleConditionOperator.Equals:
-          return fieldValue == singleCondition.value;
-        case RuleConditionOperator.NotEquals:
-          return fieldValue != singleCondition.value;
-        case RuleConditionOperator.GreaterThan:
-          return fieldValue > singleCondition.value;
-        case RuleConditionOperator.LessThan:
-          return fieldValue < singleCondition.value;
-        case RuleConditionOperator.Contains:
-          return fieldValue?.includes(singleCondition.value);
-        default:
-          return false;
+    }
+
+    const { fieldId, operator, value } = condition as RuleCondition;
+    const fieldValue = formValue[fieldId];
+
+    switch (operator) {
+      case RuleConditionOperator.Equals:
+        return fieldValue === value;
+      case RuleConditionOperator.NotEquals:
+        return fieldValue !== value;
+      case RuleConditionOperator.GreaterThan:
+        return (fieldValue as number) > (value as number);
+      case RuleConditionOperator.GreaterThanOrEqual:
+        return (fieldValue as number) >= (value as number);
+      case RuleConditionOperator.LessThan:
+        return (fieldValue as number) < (value as number);
+      case RuleConditionOperator.LessThanOrEqual:
+        return (fieldValue as number) <= (value as number);
+      case RuleConditionOperator.Between: {
+        const range = value as { min: number; max: number };
+        const num = fieldValue as number;
+        return num >= range.min && num <= range.max;
       }
+
+      // String
+      case RuleConditionOperator.Contains:
+        return String(fieldValue ?? '').includes(String(value));
+      case RuleConditionOperator.NotContains:
+        return !String(fieldValue ?? '').includes(String(value));
+      case RuleConditionOperator.StartsWith:
+        return String(fieldValue ?? '').startsWith(String(value));
+      case RuleConditionOperator.EndsWith:
+        return String(fieldValue ?? '').endsWith(String(value));
+      case RuleConditionOperator.Regex:
+        return new RegExp(String(value)).test(String(fieldValue ?? ''));
+
+      // Prisustvo
+      case RuleConditionOperator.IsEmpty:
+        return this.isEmpty(fieldValue);
+      case RuleConditionOperator.IsNotEmpty:
+        return !this.isEmpty(fieldValue);
+
+      // Lista
+      case RuleConditionOperator.In:
+        return Array.isArray(value) && value.includes(fieldValue as never);
+      case RuleConditionOperator.NotIn:
+        return Array.isArray(value) && !value.includes(fieldValue as never);
+
+      default:
+        return false;
     }
   }
 
-  /**
-   * Izvršava ili "poništava" akciju na osnovu toga da li su uslovi ispunjeni.
-   */
+  private isEmpty(value: unknown): boolean {
+    return (
+      value === null ||
+      value === undefined ||
+      value === '' ||
+      (Array.isArray(value) && value.length === 0)
+    );
+  }
+
   private executeAction(
     action: RuleAction,
     form: FormGroup,
     conditionsMet: boolean
   ): void {
     const targetControl = form.get(action.targetFieldId);
-    if (!targetControl) return;
+
+    if (!targetControl) {
+      if (typeof ngDevMode !== 'undefined' && ngDevMode) {
+        console.warn(
+          `[RuleEngine] Target field "${action.targetFieldId}" not found in form. ` +
+            `Check rule action configuration.`
+        );
+      }
+      return;
+    }
 
     switch (action.type) {
       case RuleActionType.Show:
@@ -122,7 +182,18 @@ export class RuleEngineService {
       case RuleActionType.SetRequired:
         this.toggleValidator(targetControl, Validators.required, conditionsMet);
         break;
+      case RuleActionType.SetValue:
+        if (conditionsMet) {
+          targetControl.setValue(action.value ?? null, { emitEvent: false });
+        }
+        break;
+      case RuleActionType.ClearValue:
+        if (conditionsMet) {
+          targetControl.setValue(null, { emitEvent: false });
+        }
+        break;
     }
+
     targetControl.updateValueAndValidity({ emitEvent: false });
   }
 
