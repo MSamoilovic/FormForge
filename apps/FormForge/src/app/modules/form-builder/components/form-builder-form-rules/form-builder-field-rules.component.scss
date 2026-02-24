@@ -49,6 +49,44 @@
   }
 }
 
+.section-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--ff-spacing-sm);
+}
+
+.section-subtitle {
+  font-size: 0.8rem;
+  color: var(--ff-text-secondary);
+}
+
+.logic-select {
+  height: 26px;
+  padding: 0 20px 0 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ff-color-primary);
+  background-color: rgba(var(--ff-color-primary-rgb, 99, 102, 241), 0.1);
+  border: 1px solid var(--ff-color-primary);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%236366f1' d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 5px center;
+
+  &:hover {
+    background-color: rgba(var(--ff-color-primary-rgb, 99, 102, 241), 0.2);
+  }
+
+  option {
+    background: var(--ff-color-surface);
+    color: var(--ff-text-primary);
+    font-weight: 400;
+  }
+}
+
 .condition-row,
 .action-row {
   display: flex;

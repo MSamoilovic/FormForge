@@ -210,6 +210,7 @@ export class FormBuilderPropertyPanel {
       const ruleGroup = this.fb.group({
         id: [rule.id],
         description: [rule.description],
+        conditionLogic: [rule.conditionLogic ?? 'and'],
         conditions: this.fb.array(
           rule.conditions.map((c) => this.buildConditionForm(c))
         ),

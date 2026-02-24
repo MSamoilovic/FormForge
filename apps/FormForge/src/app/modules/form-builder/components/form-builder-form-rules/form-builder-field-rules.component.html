@@ -16,19 +16,26 @@
       </div>
 
       <div class="rule-body">
-        <!-- Sekcija za USLOVE (CONDITIONS) -->
-        <div class="conditions-section" formArrayName="conditions">
-          <div class="section-header">
-            <h6>IF...</h6>
-            <button
-              type="button"
-              class="btn-stroked btn-stroked--sm"
-              (click)="addCondition(i)"
-            >
-              <ng-icon name="lucidePlus"></ng-icon>
-              AND
-            </button>
+        <div class="section-header">
+          <div class="section-header-left">
+            <h6>IF</h6>
+            <select class="logic-select" formControlName="conditionLogic">
+              <option value="and">ALL (AND)</option>
+              <option value="or">ANY (OR)</option>
+            </select>
+            <span class="section-subtitle">of the following are met</span>
           </div>
+          <button
+            type="button"
+            class="btn-stroked btn-stroked--sm"
+            (click)="addCondition(i)"
+          >
+            <ng-icon name="lucidePlus"></ng-icon>
+            Condition
+          </button>
+        </div>
+
+        <div formArrayName="conditions">
           @for (conditionGroup of $any(ruleGroup.get('conditions')).controls;
           let c_idx = $index; track c_idx) {
           <div class="condition-row" [formGroupName]="c_idx">
@@ -45,15 +52,23 @@
               <label for="operator" class="form-field-label">Operator</label>
               <select class="form-field-select" formControlName="operator">
                 @for (op of conditionOperators; track op) {
-                <option [value]="op">{{ op }}</option>
+                <option [value]="op">{{ getOperatorLabel(op) }}</option>
                 }
               </select>
             </div>
 
+            @if (needsValueInput(conditionGroup.get('operator')?.value)) {
             <div class="form-field rule-field">
-              <label for="value" class="form-field-label">Value</label>
-              <input class="form-field-input" formControlName="value" />
+              <label class="form-field-label">Value</label>
+              <input
+                class="form-field-input"
+                formControlName="value"
+                [placeholder]="
+                  getValuePlaceholder(conditionGroup.get('operator')?.value)
+                "
+              />
             </div>
+            }
 
             <button
               type="button"
@@ -69,7 +84,7 @@
 
         <div class="divider"></div>
 
-        <!-- Sekcija za AKCIJE (ACTIONS) -->
+        <!-- ACTIONS -->
         <div class="actions-section" formArrayName="actions">
           <div class="section-header">
             <h6>THEN...</h6>
@@ -86,24 +101,33 @@
           a_idx = $index; track a_idx) {
           <div class="action-row" [formGroupName]="a_idx">
             <div class="form-field rule-action-type">
-              <label for="type" class="form-field-label">Action</label>
+              <label class="form-field-label">Action</label>
               <select class="form-field-select" formControlName="type">
                 @for (action of actionTypes; track action) {
-                <option [value]="action">{{ action }}</option>
+                <option [value]="action">{{ getActionLabel(action) }}</option>
                 }
               </select>
             </div>
 
             <div class="form-field rule-field">
-              <label for="targetFieldId" class="form-field-label"
-                >Target Field</label
-              >
+              <label class="form-field-label">Target Field</label>
               <select class="form-field-select" formControlName="targetFieldId">
                 @for (field of allFormFields(); track field.id) {
                 <option [value]="field.id">{{ field.label }}</option>
                 }
               </select>
             </div>
+
+            @if (needsActionValue(actionGroup.get('type')?.value)) {
+            <div class="form-field rule-field">
+              <label class="form-field-label">Value to Set</label>
+              <input
+                class="form-field-input"
+                formControlName="value"
+                placeholder="Enter value"
+              />
+            </div>
+            }
 
             <button
               type="button"

@@ -90,9 +90,18 @@ export class RuleEngineService {
       case RuleConditionOperator.LessThanOrEqual:
         return (fieldValue as number) <= (value as number);
       case RuleConditionOperator.Between: {
-        const range = value as { min: number; max: number };
-        const num = fieldValue as number;
-        return num >= range.min && num <= range.max;
+        let min: number, max: number;
+        if (typeof value === 'object' && value !== null && 'min' in (value as object)) {
+          const range = value as { min: number; max: number };
+          min = range.min;
+          max = range.max;
+        } else {
+          const parts = String(value).split(',');
+          min = Number(parts[0]?.trim());
+          max = Number(parts[1]?.trim());
+        }
+        const num = Number(fieldValue);
+        return num >= min && num <= max;
       }
 
       // String
@@ -114,10 +123,18 @@ export class RuleEngineService {
         return !this.isEmpty(fieldValue);
 
       // Lista
-      case RuleConditionOperator.In:
-        return Array.isArray(value) && value.includes(fieldValue as never);
-      case RuleConditionOperator.NotIn:
-        return Array.isArray(value) && !value.includes(fieldValue as never);
+      case RuleConditionOperator.In: {
+        const list = Array.isArray(value)
+          ? value.map(String)
+          : String(value).split(',').map((v) => v.trim());
+        return list.includes(String(fieldValue));
+      }
+      case RuleConditionOperator.NotIn: {
+        const list = Array.isArray(value)
+          ? value.map(String)
+          : String(value).split(',').map((v) => v.trim());
+        return !list.includes(String(fieldValue));
+      }
 
       default:
         return false;
