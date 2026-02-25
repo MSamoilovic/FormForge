@@ -78,17 +78,17 @@ export class RuleEngineService {
 
     switch (operator) {
       case RuleConditionOperator.Equals:
-        return fieldValue === value;
+        return this.coerceEqual(fieldValue, value);
       case RuleConditionOperator.NotEquals:
-        return fieldValue !== value;
+        return !this.coerceEqual(fieldValue, value);
       case RuleConditionOperator.GreaterThan:
-        return (fieldValue as number) > (value as number);
+        return Number(fieldValue) > Number(value);
       case RuleConditionOperator.GreaterThanOrEqual:
-        return (fieldValue as number) >= (value as number);
+        return Number(fieldValue) >= Number(value);
       case RuleConditionOperator.LessThan:
-        return (fieldValue as number) < (value as number);
+        return Number(fieldValue) < Number(value);
       case RuleConditionOperator.LessThanOrEqual:
-        return (fieldValue as number) <= (value as number);
+        return Number(fieldValue) <= Number(value);
       case RuleConditionOperator.Between: {
         let min: number, max: number;
         if (typeof value === 'object' && value !== null && 'min' in (value as object)) {
@@ -113,8 +113,16 @@ export class RuleEngineService {
         return String(fieldValue ?? '').startsWith(String(value));
       case RuleConditionOperator.EndsWith:
         return String(fieldValue ?? '').endsWith(String(value));
-      case RuleConditionOperator.Regex:
-        return new RegExp(String(value)).test(String(fieldValue ?? ''));
+      case RuleConditionOperator.Regex: {
+        try {
+          return new RegExp(String(value)).test(String(fieldValue ?? ''));
+        } catch {
+          if (typeof ngDevMode !== 'undefined' && ngDevMode) {
+            console.warn(`[RuleEngine] Invalid regex pattern: "${value}"`);
+          }
+          return false;
+        }
+      }
 
       // Prisustvo
       case RuleConditionOperator.IsEmpty:
@@ -139,6 +147,16 @@ export class RuleEngineService {
       default:
         return false;
     }
+  }
+
+  private coerceEqual(a: unknown, b: unknown): boolean {
+    if (a === b) return true;
+    const numA = Number(a);
+    const numB = Number(b);
+    const aIsNumeric = String(a).trim() !== '' && !isNaN(numA);
+    const bIsNumeric = String(b).trim() !== '' && !isNaN(numB);
+    if (aIsNumeric && bIsNumeric) return numA === numB;
+    return String(a ?? '') === String(b ?? '');
   }
 
   private isEmpty(value: unknown): boolean {
