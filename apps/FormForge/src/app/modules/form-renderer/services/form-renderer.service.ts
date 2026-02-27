@@ -31,6 +31,16 @@ export class FormRendererService implements OnDestroy {
     this.destroy$.complete();
   }
 
+  public initializeFromSchema(schema: FormSchema): void {
+    this.formSchema.set(schema);
+    const formGroup = this.buildForm(schema);
+    this.form.set(formGroup);
+    if (schema.rules) {
+      this.ruleEngine.processRules(formGroup, schema.rules, this.destroy$);
+    }
+    this.isLoading.set(false);
+  }
+
   public initialize(formId: number): void {
     this.isLoading.set(true);
     this.dataService.getFormById(formId.toString()).subscribe({

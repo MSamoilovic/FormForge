@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
-import { FieldComponentInputs, FieldType, FormField } from '@form-forge/models';
+import { FieldComponentInputs, FieldType, FormField, FormSchema } from '@form-forge/models';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { FIELD_TYPE_MAP, FieldComponentType } from '@form-forge/ui-kit';
@@ -47,6 +47,7 @@ export class FormRenderer implements OnInit {
   private errorHandler = inject(ErrorHandlerService);
 
   private formId: number | null = null;
+  public isPreviewMode = false;
 
   public isDarkMode = computed(
     () => this.themeService.currentTheme() === 'dark'
@@ -56,12 +57,23 @@ export class FormRenderer implements OnInit {
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
+
     if (idParam) {
       this.formId = +idParam;
       this.rendererService.initialize(this.formId);
-    } else {
-      this.errorHandler.showError('Form ID is missing from the URL.', 'FormRenderer.init');
+      return;
     }
+
+    const raw = sessionStorage.getItem('ff_preview_schema');
+    if (raw) {
+      sessionStorage.removeItem('ff_preview_schema');
+      const previewSchema: FormSchema = JSON.parse(raw);
+      this.isPreviewMode = true;
+      this.rendererService.initializeFromSchema(previewSchema);
+      return;
+    }
+
+    this.errorHandler.showError('Form ID is missing from the URL.', 'FormRenderer.init');
   }
 
   onSubmit(): void {

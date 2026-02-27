@@ -50,8 +50,21 @@ export class FormBuilderService {
     this.isEditMode() ? 'Edit Form' : 'Create New Form'
   );
 
+  public readonly formId = this.formIdToEdit.asReadonly();
   public readonly canUndo = this.historyService.canUndo;
   public readonly canRedo = this.historyService.canRedo;
+
+  public readonly currentSchema = computed<FormSchema>(() => {
+    const fields = this.canvasFields();
+    const rules: FormRule[] = fields.flatMap(f => f.rules ?? []);
+    return {
+      id: this.formIdToEdit()?.toString() ?? '',
+      name: this.formName(),
+      fields,
+      rules,
+      theme: this.theme(),
+    };
+  });
 
   private formName = signal<string>('My New Form');
 

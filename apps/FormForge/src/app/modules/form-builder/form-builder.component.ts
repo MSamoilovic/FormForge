@@ -172,6 +172,17 @@ export class FormBuilderComponent {
     this.formBuilderService.saveForm();
   }
 
+  previewForm(): void {
+    const id = this.formBuilderService.formId();
+    if (id !== null) {
+      window.open(`/renderer/${id}`, '_blank');
+    } else {
+      const schema = this.formBuilderService.currentSchema();
+      sessionStorage.setItem('ff_preview_schema', JSON.stringify(schema));
+      window.open('/renderer', '_blank');
+    }
+  }
+
   onThemeChange(theme: FormTheme): void {
     this.formBuilderService.updateTheme(theme);
   }
