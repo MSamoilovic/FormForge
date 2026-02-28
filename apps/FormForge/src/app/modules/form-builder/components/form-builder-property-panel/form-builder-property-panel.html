@@ -2,9 +2,9 @@
   <app-card-header>
     <app-card-title class="panel-title">
       <ng-icon name="lucideSettings"></ng-icon>
-      <span>Properties</span>
+      <span>{{ selectedField() ? 'Properties' : 'Form Settings' }}</span>
     </app-card-title>
-    <app-card-description>Configure field settings</app-card-description>
+    <app-card-description>{{ selectedField() ? 'Configure field settings' : 'Name, description and submit message' }}</app-card-description>
   </app-card-header>
 
   <app-card-content class="card-content">
@@ -127,15 +127,19 @@
     </app-tabs-group>
 
     } @else {
-    <div class="no-field-selected">
-      <div class="empty-state-icon">
-        <ng-icon name="lucideSettings" size="20"></ng-icon>
+    <div class="properties-form-container" [formGroup]="settingsForm">
+      <div class="form-field">
+        <label class="form-field-label">Form Name</label>
+        <input class="form-field-input" formControlName="name" placeholder="Enter form name">
       </div>
-      <h3>No Field Selected</h3>
-      <p>Select a field on the canvas to see its properties.</p>
-      <div class="hint">
-        <ng-icon name="lucideArrowRight"></ng-icon>
-        <span>Click on any field</span>
+      <div class="form-field">
+        <label class="form-field-label">Description</label>
+        <textarea class="form-field-input" formControlName="description" placeholder="Describe your form..." rows="3" style="resize: vertical;"></textarea>
+      </div>
+      <div class="divider"></div>
+      <div class="form-field">
+        <label class="form-field-label">Submit Message</label>
+        <textarea class="form-field-input" formControlName="submitMessage" placeholder="Message shown after submission..." rows="3" style="resize: vertical;"></textarea>
       </div>
     </div>
     }

@@ -33,7 +33,9 @@ export class AuthService {
   private isLoadingSignal = signal<boolean>(false);
 
   readonly currentUser = this.currentUserSignal.asReadonly();
-  readonly isAuthenticated = computed(() => !!this.currentUserSignal() && this.hasValidToken());
+  readonly isAuthenticated = computed(
+    () => !!this.currentUserSignal() && this.hasValidToken()
+  );
   readonly isLoading = this.isLoadingSignal.asReadonly();
   readonly userRole = computed(() => this.currentUserSignal()?.role ?? null);
 
@@ -49,7 +51,7 @@ export class AuthService {
       const user = this.loadUserFromStorage();
       if (user) {
         this.currentUserSignal.set(user);
-      this.authState$.next(true);
+        this.authState$.next(true);
       }
     } else {
       // Token is invalid or expired - clear all auth data
@@ -154,33 +156,35 @@ export class AuthService {
 
     const request: RefreshTokenRequest = { refresh_token: refreshToken };
 
-    return this.api.post<TokenResponse>(`${this.endpoint}/refresh`, request).pipe(
-      tap((response) => {
-        this.saveTokens(response.access_token, response.refresh_token);
-        this.authState$.next(true);
-      }),
-      catchError((error) => {
-        this.logout();
-        return throwError(() => error);
-      })
-    );
+    return this.api
+      .post<TokenResponse>(`${this.endpoint}/refresh`, request)
+      .pipe(
+        tap((response) => {
+          this.saveTokens(response.access_token, response.refresh_token);
+          this.authState$.next(true);
+        }),
+        catchError((error) => {
+          this.logout();
+          return throwError(() => error);
+        })
+      );
   }
 
-  logout(redirectTo: string = '/login'): void {
+  logout(redirectTo = '/login'): void {
     this.clearAuthData();
     this.router.navigate([redirectTo]);
   }
 
   getCurrentUser(): Observable<User> {
-    return this.api.get<User>(`${this.endpoint}/me`).pipe(
-      tap((user) => this.saveUser(user))
-    );
+    return this.api
+      .get<User>(`${this.endpoint}/me`)
+      .pipe(tap((user) => this.saveUser(user)));
   }
 
   updateProfile(data: UpdateProfileRequest): Observable<User> {
-    return this.api.put<User>(`${this.endpoint}/me`, data).pipe(
-      tap((user) => this.saveUser(user))
-    );
+    return this.api
+      .put<User>(`${this.endpoint}/me`, data)
+      .pipe(tap((user) => this.saveUser(user)));
   }
 
   changePassword(data: ChangePasswordRequest): Observable<void> {

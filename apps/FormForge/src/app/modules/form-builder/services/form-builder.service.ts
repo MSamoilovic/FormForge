@@ -60,6 +60,8 @@ export class FormBuilderService {
     return {
       id: this.formIdToEdit()?.toString() ?? '',
       name: this.formName(),
+      description: this.formDescription(),
+      submitMessage: this.formSubmitMessage(),
       fields,
       rules,
       theme: this.theme(),
@@ -67,6 +69,18 @@ export class FormBuilderService {
   });
 
   private formName = signal<string>('My New Form');
+  private formDescription = signal<string>('');
+  private formSubmitMessage = signal<string>('Thank you for your submission!');
+
+  public readonly name = this.formName.asReadonly();
+  public readonly description = this.formDescription.asReadonly();
+  public readonly submitMessage = this.formSubmitMessage.asReadonly();
+
+  public updateFormSettings(settings: { name?: string; description?: string; submitMessage?: string }): void {
+    if (settings.name !== undefined) this.formName.set(settings.name);
+    if (settings.description !== undefined) this.formDescription.set(settings.description);
+    if (settings.submitMessage !== undefined) this.formSubmitMessage.set(settings.submitMessage);
+  }
 
   constructor() {
     this.initialize();
@@ -121,6 +135,8 @@ export class FormBuilderService {
         });
 
         this.formName.set(formSchema.name);
+        this.formDescription.set(formSchema.description || '');
+        this.formSubmitMessage.set(formSchema.submitMessage || 'Thank you for your submission!');
         this.canvasFields.set(fieldsWithRules);
         this.theme.set(formSchema.theme || undefined);
         this.isLoading.set(false);
@@ -306,14 +322,13 @@ export class FormBuilderService {
       return fieldWithoutRules;
     });
 
-    console.log(this.currentTheme());
-
     const formSchemaPayload = new FormSchemaPayload(
       this.formName(),
-      'A dynamically Created Form',
+      this.formDescription(),
       cleanFields,
       allRules,
-      this.currentTheme()
+      this.currentTheme(),
+      this.formSubmitMessage()
     );
 
     let saveObservable: Observable<FormSchemaResponse>;

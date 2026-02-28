@@ -6,6 +6,7 @@ export class FormSchemaPayload {
     public description: string,
     public fields: FormField[],
     public rules: FormRule[],
-    public theme?: FormTheme
+    public theme?: FormTheme,
+    public submitMessage?: string
   ) {}
 }

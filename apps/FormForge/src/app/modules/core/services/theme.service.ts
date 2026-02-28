@@ -17,8 +17,8 @@ export class ThemeService {
     effect(() => {
       const theme = this.currentTheme();
       if (isPlatformBrowser(this.platformId)) {
-        console.log(this.platformId);
         localStorage.setItem(this.storageKey, theme);
+        document.documentElement.classList.toggle('dark', theme === 'dark');
       }
     });
   }

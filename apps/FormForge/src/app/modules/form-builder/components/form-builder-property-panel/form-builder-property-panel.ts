@@ -1,6 +1,7 @@
 import { Component, effect, inject, input, output } from '@angular/core';
 import { FieldOption, FormField, FormRule, FormTheme, RuleCondition, RuleConditionGroup } from '@form-forge/models';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilderService } from '../../services/form-builder.service';
 import { FormBuilderFieldRulesComponent } from '../form-builder-form-rules/form-builder-field-rules.component';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -61,6 +62,13 @@ import {
 })
 export class FormBuilderPropertyPanel {
   private fb = inject(FormBuilder);
+  readonly builderService = inject(FormBuilderService);
+
+  settingsForm = new FormGroup({
+    name: new FormControl('', { nonNullable: true }),
+    description: new FormControl('', { nonNullable: true }),
+    submitMessage: new FormControl('', { nonNullable: true }),
+  });
 
   readonly selectedField = input.required<FormField | null>();
   readonly allCanvasFields = input.required<FormField[]>();
@@ -81,6 +89,25 @@ export class FormBuilderPropertyPanel {
   countries: Country[] = Countries;
 
   constructor() {
+    effect(() => {
+      const field = this.selectedField();
+      if (!field) {
+        this.settingsForm.setValue({
+          name: this.builderService.name(),
+          description: this.builderService.description(),
+          submitMessage: this.builderService.submitMessage(),
+        }, { emitEvent: false });
+      }
+    });
+
+    this.settingsForm.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
+      .subscribe((val) => {
+        if (!this.selectedField()) {
+          this.builderService.updateFormSettings(val);
+        }
+      });
+
     this.propertiesForm = this.fb.group({
       label: ['', Validators.required],
       placeholder: [''],

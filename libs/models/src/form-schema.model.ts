@@ -6,6 +6,7 @@ export interface FormSchema {
   id: string;
   name: string;
   description?: string;
+  submitMessage?: string;
   fields: FormField[];
   rules?: FormRule[];
   theme?: FormTheme;

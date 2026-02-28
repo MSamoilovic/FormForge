@@ -20,11 +20,13 @@ export class FormRendererService implements OnDestroy {
   private formSchema = signal<FormSchema | null>(null);
   private form = signal<FormGroup | null>(null);
   private isLoading = signal<boolean>(true);
+  private submittedState = signal<boolean>(false);
   private destroy$ = new Subject<void>();
 
   public readonly schema = this.formSchema.asReadonly();
   public readonly formGroup = this.form.asReadonly();
   public readonly loading = this.isLoading.asReadonly();
+  public readonly isSubmitted = this.submittedState.asReadonly();
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -60,6 +62,11 @@ export class FormRendererService implements OnDestroy {
     });
   }
 
+  public resetSubmission(): void {
+    this.submittedState.set(false);
+    this.form()?.reset();
+  }
+
   public submit(formId: number): void {
     const formGroup = this.form();
     if (!formGroup) return;
@@ -76,8 +83,7 @@ export class FormRendererService implements OnDestroy {
 
     this.dataService.createSubmission(formId, submissionData).subscribe({
       next: () => {
-        this.notificationService.showSuccess('Your response has been successfully submitted!');
-        formGroup.reset();
+        this.submittedState.set(true);
       },
       error: (err) => {
         this.errorHandler.handle(err, 'FormRenderer.submit');
