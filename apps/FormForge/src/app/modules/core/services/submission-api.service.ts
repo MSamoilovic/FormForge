@@ -26,6 +26,10 @@ export class SubmissionApiService {
     return this.api.get<SubmissionResponse[]>(this.getEndpoint(formId));
   }
 
+  getById(formId: number, submissionId: number): Observable<SubmissionResponse> {
+    return this.api.get<SubmissionResponse>(`${this.getEndpoint(formId)}/${submissionId}`);
+  }
+
   exportToCSV(formId: number, filters: { [key: string]: any }) {
     const endpoint = this.getEndpoint(formId) + '/export';
 

@@ -4,7 +4,6 @@ import {
   DestroyRef,
   effect,
   inject,
-  OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
@@ -13,8 +12,9 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SubmissionsDataService } from './services/submissions-data.service';
 import { SubmissionResponse } from '../core/models/SubmissionResponse';
+import { FormSchemaResponse } from '../core/models/FormSchemaResponse';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, Subscription } from 'rxjs';
+import { debounceTime, forkJoin, Subscription } from 'rxjs';
 import { ThemeService } from '../core/services/theme.service';
 import { ErrorHandlerService } from '../core/services/error-handler.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
@@ -97,11 +97,21 @@ export class SubmissionsComponent implements OnInit {
 
   formId: number | null = null;
   submissions = signal<SubmissionResponse[]>([]);
+  formSchema = signal<FormSchemaResponse | null>(null);
   isLoading = signal<boolean>(true);
 
   public isDarkMode = computed(
     () => this.themeService.currentTheme() === 'dark'
   );
+
+  fieldLabelMap = computed(() => {
+    const schema = this.formSchema();
+    if (!schema) return {} as Record<string, string>;
+    return schema.fields.reduce((acc, field) => {
+      acc[field.id] = field.label;
+      return acc;
+    }, {} as Record<string, string>);
+  });
 
   displayedColumns = computed(() => {
     const firstSubmission = this.submissions()[0];
@@ -115,23 +125,18 @@ export class SubmissionsComponent implements OnInit {
   private filterFormSubscription?: Subscription;
   filterValues = signal<Record<string, string>>({});
 
-  // Pagination state
   pagination = signal<PaginationState>({ pageIndex: 0, pageSize: 10 });
-
-  // Sort state
   sortState = signal<SortState>({ column: null, direction: null });
 
-  // Filtered and sorted data
   filteredData = computed(() => {
     let data = [...this.submissions()];
 
-    // Apply filters
     const filterValues = this.filterValues();
     data = data.filter((submission) => {
       for (const key in filterValues) {
         const filterValue = filterValues[key]?.trim().toLowerCase();
         if (filterValue) {
-          let dataValue: any;
+          let dataValue: unknown;
           if (key === 'id' || key === 'submitted_at') {
             dataValue = submission[key];
           } else {
@@ -150,12 +155,11 @@ export class SubmissionsComponent implements OnInit {
       return true;
     });
 
-    // Apply sorting
     const sort = this.sortState();
     if (sort.column && sort.direction) {
       data.sort((a, b) => {
-        let aValue: any;
-        let bValue: any;
+        let aValue: unknown;
+        let bValue: unknown;
 
         if (sort.column === 'id') {
           aValue = a.id;
@@ -171,15 +175,11 @@ export class SubmissionsComponent implements OnInit {
         if (aValue === null || aValue === undefined) return 1;
         if (bValue === null || bValue === undefined) return -1;
 
-        if (typeof aValue === 'string') {
-          aValue = aValue.toLowerCase();
-        }
-        if (typeof bValue === 'string') {
-          bValue = bValue.toLowerCase();
-        }
+        const aComp = typeof aValue === 'string' ? aValue.toLowerCase() : aValue;
+        const bComp = typeof bValue === 'string' ? bValue.toLowerCase() : bValue;
 
-        if (aValue < bValue) return sort.direction === 'asc' ? -1 : 1;
-        if (aValue > bValue) return sort.direction === 'asc' ? 1 : -1;
+        if (aComp < bComp) return sort.direction === 'asc' ? -1 : 1;
+        if (aComp > bComp) return sort.direction === 'asc' ? 1 : -1;
         return 0;
       });
     }
@@ -187,7 +187,6 @@ export class SubmissionsComponent implements OnInit {
     return data;
   });
 
-  // Paginated data
   paginatedData = computed(() => {
     const { pageIndex, pageSize } = this.pagination();
     const start = pageIndex * pageSize;
@@ -196,12 +195,9 @@ export class SubmissionsComponent implements OnInit {
   });
 
   constructor() {
-    // Effect se automatski čisti kada se komponenta uništi
-    // Resetuj paginaciju kada se submissions promene
     effect(() => {
       const submissions = this.submissions();
       if (submissions.length > 0) {
-        // Reset to first page when data changes, ali samo ako već nije na prvoj stranici
         const currentPagination = this.pagination();
         if (currentPagination.pageIndex !== 0) {
           this.pagination.set({ pageIndex: 0, pageSize: currentPagination.pageSize });
@@ -214,22 +210,25 @@ export class SubmissionsComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('formId');
     if (idParam) {
       this.formId = +idParam;
-      this.loadSubmissions(this.formId);
+      this.loadData(idParam, this.formId);
     } else {
       this.errorHandler.showError('Form ID is missing from URL', 'Submissions.init');
       this.isLoading.set(false);
     }
   }
 
-  private loadSubmissions(formId: number) {
+  private loadData(formIdStr: string, formId: number) {
     this.isLoading.set(true);
-    this.submissionDataService.getAllSubmissions(formId)
+    forkJoin({
+      submissions: this.submissionDataService.getAllSubmissions(formId),
+      form: this.submissionDataService.getFormById(formIdStr),
+    })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (data) => {
-          this.submissions.set(data);
-          // Kreiraj filter form samo kada se submissions učitaju
-          if (data.length > 0) {
+        next: ({ submissions, form }) => {
+          this.formSchema.set(form as FormSchemaResponse);
+          this.submissions.set(submissions);
+          if (submissions.length > 0) {
             this.buildFilterForm();
           }
           this.isLoading.set(false);
@@ -242,33 +241,35 @@ export class SubmissionsComponent implements OnInit {
   }
 
   buildFilterForm(): void {
-    // Čisti staru subscription ako postoji
     if (this.filterFormSubscription) {
       this.filterFormSubscription.unsubscribe();
       this.filterFormSubscription = undefined;
     }
 
-    const group: { [key: string]: any } = {};
+    const group: { [key: string]: unknown[] } = {};
     this.displayedColumns().forEach((col) => {
       group[col] = [''];
     });
     this.filterForm = this.fb.group(group);
 
-    // Kreiraj novu subscription sa automatskim cleanup-om
     this.filterFormSubscription = this.filterForm.valueChanges
       .pipe(
         debounceTime(300),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((values) => {
-        // Update filter values signal
         this.filterValues.set(values);
-        // Reset to first page when filters change
         const currentPagination = this.pagination();
         if (currentPagination.pageIndex !== 0) {
           this.pagination.set({ pageIndex: 0, pageSize: currentPagination.pageSize });
         }
       });
+  }
+
+  getColumnLabel(column: string): string {
+    if (column === 'id') return 'ID';
+    if (column === 'submitted_at') return 'Submitted At';
+    return this.fieldLabelMap()[column] ?? column;
   }
 
   onSort(column: string): void {
@@ -300,12 +301,11 @@ export class SubmissionsComponent implements OnInit {
     if (this.formId === null) {
       return;
     }
-
     const filters = this.filterForm.value;
     this.submissionDataService.exportSubmissions(this.formId, filters);
   }
 
-  getCellValue(submission: SubmissionResponse, column: string): any {
+  getCellValue(submission: SubmissionResponse, column: string): unknown {
     if (column === 'submitted_at') {
       return submission.submitted_at;
     } else if (column === 'id') {
@@ -314,6 +314,4 @@ export class SubmissionsComponent implements OnInit {
       return submission.data[column];
     }
   }
-
- 
 }

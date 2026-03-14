@@ -3,6 +3,7 @@ import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubmissionsDataService } from '../services/submissions-data.service';
 import { SubmissionResponse } from '../../core/models/SubmissionResponse';
+import { FormSchemaResponse } from '../../core/models/FormSchemaResponse';
 import { ThemeService } from '../../core/services/theme.service';
 import { ErrorHandlerService } from '../../core/services/error-handler.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
@@ -15,6 +16,7 @@ import {
 import { CardComponent, CardContentComponent, CardHeaderComponent, CardTitleComponent } from '../../../shared/ui/card';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { cn } from '../../../shared/utils/cn';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-submission-detail',
@@ -50,6 +52,7 @@ export class SubmissionDetailComponent implements OnInit {
   protected cn = cn;
 
   submission = signal<SubmissionResponse | null>(null);
+  formSchema = signal<FormSchemaResponse | null>(null);
   isLoading = signal<boolean>(true);
   formId: number | null = null;
   submissionId: number | null = null;
@@ -58,12 +61,22 @@ export class SubmissionDetailComponent implements OnInit {
     () => this.themeService.currentTheme() === 'dark'
   );
 
+  fieldLabelMap = computed(() => {
+    const schema = this.formSchema();
+    if (!schema) return {} as Record<string, string>;
+    return schema.fields.reduce((acc, field) => {
+      acc[field.id] = field.label;
+      return acc;
+    }, {} as Record<string, string>);
+  });
+
   submissionData = computed(() => {
     const sub = this.submission();
     if (!sub) return [];
-    
+    const labelMap = this.fieldLabelMap();
     return Object.entries(sub.data).map(([key, value]) => ({
       key,
+      label: labelMap[key] ?? key,
       value,
     }));
   });
@@ -71,29 +84,26 @@ export class SubmissionDetailComponent implements OnInit {
   ngOnInit() {
     const formIdParam = this.route.snapshot.paramMap.get('formId');
     const submissionIdParam = this.route.snapshot.paramMap.get('submissionId');
-    
+
     if (formIdParam && submissionIdParam) {
       this.formId = +formIdParam;
       this.submissionId = +submissionIdParam;
-      this.loadSubmission();
+      this.loadData(formIdParam, this.formId, this.submissionId);
     } else {
       this.errorHandler.showError('Form ID or Submission ID is missing', 'SubmissionDetail.init');
       this.isLoading.set(false);
     }
   }
 
-  private loadSubmission() {
-    if (!this.formId) return;
-
+  private loadData(formIdStr: string, formId: number, submissionId: number) {
     this.isLoading.set(true);
-    this.submissionDataService.getAllSubmissions(this.formId).subscribe({
-      next: (data) => {
-        const submission = data.find((s) => s.id === this.submissionId);
-        if (submission) {
-          this.submission.set(submission);
-        } else {
-          this.errorHandler.showError('Submission not found', 'SubmissionDetail.load');
-        }
+    forkJoin({
+      submission: this.submissionDataService.getSubmissionById(formId, submissionId),
+      form: this.submissionDataService.getFormById(formIdStr),
+    }).subscribe({
+      next: ({ submission, form }) => {
+        this.submission.set(submission);
+        this.formSchema.set(form as FormSchemaResponse);
         this.isLoading.set(false);
       },
       error: (error) => {
@@ -111,4 +121,3 @@ export class SubmissionDetailComponent implements OnInit {
     }
   }
 }
-

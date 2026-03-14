@@ -27,7 +27,8 @@
       <app-button variant="outline" (click)="rendererService.resetSubmission()">Submit Again</app-button>
       }
     </div>
-    } @else if (rendererService.formGroup(); as formGroup) {
+    } @else {
+    @if (rendererService.formGroup(); as formGroup) {
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" novalidate>
 
       @for (field of formSchema.fields; track field.id) {
@@ -52,6 +53,7 @@
         Submit
       </app-button>
     </form>
+    }
     }
   </app-card-content>
 </app-card>

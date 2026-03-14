@@ -1,7 +1,12 @@
 <div class="container mx-auto p-6 max-w-4xl">
   <!-- Header -->
   <div class="flex items-center justify-between mb-6">
-    <h1 class="text-3xl font-bold text-foreground">Submission Details</h1>
+    <div>
+      <h1 class="text-3xl font-bold text-foreground">Submission Details</h1>
+      @if (formSchema()) {
+        <p class="text-muted-foreground mt-1">{{ formSchema()!.name }}</p>
+      }
+    </div>
     <app-button variant="outline" (click)="goBack()">
       <ng-icon name="lucideArrowLeft" class="h-4 w-4" />
       Back to Submissions
@@ -33,7 +38,7 @@
           @for (item of submissionData(); track item.key) {
             <div class="border-b pb-4 last:border-b-0">
               <label class="text-sm font-medium text-muted-foreground mb-1 block">
-                {{ item.key | titlecase }}
+                {{ item.label }}
               </label>
               <p class="text-foreground">
                 @if (item.value === null || item.value === undefined) {
@@ -62,4 +67,3 @@
     </app-card>
   }
 </div>
-

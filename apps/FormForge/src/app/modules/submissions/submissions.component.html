@@ -1,7 +1,12 @@
 <div class="container mx-auto p-6 max-w-7xl">
   <!-- Header -->
   <div class="flex items-center justify-between mb-6">
-    <h1 class="text-3xl font-bold text-foreground">Form Submissions</h1>
+    <div>
+      <h1 class="text-3xl font-bold text-foreground">Submissions</h1>
+      @if (formSchema()) {
+        <p class="text-muted-foreground mt-1">{{ formSchema()!.name }}</p>
+      }
+    </div>
     <div class="flex items-center gap-3">
       <app-button
         variant="outline"
@@ -33,7 +38,7 @@
               @for (column of displayedColumns(); track column) {
                 <div class="space-y-1">
                   <label class="text-xs font-medium text-muted-foreground">
-                    {{ column | titlecase }}
+                    {{ getColumnLabel(column) }}
                   </label>
                   <div class="relative">
                     <ng-icon
@@ -43,7 +48,7 @@
                     <input
                       appInput
                       [formControlName]="column"
-                      [placeholder]="'Filter ' + (column | titlecase)"
+                      [placeholder]="'Filter ' + getColumnLabel(column)"
                       autocomplete="off"
                       class="pl-8"
                     />
@@ -65,18 +70,19 @@
                         (click)="onSort(column)"
                         class="flex items-center gap-2 hover:text-foreground transition-colors"
                       >
-                        <span>{{ column | titlecase }}</span>
+                        <span>{{ getColumnLabel(column) }}</span>
                         @if (getSortIcon(column); as icon) {
                           <ng-icon [name]="icon" class="h-4 w-4" />
                         }
                       </button>
                     </app-table-head>
                   }
+                  <app-table-head></app-table-head>
                 </app-table-row>
               </app-table-header>
               <app-table-body>
                 @for (submission of paginatedData(); track submission.id) {
-                  <app-table-row 
+                  <app-table-row
                     class="cursor-pointer"
                     (click)="router.navigate(['/submissions', formId, submission.id])"
                   >
@@ -89,6 +95,9 @@
                         }
                       </app-table-cell>
                     }
+                    <app-table-cell class="text-right">
+                      <span class="text-xs text-muted-foreground">View →</span>
+                    </app-table-cell>
                   </app-table-row>
                 }
               </app-table-body>

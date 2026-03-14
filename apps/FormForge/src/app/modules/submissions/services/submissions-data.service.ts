@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { SubmissionApiService } from '../../core/services/submission-api.service';
+import { FormApiService } from '../../core/services/form-api';
 import { ErrorHandlerService } from '../../core/services/error-handler.service';
 import { NotificationService } from '../../core/services/notification.service';
 
@@ -8,11 +9,20 @@ import { NotificationService } from '../../core/services/notification.service';
 })
 export class SubmissionsDataService {
   private submissionsApiService = inject(SubmissionApiService);
+  private formApiService = inject(FormApiService);
   private errorHandler = inject(ErrorHandlerService);
   private notificationService = inject(NotificationService);
 
   getAllSubmissions(formId: number) {
     return this.submissionsApiService.getAll(formId);
+  }
+
+  getSubmissionById(formId: number, submissionId: number) {
+    return this.submissionsApiService.getById(formId, submissionId);
+  }
+
+  getFormById(formId: string) {
+    return this.formApiService.getById(formId);
   }
 
   exportSubmissions(formId: number, filters: Record<string, unknown>) {
