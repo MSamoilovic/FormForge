@@ -70,3 +70,30 @@ form {
   font-size: 1.125rem;
   color: var(--ff-text-primary);
 }
+
+// =============================================================================
+// Responsive — mobilna optimizacija renderera
+// =============================================================================
+@media (max-width: 640px) {
+  :host {
+    // Manje bočnog razmaka da forma iskoristi širinu ekrana
+    padding: var(--ff-spacing-md) var(--ff-spacing-sm);
+    align-items: stretch;
+  }
+
+  .form-container {
+    // Puna širina na telefonu (max-width 700px nema efekta ovde)
+    max-width: 100%;
+  }
+
+  form {
+    // Zbijeniji razmak između polja na malom ekranu
+    gap: var(--ff-spacing-md);
+  }
+
+  .submit-button {
+    // Puno-širinski tap target na mobilnom
+    width: 100%;
+    align-self: stretch;
+  }
+}

@@ -114,3 +114,15 @@
   }
 }
 
+// Responsive — na uskim ekranima fiksni 180px selektor pravi overflow,
+// pa selektor i input slažemo vertikalno.
+@media (max-width: 640px) {
+  .phone-field-container {
+    flex-direction: column;
+  }
+
+  .country-select {
+    width: 100%;
+  }
+}
+

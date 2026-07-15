@@ -1,90 +1,55 @@
 <h1 align="center">FormForge</h1>
 <p align="center">
-  A powerful web application for the dynamic creation, management, and display of forms.
+  A powerful web application for dynamically creating, managing, and rendering forms.
 </p>
 
 ---
 
-<h2 id="features">Key Features</h2>
-<ul>
-  <li><strong>Visual Form Builder:</strong> Easily drag and drop field components (text, select, radio buttons, etc.).</li>
-  <li><strong>Reactive Form Management:</strong> Uses <code>Reactive Forms</code> for efficient state management.</li>
-  <li><strong>Dynamic Rule Engine:</strong> Supports complex rules (<code>AND</code>/<code>OR</code>) that control the visibility and behavior of form fields.</li>
-  <li><strong>Embed Anywhere:</strong> 🆕 JavaScript SDK for embedding forms on any website (inline, popup, or slide-in widget).</li>
-  <li><strong>AI-Powered:</strong> Generate forms from natural language descriptions.</li>
-  <li><strong>Nx Monorepo:</strong> Organized and scalable code with clearly defined libraries and applications.</li>
-  <li><strong>Standalone Components:</strong> A modern development approach using standalone Angular components, without the need for <code>NgModule</code>-s.</li>
-</ul>
+## Key Features
 
-<br>
+- **Visual Form Builder** — drag & drop 17 field types (text, select, radio, file upload, rich text, and more).
+- **Reactive Forms** — efficient form state management via Angular Reactive Forms + Signals.
+- **Rule Engine** — complex rules (`AND`/`OR`) that control field visibility and behavior.
+- **Submissions** — collect submissions, view them, and export to CSV.
+- **AI Generation** — create a form from a natural-language description.
+- **Theming** — per-form visual identity via CSS variables + dark mode.
+- **Nx Monorepo** — scalable code with clearly separated libraries and applications.
 
-<h2 id="technologies">Technologies Used</h2>
-<p>This project is built using a modern stack to ensure performance and maintainability:</p>
-<ul>
-  <li><strong>Angular v17+</strong>: The main frontend framework.</li>
-  <li><strong>TypeScript</strong>: A strongly typed language for more reliable code.</li>
-  <li><strong>Nx</strong>: A monorepo tool for managing projects and shared libraries.</li>
-  <li><strong>Tailwind CSS</strong>: A fast and efficient CSS utility-first library for styling.</li>
-  <li><strong>CdkDragDrop</strong>: Angular Material CDK for drag-and-drop functionality.</li>
-</ul>
+## Tech Stack
 
-<br>
+- **Angular 20+** — standalone components, Signals (no `NgModule`).
+- **TypeScript** — strictly typed code.
+- **Nx** — monorepo tooling for apps and shared libraries.
+- **Tailwind CSS** + Spartan UI — styling and UI primitives.
+- **Angular CDK** — drag & drop.
+- **Jest** (unit) + **Playwright** (E2E) — testing.
 
-<h2 id="getting-started">Getting Started</h2>
-<p>To run the project locally, follow these simple steps:</p>
-<ol>
-  <li><strong>Clone the repository:</strong>
-    <pre><code>git clone https://github.com/your-username/your-repository.git
-cd your-repository</code></pre>
-  </li>
-  <li><strong>Install dependencies:</strong>
-    <pre><code>npm install</code></pre>
-  </li>
-  <li><strong>Run the application:</strong>
-    <pre><code>npm run start</code></pre>
-    The application will be available at <a href="http://localhost:4200/">http://localhost:4200/</a>.
-  </li>
-</ol>
+## Getting Started
 
-<br>
+```bash
+git clone https://github.com/MSamoilovic/FormForge.git
+cd FormForge
+npm install
+npm run start        # nx serve FormForge --port 4500
+```
 
-<h2 id="project-structure">Project Structure</h2>
-<p>The project is organized as an Nx monorepo for easy code sharing and scalability:</p>
-<ul>
-  <li><code>apps/FormForge/</code>: The main Angular application.</li>
-  <li><code>libs/models/</code>: A shared library with the logic and models for the Form Builder and Form Renderer.</li>
-  <li><code>libs/ui-kit/</code>: A shared library with UI components (inputs, buttons, etc.).</li>
-  <li><code>libs/rule-engine/</code>: Business logic for conditional form rules.</li>
-  <li><code>libs/embed-sdk/</code>: 🆕 JavaScript SDK for embedding forms on external websites.</li>
-</ul>
+The app is available at [http://localhost:4500](http://localhost:4500).
 
-<br>
+> **Backend:** the frontend expects a REST API at `http://127.0.0.1:8001/api`. The backend lives in a separate repository — see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#5-api-contract) for the API contract.
 
-<h2 id="documentation">📚 Documentation</h2>
-<p>Comprehensive planning and technical documentation:</p>
-<ul>
-  <li><strong><a href="PROJECT_OVERVIEW.md">Project Overview</a></strong>: Complete project summary</li>
-  <li><strong><a href="ROADMAP.md">Roadmap</a></strong>: Long-term feature plan (Q1-Q4 2025)</li>
-  <li><strong><a href="TECHNICAL_PLAN.md">Technical Plan</a></strong>: Detailed implementation guide</li>
-  <li><strong><a href="BACKLOG.md">Product Backlog</a></strong>: User stories and sprint planning</li>
-  <li><strong><a href="QUICK_START_GUIDE.md">Quick Start Guide</a></strong>: Step-by-step implementation guide</li>
-  <li><strong><a href="EMBED_IMPLEMENTATION.md">Embed System</a></strong>: 🆕 Widget/embed technical specification</li>
-</ul>
+## Project Structure
 
-<br>
+Nx monorepo:
 
-<h2 id="upcoming-features">🚀 Upcoming Features</h2>
-<p>Exciting new features coming soon:</p>
-<ul>
-  <li>✅ <strong>Embed/Widget System</strong>: Embed forms anywhere (Sprint 5-6)</li>
-  <li>📧 <strong>Email Field</strong>: With built-in validation (Sprint 1)</li>
-  <li>📱 <strong>Phone Field</strong>: International format support (Sprint 1)</li>
-  <li>📄 <strong>Textarea Field</strong>: Multi-line text input (Sprint 1)</li>
-  <li>📎 <strong>File Upload</strong>: Drag & drop with preview (Sprint 2)</li>
-  <li>🔄 <strong>Undo/Redo</strong>: Full history management (Sprint 1)</li>
-  <li>🌙 <strong>Dark Mode</strong>: System and manual toggle (Sprint 2)</li>
-  <li>📊 <strong>Analytics Dashboard</strong>: Form performance insights (Sprint 4)</li>
-  <li>🤖 <strong>Enhanced AI</strong>: Better form generation (Sprint 5)</li>
-</ul>
+- `apps/FormForge/` — the main Angular application
+- `apps/FormForge-e2e/` — Playwright E2E tests
+- `libs/models/` — shared TypeScript models (source of truth for types)
+- `libs/ui-kit/` — presentational field components + shell
+- `libs/rule-engine/` — conditional rule logic
+- `libs/config/` — field defaults and UI configuration
 
-<p>See <a href="ROADMAP.md">ROADMAP.md</a> for complete feature list.</p>
+## Documentation
+
+- **[PLAN.md](PLAN.md)** — master plan and current focus (single authoritative tracker)
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — technical reference: stack, monorepo, domain model, API contract
+- **[docs/ROADMAP.md](docs/ROADMAP.md)** — feature roadmap and backlog

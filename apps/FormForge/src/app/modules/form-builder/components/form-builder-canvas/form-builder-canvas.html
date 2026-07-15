@@ -40,6 +40,28 @@
           <div class="drag-handle" cdkDragHandle>
             <ng-icon name="lucideGripVertical" size="20" />
           </div>
+          @if (ruleIndicators()[field.id]; as ind) {
+            @if (ind.isTarget || ind.isTrigger) {
+              <div class="rule-indicators">
+                @if (ind.isTarget) {
+                  <span
+                    class="rule-badge rule-badge--target"
+                    [title]="ind.targetSummary"
+                  >
+                    <ng-icon name="lucideEye" size="13" />
+                  </span>
+                }
+                @if (ind.isTrigger) {
+                  <span
+                    class="rule-badge rule-badge--trigger"
+                    [title]="ind.triggerSummary"
+                  >
+                    <ng-icon name="lucideZap" size="13" />
+                  </span>
+                }
+              </div>
+            }
+          }
           <div class="field-content ff-field-content">
             <ng-container
               [ngComponentOutlet]="getComponent(field.type)"
