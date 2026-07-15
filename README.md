@@ -5,26 +5,20 @@
 
 ---
 
-## Key Features
+## Motivation
 
-- **Visual Form Builder** — drag & drop 17 field types (text, select, radio, file upload, rich text, and more).
-- **Reactive Forms** — efficient form state management via Angular Reactive Forms + Signals.
-- **Rule Engine** — complex rules (`AND`/`OR`) that control field visibility and behavior.
-- **Submissions** — collect submissions, view them, and export to CSV.
-- **AI Generation** — create a form from a natural-language description.
-- **Theming** — per-form visual identity via CSS variables + dark mode.
-- **Nx Monorepo** — scalable code with clearly separated libraries and applications.
+Building forms by hand is repetitive, and most form tools are either too rigid or lock your data behind a SaaS. FormForge is a self-hostable form platform that lets you:
 
-## Tech Stack
+- **Design visually** — drag & drop 17 field types instead of writing markup.
+- **Add logic without code** — an `AND`/`OR` rule engine controls field visibility and behavior.
+- **Own your data** — forms and submissions live in your own backend (separate FastAPI + PostgreSQL service).
+- **Move fast** — generate a form from a natural-language description with AI, then refine it.
 
-- **Angular 20+** — standalone components, Signals (no `NgModule`).
-- **TypeScript** — strictly typed code.
-- **Nx** — monorepo tooling for apps and shared libraries.
-- **Tailwind CSS** + Spartan UI — styling and UI primitives.
-- **Angular CDK** — drag & drop.
-- **Jest** (unit) + **Playwright** (E2E) — testing.
+It's built as an Nx monorepo with Angular 20 (standalone components + Signals), so the field library, rule engine, and models are cleanly separated and reusable.
 
-## Getting Started
+## Quick Start
+
+**Prerequisites:** Node.js 20+, and the backend API running at `http://127.0.0.1:8001` (separate repo: [FormForge_API](https://github.com/MSamoilovic/FormForge_API)).
 
 ```bash
 git clone https://github.com/MSamoilovic/FormForge.git
@@ -33,23 +27,38 @@ npm install
 npm run start        # nx serve FormForge --port 4500
 ```
 
-The app is available at [http://localhost:4500](http://localhost:4500).
+Open [http://localhost:4500](http://localhost:4500).
 
-> **Backend:** the frontend expects a REST API at `http://127.0.0.1:8001/api`. The backend lives in a separate repository — see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#5-api-contract) for the API contract.
+> Without the backend the UI loads, but saving/loading forms and submissions will fail. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#5-api-contract) for the API contract.
 
-## Project Structure
+## Usage
 
-Nx monorepo:
+1. **Sign in** — register or log in (JWT auth).
+2. **Build a form** — in the Form Builder, drag fields from the toolbox onto the canvas and configure each in the property panel.
+3. **Add rules** — attach conditional rules (show/hide/require) to a field; the canvas shows indicators on fields driven by or triggering rules.
+4. **Theme it** — set per-form colors, font, and border radius; toggle dark mode.
+5. **Preview & publish** — preview opens the live renderer; share the form URL to collect responses.
+6. **Review submissions** — view responses per form and export them to CSV.
+7. **AI shortcut** — describe a form in plain language and let AI scaffold it, then edit.
 
-- `apps/FormForge/` — the main Angular application
+For the full domain model, module map, and API contract, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Contributing
+
+This is an Nx monorepo:
+
+- `apps/FormForge/` — the Angular application
 - `apps/FormForge-e2e/` — Playwright E2E tests
-- `libs/models/` — shared TypeScript models (source of truth for types)
-- `libs/ui-kit/` — presentational field components + shell
-- `libs/rule-engine/` — conditional rule logic
-- `libs/config/` — field defaults and UI configuration
+- `libs/models/` — shared TypeScript types (`@form-forge/models`, the single source of truth)
+- `libs/ui-kit/` — presentational field components (`@form-forge/ui-kit`)
+- `libs/rule-engine/` — conditional rule logic (`@form-forge/rule-engine`)
+- `libs/config/` — field defaults and UI config (`@form-forge/config`)
 
-## Documentation
+**Workflow:**
 
-- **[PLAN.md](PLAN.md)** — master plan and current focus (single authoritative tracker)
-- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — technical reference: stack, monorepo, domain model, API contract
-- **[docs/ROADMAP.md](docs/ROADMAP.md)** — feature roadmap and backlog
+```bash
+npx nx lint FormForge       # lint
+npx nx test FormForge       # unit tests (Jest)
+npx nx e2e FormForge-e2e    # E2E (Playwright)
+npx nx build FormForge      # production build
+```
